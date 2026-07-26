@@ -1,4 +1,4 @@
-# Open Legend (Unofficial) — User Tutorial
+# Tomucato's Open Legend RPG system(Unofficial) — User Tutorial
 
 A practical guide to playing [Open Legend RPG](https://openlegendrpg.com/) with this Foundry VTT system. It covers making characters, rolling actions, working with banes & boons, and the automation the system runs for you.
 
