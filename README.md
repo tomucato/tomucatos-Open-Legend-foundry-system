@@ -2,15 +2,15 @@
 
 <p align="center">
   <a href="https://foundryvtt.com/"><img src="https://img.shields.io/badge/Foundry%20VTT-v11%20–%20v14-ee9b3a?style=for-the-badge&logo=foundryvirtualtabletop&logoColor=white" alt="Foundry VTT v11–v14"></a>
-  <a href="https://github.com/tomucato/Open-Legend-foundry-system/releases"><img src="https://img.shields.io/github/v/release/tomucato/Open-Legend-foundry-system?style=for-the-badge&label=Latest%20Release&color=blue" alt="Latest release"></a>
+  <a href="https://github.com/tomucato/tomucatos-Open-Legend-foundry-system/releases"><img src="https://img.shields.io/github/v/release/tomucato/tomucatos-Open-Legend-foundry-system?style=for-the-badge&label=Latest%20Release&color=blue" alt="Latest release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT license"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/tomucato/Open-Legend-foundry-system/stargazers"><img src="https://img.shields.io/github/stars/tomucato/Open-Legend-foundry-system?style=flat-square&logo=github" alt="GitHub stars"></a>
-  <a href="https://github.com/tomucato/Open-Legend-foundry-system/issues"><img src="https://img.shields.io/github/issues/tomucato/Open-Legend-foundry-system?style=flat-square&logo=github" alt="Open issues"></a>
-  <a href="https://github.com/tomucato/Open-Legend-foundry-system/releases"><img src="https://img.shields.io/github/downloads/tomucato/Open-Legend-foundry-system/total?style=flat-square&label=downloads" alt="Total downloads"></a>
-  <a href="https://github.com/tomucato/Open-Legend-foundry-system/commits/main"><img src="https://img.shields.io/github/last-commit/tomucato/Open-Legend-foundry-system?style=flat-square" alt="Last commit"></a>
+  <a href="https://github.com/tomucato/tomucatos-Open-Legend-foundry-system/stargazers"><img src="https://img.shields.io/github/stars/tomucato/tomucatos-Open-Legend-foundry-system?style=flat-square&logo=github" alt="GitHub stars"></a>
+  <a href="https://github.com/tomucato/tomucatos-Open-Legend-foundry-system/issues"><img src="https://img.shields.io/github/issues/tomucato/tomucatos-Open-Legend-foundry-system?style=flat-square&logo=github" alt="Open issues"></a>
+  <a href="https://github.com/tomucato/tomucatos-Open-Legend-foundry-system/releases"><img src="https://img.shields.io/github/downloads/tomucato/tomucatos-Open-Legend-foundry-system/total?style=flat-square&label=downloads" alt="Total downloads"></a>
+  <a href="https://github.com/tomucato/tomucatos-Open-Legend-foundry-system/commits/main"><img src="https://img.shields.io/github/last-commit/tomucato/tomucatos-Open-Legend-foundry-system?style=flat-square" alt="Last commit"></a>
   <a href="https://openlegendrpg.com/"><img src="https://img.shields.io/badge/Open%20Legend-RPG-8b0000?style=flat-square" alt="Open Legend RPG"></a>
 </p>
 
@@ -48,7 +48,7 @@ An **unofficial, automation-heavy implementation of the [Open Legend RPG](https:
 2. Paste this manifest URL into the **Manifest URL** field:
 
    ```
-   https://raw.githubusercontent.com/tomucato/Open-Legend-foundry-system/main/system.json
+   https://raw.githubusercontent.com/tomucato/tomucatos-Open-Legend-foundry-system/main/system.json
    ```
 
 3. Click **Install**, then create a world using the **Open Legend Unofficial** system.
@@ -61,7 +61,7 @@ New to the system? Read the **[User Tutorial](TUTORIAL.md)** — it walks throug
 
 ## 🤝 Contributing
 
-Issues and pull requests are welcome! If you hit a bug or want a rule automated, [open an issue](https://github.com/tomucato/Open-Legend-foundry-system/issues).
+Issues and pull requests are welcome! If you hit a bug or want a rule automated, [open an issue](https://github.com/tomucato/tomucatos-Open-Legend-foundry-system/issues).
 
 ## ⚖️ License
 
