@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbKooHQLfl73L",
+  "name": "Innocent",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Whether from a distant fey ancestry or simply an air of naivety, you possess a childlike quality that can melt even the coldest of hearts. Once per game session, you can leverage your innocence to turn an enemy and cause them to take pity on you. The enemy might choose to look the other way when you've done something illegal, forgive a debt you could never pay, or vouch in your favor before the authorities.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

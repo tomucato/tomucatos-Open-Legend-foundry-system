@@ -1,0 +1,14 @@
+{
+  "_id": "qdEx7kanwQOgdXW8",
+  "name": "Crowd Favorite",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Whether you are an actor, musician, storyteller, magician, or some other type of performer, the common folk love your work. They adore you for your ability to use your art to transport them to a world beyond their daily drudgery, and you can always find a place to perform and make money at the local tavern or inn.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "_id": "Cezw0fQlg7g43pky",
+  "name": "Battlefield Opportunist (I - V)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Your battlefield prowess allows you to capitalize on windows of opportunity that others don't notice, making you far more deadly in melee combat. Whether you wield an axe, plasmablade, or your bare fists, foes struggle to maneuver around or away from you.</p>",
+    "effect": "You may make an additional opportunity attack per round for each tier of this feat you possess. You can only make one opportunity attack per triggering action (e.g., you cannot make multiple attacks against the same foe when they leave your threatened space).",
+    "special": "",
+    "tags": [
+      "Might",
+      "Agility",
+      "Passive",
+      "Combat",
+      "Feat Chain"
+    ],
+    "cost": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "maxTier": 5,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 5,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Battlefield Opportunist (I - V)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

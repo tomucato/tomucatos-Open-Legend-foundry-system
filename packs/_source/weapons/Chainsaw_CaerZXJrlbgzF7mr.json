@@ -1,0 +1,50 @@
+{
+  "_id": "CaerZXJrlbgzF7mr",
+  "name": "Chainsaw",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Two-handed Melee. Forceful, Heavy.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": true,
+    "quantity": 1,
+    "baseType": "Chainsaw",
+    "categories": [
+      "two-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      },
+      {
+        "key": "heavy"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Demoralized",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.M5TnAHm1bWjzhJi9"
+      },
+      {
+        "name": "Provoked",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fGfouj2vuuyiy3vM"
+      },
+      {
+        "name": "Fear",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.H4eeAjn7RGyeOcve"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,5185 @@
+/* =========================================================================
+   Open Legend — Character / Actor sheet styling
+   Palette:  --ol-purple #301e69  (deep royal purple)
+             --ol-gold   #c2922b  (antique gold)
+   ========================================================================= */
+.openlegend.sheet {
+  --ol-purple: #301e69;
+  --ol-purple-light: #4a3494;
+  --ol-purple-dark: #1d1240;
+  --ol-gold: #c2922b;
+  --ol-gold-light: #e3b94f;
+  --ol-ink: #2b2440;
+  --ol-parchment: #f6f3ec;
+}
+
+/* ---- Window frame ------------------------------------------------------- */
+.openlegend.sheet.actor {
+  min-width: 600px;
+  min-height: 520px;
+}
+.openlegend.sheet .window-content {
+  background:
+    linear-gradient(rgba(246, 243, 236, 0.92), rgba(246, 243, 236, 0.92)),
+    radial-gradient(circle at top left, rgba(48, 30, 105, 0.06), transparent 60%);
+  color: var(--ol-ink);
+  padding: 10px 12px;
+  /* Scroll the WHOLE sheet as one document (core sets this to overflow:hidden).
+     Header, stats, defenses, tabs and body all scroll together; each tab shows
+     its full natural height rather than scrolling within a fixed body. */
+  overflow: hidden auto;
+  scrollbar-gutter: stable;
+}
+
+/* ---- Battle Trance: the whole sheet glows "on fire" while entranced. The
+   class is toggled on the sheet root in the actor sheet's _onRender. --------- */
+.openlegend.sheet.ol-battle-trance {
+  border: 2px solid #d9531e;
+  border-radius: 8px;
+  box-shadow: 0 0 18px 2px rgba(217, 83, 30, 0.85),
+              inset 0 0 22px rgba(217, 83, 30, 0.35);
+  animation: ol-trance-flicker 2.2s ease-in-out infinite;
+}
+.openlegend.sheet.ol-battle-trance .window-content {
+  background:
+    linear-gradient(rgba(246, 240, 233, 0.92), rgba(246, 240, 233, 0.92)),
+    radial-gradient(circle at top, rgba(217, 83, 30, 0.16), transparent 55%);
+}
+@keyframes ol-trance-flicker {
+  0%, 100% { box-shadow: 0 0 16px 2px rgba(217, 83, 30, 0.75), inset 0 0 18px rgba(217, 83, 30, 0.30); }
+  50%      { box-shadow: 0 0 26px 5px rgba(255, 120, 40, 0.95), inset 0 0 28px rgba(255, 120, 40, 0.45); }
+}
+
+/* ---- Header ------------------------------------------------------------- */
+.openlegend.sheet .sheet-header {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--ol-purple) 0%, var(--ol-purple-light) 100%);
+  border: 1px solid var(--ol-gold);
+  box-shadow: 0 2px 10px rgba(29, 18, 64, 0.35), inset 0 0 0 1px rgba(227, 185, 79, 0.25);
+  color: #fff;
+}
+/* Portrait wrapper keeps the fixed sizing the bare <img> used to have, and
+   positions the full-size popout icon over the image. */
+.openlegend.sheet .portrait {
+  position: relative;
+  flex: 0 0 96px;
+  width: 96px;
+  height: 96px;
+}
+.openlegend.sheet .profile-img {
+  width: 96px;
+  height: 96px;
+  /* Scale the whole image down to fit the frame (no cropping). */
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid var(--ol-gold);
+  box-shadow: 0 0 12px rgba(194, 146, 43, 0.5);
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+/* Expand-to-full-size icon, bottom-right corner of the portrait. Fades in on
+   hover so it doesn't clutter the frame at rest. */
+.openlegend.sheet .portrait-popout {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  color: var(--ol-gold-light);
+  background: rgba(29, 18, 64, 0.78);
+  border: 1px solid var(--ol-gold);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, background 0.12s ease;
+}
+.openlegend.sheet .portrait:hover .portrait-popout {
+  opacity: 1;
+}
+.openlegend.sheet .portrait-popout:hover {
+  background: var(--ol-purple);
+  color: #fff;
+}
+.openlegend.sheet .portrait-popout i {
+  font-size: 12px;
+  pointer-events: none;
+}
+.openlegend.sheet .header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* ---- Name + Archetype row (equal width) --------------------------------- */
+.openlegend.sheet .name-row {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+.openlegend.sheet .name-row .field {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+/* Match the Archetype box height to the larger Name input. */
+.openlegend.sheet .name-row .field-archetype input {
+  padding: 8px;
+}
+.openlegend.sheet .name-row label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet input.charname {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 4px 8px;
+  font-family: "Modesto Condensed", "Signika", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid transparent;
+  border-bottom: 2px solid var(--ol-gold);
+  border-radius: 4px;
+}
+.openlegend.sheet input.charname:hover,
+.openlegend.sheet input.charname:focus {
+  background: rgba(255, 255, 255, 0.16);
+  border-bottom-color: var(--ol-gold-light);
+  box-shadow: 0 0 8px rgba(194, 146, 43, 0.5);
+}
+/* Item sheets reuse .charname for the item name, but 24px is oversized for an
+   item title — shrink it on item sheets only (actor names stay large). */
+.openlegend.sheet.item input.charname {
+  font-size: 18px;
+}
+/* The item-name field spans the full header width above the stat row; override
+   the narrow .gear-stat input width so the name box fills the row. */
+.openlegend.sheet .gear-stat.field-name {
+  width: 100%;
+}
+.openlegend.sheet .gear-stat.field-name input {
+  width: 100%;
+}
+
+/* ---- Resources (Health / Level / XP) ----------------------------------- */
+.openlegend.sheet .resources {
+  display: flex;
+  gap: 12px;
+}
+.openlegend.sheet .resource {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.openlegend.sheet .resource > label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .resource-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.openlegend.sheet .resource-content .sep {
+  opacity: 0.7;
+  color: var(--ol-gold-light);
+}
+
+/* ---- Identity fields (Wealth Level / Level / XP / Legend Point) --------- */
+.openlegend.sheet .identity-fields {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 10px;
+  align-items: end;
+}
+.openlegend.sheet .identity-fields .field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.openlegend.sheet .identity-fields label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+
+/* ---- Vitals section (Health/Speed/Initiative row + defenses row) -------- */
+.openlegend.sheet .vitals {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(48, 30, 105, 0.18);
+  box-shadow: 0 1px 4px rgba(48, 30, 105, 0.08);
+}
+/* Section titles for the Stats and Defenses panels. */
+.openlegend.sheet .vitals-title {
+  margin: 0;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--ol-gold);
+  color: var(--ol-purple);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+/* Health / Speed / Initiative share the row equally. */
+.openlegend.sheet .vitals-row {
+  display: flex;
+  gap: 10px;
+}
+/* A compact tile that doesn't stretch to fill its row — used for the lone Resist
+   tile in the Actions section. */
+.openlegend.sheet .vitals-row > .vital.vital-small {
+  flex: 0 0 auto;
+  min-width: 110px;
+}
+.openlegend.sheet .vital {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+  color: #fff;
+}
+.openlegend.sheet .vital > label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .vital .derived {
+  font-size: 22px;
+  line-height: 1;
+  color: #fff;
+}
+.openlegend.sheet .vital-health-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 20px;
+  font-weight: 700;
+}
+.openlegend.sheet .vital input[type="text"] {
+  width: 46px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(227, 185, 79, 0.45);
+  border-radius: 4px;
+}
+/* Speed can reach 4 digits on mounts/vehicles (e.g. 1000'): give it room. */
+.openlegend.sheet .vital-speed input[type="text"] {
+  width: 64px;
+}
+/* Where supported (Foundry's Chromium), every vital input sizes to its content
+   instead — 46px floor, capped so a wild value can't blow up the tile. */
+@supports (field-sizing: content) {
+  .openlegend.sheet .vital input[type="text"] {
+    field-sizing: content;
+    width: auto;
+    min-width: 46px;
+    max-width: 110px;
+  }
+}
+.openlegend.sheet .vital-health-content .sep {
+  opacity: 0.7;
+  color: var(--ol-gold-light);
+}
+/* Clickable initiative (rolls into the combat tracker). */
+.openlegend.sheet .initiative-roll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #fff;
+}
+.openlegend.sheet .initiative-roll i {
+  color: var(--ol-gold-light);
+  font-size: 14px;
+  transition: transform 0.15s ease;
+}
+.openlegend.sheet .initiative-roll:hover {
+  text-shadow: 0 0 8px rgba(227, 185, 79, 0.7);
+}
+.openlegend.sheet .initiative-roll:hover i {
+  transform: rotate(-18deg) scale(1.15);
+}
+/* Actions controls (Resist / Rest): mirror the initiative roll; Resist is also
+   draggable to the hotbar. */
+.openlegend.sheet .resist-banes,
+.openlegend.sheet .lethal-rest,
+.openlegend.sheet .hospitaler-action,
+.openlegend.sheet .trance-action,
+.openlegend.sheet .reckless-action,
+.openlegend.sheet .form-transform {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #fff;
+}
+.openlegend.sheet .resist-banes i,
+.openlegend.sheet .lethal-rest i,
+.openlegend.sheet .hospitaler-action i,
+.openlegend.sheet .trance-action i,
+.openlegend.sheet .reckless-action i,
+.openlegend.sheet .form-transform i {
+  color: var(--ol-gold-light);
+  font-size: 14px;
+  transition: transform 0.15s ease;
+}
+.openlegend.sheet .resist-banes:hover,
+.openlegend.sheet .lethal-rest:hover,
+.openlegend.sheet .hospitaler-action:hover,
+.openlegend.sheet .trance-action:hover,
+.openlegend.sheet .reckless-action:hover,
+.openlegend.sheet .form-transform:hover {
+  text-shadow: 0 0 8px rgba(227, 185, 79, 0.7);
+}
+.openlegend.sheet .resist-banes:hover i,
+.openlegend.sheet .lethal-rest:hover i,
+.openlegend.sheet .hospitaler-action:hover i,
+.openlegend.sheet .trance-action:hover i,
+.openlegend.sheet .reckless-action:hover i,
+.openlegend.sheet .form-transform:hover i {
+  transform: scale(1.15);
+}
+/* Battle Trance tile: glow + flame when active. */
+.openlegend.sheet .vital-trance.is-on {
+  box-shadow: 0 0 10px rgba(220, 90, 30, 0.7) inset, 0 0 8px rgba(220, 90, 30, 0.5);
+}
+.openlegend.sheet .trance-action.is-on i { color: #ff7a33; }
+/* Reckless Attack tile: red "ready" glow while in a Battle Trance. */
+.openlegend.sheet .vital-reckless.is-on {
+  box-shadow: 0 0 10px rgba(200, 40, 40, 0.7) inset, 0 0 8px rgba(200, 40, 40, 0.5);
+}
+.openlegend.sheet .vital-reckless.is-on .reckless-action i { color: #ff5a4d; }
+
+/* ---- Defenses (derived) ------------------------------------------------- */
+.openlegend.sheet .defenses {
+  display: flex;
+  gap: 12px;
+  margin-top: 2px;
+}
+.openlegend.sheet .defense {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+}
+.openlegend.sheet .defense label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .defense .derived {
+  font-size: 22px;
+  line-height: 1;
+  color: #fff;
+}
+/* Clickable "how was this calculated?" icon on a defense / speed / initiative. */
+.openlegend.sheet .defense-report {
+  margin-left: 3px;
+  color: var(--ol-gold-light);
+  cursor: pointer;
+  opacity: 0.8;
+}
+.openlegend.sheet .defense-report:hover {
+  opacity: 1;
+  text-shadow: 0 0 6px var(--ol-gold);
+}
+
+/* Any auto-computed value */
+.openlegend.sheet .derived {
+  font-weight: 700;
+}
+
+/* NPC Simple Build stat-line guidance icon + bar. */
+.openlegend.sheet .npc-statline {
+  margin-left: 4px;
+  font-size: 11px;
+  color: var(--ol-gold-light, #e3b94f);
+  cursor: help;
+}
+.openlegend.sheet .npc-statline-bar {
+  margin: 0 0 8px;
+  padding: 4px 8px;
+  font-size: 0.85em;
+  border-radius: 5px;
+  background: rgba(48, 30, 105, 0.06);
+}
+/* NPC free-form defense inputs sit inside the purple .defense blocks (Defenses
+   section), replacing the read-only .derived span. Match the .vital input look:
+   white text on a dark translucent field, gold border, large and centered. */
+.openlegend.sheet .defense input[type="text"] {
+  width: 56px;
+  text-align: center;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(227, 185, 79, 0.45);
+  border-radius: 4px;
+}
+.openlegend.sheet .defense input[type="text"]:focus {
+  border-color: var(--ol-gold);
+  box-shadow: 0 0 6px rgba(194, 146, 43, 0.6);
+}
+/* NPC editable max-HP input sits beside the current-HP input in the Stats block;
+   inherits the .vital input look, just slightly narrower. */
+.openlegend.sheet .npc-hp-max {
+  width: 40px;
+}
+
+/* ---- Inputs / selects inside the (dark) header -------------------------- */
+.openlegend.sheet .header-fields input[type="text"],
+.openlegend.sheet .header-fields input[type="number"],
+.openlegend.sheet .header-fields select {
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(227, 185, 79, 0.45);
+  border-radius: 4px;
+}
+/* Numeric/select identity fields fill their equal column, centered text. */
+.openlegend.sheet .field-level input,
+.openlegend.sheet .field-level select,
+.openlegend.sheet .field-xp input,
+.openlegend.sheet .field-legend input,
+.openlegend.sheet .field-boss-edge input,
+.openlegend.sheet .field-wealth select {
+  width: 100%;
+  text-align: center;
+}
+.openlegend.sheet .header-fields select option {
+  color: var(--ol-ink);
+  background: var(--ol-parchment);
+}
+.openlegend.sheet .header-fields input:focus,
+.openlegend.sheet .header-fields select:focus {
+  border-color: var(--ol-gold);
+  box-shadow: 0 0 6px rgba(194, 146, 43, 0.6);
+}
+/* The NPC sheet still uses the .resources layout — keep its inputs compact. */
+.openlegend.sheet .resources input[type="text"],
+.openlegend.sheet .resources input[type="number"] {
+  width: 46px;
+  text-align: center;
+}
+
+/* ---- Tabs --------------------------------------------------------------- */
+/* `body.game` prefix raises specificity above core's
+   `body.game .sheet.app nav.sheet-tabs` rule, which otherwise overrides the
+   gold border with its own light top/bottom borders. */
+body.game .openlegend.sheet .sheet-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 12px;
+  border: none;
+  border-bottom: 2px solid var(--ol-gold);
+}
+/* Bane / boon sheets: drop the gold divider under the tab row. */
+body.game .openlegend.sheet.bane .sheet-tabs,
+body.game .openlegend.sheet.boon .sheet-tabs {
+  border-bottom: none;
+}
+/* v14's tab-navigation partial renders bare <a data-action="tab"> children
+   (no `.item` class) with the label in a <span> and `.active` on the anchor
+   itself. Target the anchors directly; keep `.item` as a legacy alias. */
+body.game .openlegend.sheet .sheet-tabs > a,
+body.game .openlegend.sheet .sheet-tabs .item {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: var(--ol-purple);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  text-shadow: none;
+  cursor: pointer;
+}
+body.game .openlegend.sheet .sheet-tabs > a:hover,
+body.game .openlegend.sheet .sheet-tabs .item:hover {
+  background: rgba(48, 30, 105, 0.08);
+  color: var(--ol-purple-light);
+}
+body.game .openlegend.sheet .sheet-tabs > a.active,
+body.game .openlegend.sheet .sheet-tabs .item.active {
+  color: #fff;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border-color: var(--ol-gold);
+  box-shadow: 0 -2px 6px rgba(48, 30, 105, 0.3);
+}
+/* The active anchor's <span> would otherwise keep the base purple text color. */
+body.game .openlegend.sheet .sheet-tabs > a.active span {
+  color: inherit;
+}
+
+/* ---- Attribute-point budget bar ----------------------------------------- */
+.openlegend.sheet .creation-budget {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--ol-gold);
+  background: linear-gradient(90deg, rgba(48, 30, 105, 0.10), rgba(194, 146, 43, 0.10));
+  font-size: 13px;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .creation-budget strong {
+  font-size: 16px;
+  color: var(--ol-gold);
+}
+.openlegend.sheet .creation-budget .remaining {
+  margin-left: auto;
+  opacity: 0.8;
+  font-size: 12px;
+}
+.openlegend.sheet .creation-budget.over-budget {
+  border-color: #b32d2e;
+  background: rgba(179, 45, 46, 0.10);
+  color: #b32d2e;
+}
+.openlegend.sheet .creation-budget.over-budget strong { color: #b32d2e; }
+
+/* ---- Alternate Form tab bar (above the header) -------------------------- */
+.openlegend.sheet .ol-form-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 4px;
+  border: 1px solid var(--ol-gold);
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(90deg, rgba(48, 30, 105, 0.14), rgba(194, 146, 43, 0.08));
+}
+.openlegend.sheet .ol-form-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ol-purple);
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid transparent;
+}
+.openlegend.sheet .ol-form-tab .ol-form-tab-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  color: inherit;
+}
+.openlegend.sheet .ol-form-tab.is-active {
+  background: var(--ol-purple);
+  color: var(--ol-gold-light);
+  border-color: var(--ol-gold);
+}
+.openlegend.sheet .ol-form-tab .ol-form-tab-rename,
+.openlegend.sheet .ol-form-tab .ol-form-tab-delete {
+  display: inline-flex;
+  opacity: 0.55;
+  font-size: 11px;
+  cursor: pointer;
+  color: inherit;
+}
+.openlegend.sheet .ol-form-tab .ol-form-tab-rename:hover { opacity: 1; }
+.openlegend.sheet .ol-form-tab .ol-form-tab-delete:hover { opacity: 1; color: #ff6b6b; }
+.openlegend.sheet .ol-form-tab.ol-form-add {
+  cursor: pointer;
+  background: transparent;
+  color: var(--ol-gold);
+  border: 1px dashed var(--ol-gold);
+}
+.openlegend.sheet .ol-form-tab.ol-form-add:hover {
+  background: rgba(194, 146, 43, 0.15);
+  text-shadow: none;
+}
+.openlegend.sheet .ol-form-tier-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 0 0;
+  padding: 5px 10px;
+  border: 1px solid var(--ol-gold);
+  border-top: none;
+  background: rgba(48, 30, 105, 0.08);
+  font-size: 12px;
+}
+/* Companion tier bar stands alone (no form-tabs above it) — full border + radius. */
+.openlegend.sheet .ol-companion-tier-bar {
+  margin: 0 0 8px 0;
+  border-top: 1px solid var(--ol-gold);
+  border-radius: 8px;
+}
+.openlegend.sheet .ol-form-tier-bar label {
+  font-weight: 600;
+  color: var(--ol-purple);
+  white-space: nowrap;
+}
+.openlegend.sheet .ol-form-tier-bar select {
+  flex: 1 1 auto;
+}
+.openlegend.sheet .ol-form-token-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 8px 0;
+  padding: 8px 10px 5px;
+  border: 1px solid var(--ol-gold);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: rgba(48, 30, 105, 0.06);
+  font-size: 12px;
+}
+.openlegend.sheet .ol-form-token-bar label {
+  font-weight: 600;
+  color: var(--ol-purple);
+  white-space: nowrap;
+}
+.openlegend.sheet .ol-form-token-img {
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+  object-fit: cover;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.05);
+}
+.openlegend.sheet .ol-form-token-apply {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid var(--ol-gold);
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--ol-purple) 0%, var(--ol-purple-light) 100%);
+  color: var(--ol-gold-light);
+  font-weight: 600;
+  cursor: pointer;
+}
+.openlegend.sheet .ol-form-token-apply:hover { filter: brightness(1.15); text-shadow: none; }
+
+/* ---- Alternate Form: read-only preview + Transform ----------------------- */
+/* Check mark on the ACTIVE form's tab (the highlighted tab is the one being
+   VIEWED — viewing is read-only; only Transform changes the active form). */
+.openlegend.sheet .ol-form-active-dot {
+  font-size: 10px;
+  color: #7ec97e;
+}
+.openlegend.sheet .ol-form-tab.is-active .ol-form-active-dot { color: #9be89b; }
+
+/* Banner shown while previewing a non-active form. */
+.openlegend.sheet .ol-form-preview-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 0 0;
+  padding: 5px 10px;
+  border: 1px solid var(--ol-gold);
+  border-top: none;
+  background: repeating-linear-gradient(45deg, rgba(194, 146, 43, 0.16), rgba(194, 146, 43, 0.16) 8px, rgba(194, 146, 43, 0.06) 8px, rgba(194, 146, 43, 0.06) 16px);
+  font-size: 12px;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .ol-form-preview-banner a {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border: 1px solid var(--ol-gold);
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--ol-purple) 0%, var(--ol-purple-light) 100%);
+  color: var(--ol-gold-light);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.openlegend.sheet .ol-form-preview-banner a:hover { filter: brightness(1.15); text-shadow: none; }
+
+/* While previewing, everything stays usable EXCEPT the Battle Trance toggle —
+   trance is a combat state of the ACTIVE form (its handler also guards). */
+.openlegend.sheet.ol-form-preview .window-content [data-action="battleTranceToggle"] {
+  pointer-events: none;
+  opacity: 0.45;
+}
+/* Amber inner ring so a preview never passes for the live sheet. */
+.openlegend.sheet.ol-form-preview .window-content {
+  box-shadow: inset 0 0 0 2px var(--ol-gold);
+}
+
+/* Transform tile in the Actions section (shows the ACTIVE form's name; styled
+   with the other action tiles above). Highlighted while previewing a form. */
+.openlegend.sheet .vital-transform.is-preview {
+  outline: 2px solid var(--ol-gold);
+  outline-offset: 1px;
+}
+
+/* ---- Companion ---------------------------------------------------------- */
+.openlegend.sheet .vital-companion .companion-view { color: #fff; }
+.openlegend.sheet .vital-companion .companion-view span { color: #fff; }
+.openlegend.sheet .vital-companion .companion-view:hover { color: var(--ol-gold-light); text-shadow: none; }
+.openlegend.sheet .vital-companion .companion-view:hover span { color: var(--ol-gold-light); }
+
+/* ---- Minion ------------------------------------------------------------- */
+.openlegend.sheet .minion-fixed-note {
+  font-size: 11px;
+  font-weight: 400;
+  font-style: italic;
+  opacity: 0.75;
+}
+.openlegend.sheet .minion-budget {
+  background: linear-gradient(90deg, rgba(48, 30, 105, 0.10), rgba(194, 146, 43, 0.12));
+}
+
+/* ---- Attribute categories grid ------------------------------------------ */
+.openlegend.sheet .attribute-categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Left column stacks Physical → Social → Mental; Extraordinary fills the right. */
+  grid-template-areas:
+    "physical      extraordinary"
+    "social        extraordinary"
+    "mental        extraordinary";
+  align-items: start;
+  gap: 12px 18px;
+}
+.openlegend.sheet .category-physical { grid-area: physical; }
+.openlegend.sheet .category-social { grid-area: social; }
+.openlegend.sheet .category-mental { grid-area: mental; }
+.openlegend.sheet .category-extraordinary { grid-area: extraordinary; }
+
+.openlegend.sheet .attribute-category {
+  break-inside: avoid;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(48, 30, 105, 0.18);
+  box-shadow: 0 1px 4px rgba(48, 30, 105, 0.08);
+}
+.openlegend.sheet .category-label {
+  margin: 0 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--ol-gold);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ol-purple);
+}
+
+/* ---- Attribute rows ----------------------------------------------------- */
+.openlegend.sheet .attribute {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+}
+.openlegend.sheet .attribute:hover {
+  background: rgba(194, 146, 43, 0.12);
+}
+.openlegend.sheet .attribute-roll {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--ol-purple);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.openlegend.sheet .attribute-roll i {
+  color: var(--ol-gold);
+  opacity: 0.85;
+  transition: transform 0.15s ease;
+}
+.openlegend.sheet .attribute-roll:hover {
+  color: var(--ol-purple-light);
+  text-shadow: 0 0 8px rgba(194, 146, 43, 0.5);
+}
+.openlegend.sheet .attribute-roll:hover i {
+  transform: rotate(-18deg) scale(1.15);
+  opacity: 1;
+}
+/* Per-attribute breakdown icon: compact, doesn't grow the row. */
+.openlegend.sheet .attribute-report {
+  flex: 0 0 auto;
+  font-size: 11px;
+  color: var(--ol-gold-light);
+  opacity: 0.6;
+  cursor: pointer;
+}
+.openlegend.sheet .attribute-report:hover {
+  opacity: 1;
+  text-shadow: 0 0 6px var(--ol-gold);
+}
+.openlegend.sheet .attribute-dice {
+  flex: 0 0 46px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ol-purple);
+  opacity: 0.8;
+}
+.openlegend.sheet .attribute-cost {
+  flex: 0 0 30px;
+  text-align: right;
+  font-size: 11px;
+  color: var(--ol-gold);
+  opacity: 0.85;
+}
+.openlegend.sheet .attribute input[type="text"],
+.openlegend.sheet .attribute input[type="number"] {
+  flex: 0 0 42px;
+  width: 42px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--ol-purple);
+  background: var(--ol-parchment);
+  border: 1px solid rgba(48, 30, 105, 0.3);
+  border-radius: 5px;
+}
+.openlegend.sheet .attribute input:focus {
+  border-color: var(--ol-gold);
+  box-shadow: 0 0 6px rgba(194, 146, 43, 0.55);
+}
+
+/* Attribute Substitution: a second, locked row for the dependent attribute. It
+   carries the substituted (primary) value the sheet actually uses — no points,
+   not editable. Slightly inset + gold-edged to read as "granted, in effect". */
+.openlegend.sheet .attribute.attribute-substituted {
+  margin-top: -2px;
+  padding-left: 14px;
+  border-left: 2px solid var(--ol-gold);
+  opacity: 0.95;
+}
+.openlegend.sheet .attribute-cost-none {
+  flex: 0 0 30px;
+  text-align: right;
+  font-size: 11px;
+  color: var(--ol-gold);
+  opacity: 0.55;
+}
+.openlegend.sheet .attribute-value-locked {
+  flex: 0 0 42px;
+  width: 42px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--ol-gold);
+  background: rgba(194, 146, 43, 0.12);
+  border: 1px solid rgba(194, 146, 43, 0.45);
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.openlegend.sheet .attribute-value-locked i {
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+/* ---- Body --------------------------------------------------------------
+   The whole .window-content scrolls as one document (see its rule above), so
+   the body does not scroll on its own — it grows to the active tab's full
+   natural height. */
+.openlegend.sheet .sheet-body {
+  flex: 0 0 auto;
+}
+
+/* ---- Generic body inputs ------------------------------------------------ */
+.openlegend.sheet .sheet-body input[type="text"] {
+  border: 1px solid rgba(48, 30, 105, 0.3);
+  border-radius: 4px;
+}
+
+/* ---- Boon / Bane item lists --------------------------------------------- */
+.openlegend.sheet .sheet-body h2 {
+  margin: 12px 0 6px;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--ol-gold);
+  color: var(--ol-purple);
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.openlegend.sheet .items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.openlegend.sheet .items-list .item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(48, 30, 105, 0.15);
+  margin-bottom: 4px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.openlegend.sheet .items-list .item:hover {
+  border-color: var(--ol-gold);
+  background: rgba(194, 146, 43, 0.1);
+}
+.openlegend.sheet .items-list .item img {
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+}
+.openlegend.sheet .items-list .item .item-name {
+  flex: 1;
+  margin: 0;
+  font-weight: 600;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .items-list .item .item-controls {
+  flex: 0 0 50px;
+  display: flex;
+  justify-content: space-around;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .items-list .item .item-control:hover {
+  color: var(--ol-gold);
+}
+.openlegend.sheet .item-create {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 4px 10px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #fff;
+  background: var(--ol-purple);
+  border: 1px solid var(--ol-gold);
+  border-radius: 6px;
+}
+.openlegend.sheet .item-create:hover {
+  background: var(--ol-purple-light);
+  box-shadow: 0 0 8px rgba(194, 146, 43, 0.5);
+  text-shadow: none;
+}
+/* "Generate Action" icon control on a weapon inventory row (left of Edit). */
+.openlegend.sheet .item-control.item-generate,
+.openlegend.sheet .item-control.item-consume {
+  cursor: pointer;
+}
+/* Augmenting indicator: informational only (not a button) — muted, default cursor.
+   It sits inside a draggable summary; force it to own its pointer events so the
+   Foundry tooltip (data-tooltip) reliably fires on hover instead of the row. */
+.openlegend.sheet .item-control.item-augmenting {
+  cursor: help;
+  color: var(--ol-gold, #c2922b);
+  opacity: 0.85;
+  pointer-events: auto;
+}
+.openlegend.sheet .item-control.item-augmenting > i {
+  pointer-events: none;
+}
+.openlegend.sheet .item-control.item-augmenting:hover {
+  opacity: 1;
+}
+/* Generate-Action dialog radio list. */
+.ol-generate-action .ol-gen-row {
+  display: block;
+  padding: 4px 2px;
+  cursor: pointer;
+}
+.ol-generate-action .ol-gen-row:hover {
+  background: rgba(48, 30, 105, 0.08);
+}
+/* "✨ N" value tag on an extraordinary-item bane/boon option. */
+.ol-generate-action .ol-gen-tag {
+  margin-left: 4px;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ol-gold, #c8a44d);
+}
+
+/* Expendable "Use" dialog: a temporary-action configurator (rolling stat,
+   invoke pick, targets/area, range, advantage) opened from the inventory. */
+.ol-expend-use-app .window-content {
+  min-width: 380px;
+}
+.ol-expend-use .ol-expend-intro {
+  margin: 0 0 8px;
+}
+.ol-expend-use .ol-expend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+.ol-expend-use .ol-expend-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ol-expend-use .ol-expend-field > label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-dark-secondary, #666);
+}
+.ol-expend-use .ol-expend-wide {
+  grid-column: 1 / -1;
+}
+.ol-expend-use .ol-expend-hint {
+  margin: 8px 0 0;
+  font-size: 0.85em;
+  font-style: italic;
+  color: var(--color-text-dark-secondary, #777);
+}
+/* Area Length / Lines: ± stepper around the number input (matches the action
+   sheet and extraordinary-property steppers). */
+.ol-expend-use .ol-expend-stepper {
+  display: flex;
+  align-items: stretch;
+}
+.ol-expend-use .ol-expend-stepper input[type="number"] {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  border-radius: 0;
+}
+.ol-expend-use .ol-step-btn {
+  flex: 0 0 28px;
+  width: 28px;
+  padding: 0;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+}
+.ol-expend-use .ol-step-btn:first-child {
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+}
+.ol-expend-use .ol-step-btn:last-child {
+  border-radius: 0 4px 4px 0;
+  border-left: none;
+}
+.ol-expend-use .ol-step-btn:hover {
+  background: linear-gradient(180deg, var(--ol-gold), var(--ol-gold-light));
+  color: var(--ol-purple);
+}
+
+/* ---- Biography tab: perks & flaws + bio editors ------------------------- */
+.openlegend.sheet .features-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.openlegend.sheet .feature-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.openlegend.sheet .feature-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--ol-gold);
+  color: var(--ol-purple);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.openlegend.sheet .feature-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ol-gold);
+}
+.openlegend.sheet .feature-picker .feature-add {
+  width: 100%;
+  border: 1px solid rgba(48, 30, 105, 0.3);
+  border-radius: 4px;
+  background: var(--ol-parchment);
+  color: var(--ol-ink);
+}
+.openlegend.sheet .feature-maxed {
+  display: block;
+  font-size: 11px;
+  font-style: italic;
+  opacity: 0.7;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.openlegend.sheet .feature-item {
+  border-radius: 8px;
+  border: 1px solid rgba(48, 30, 105, 0.18);
+  background: rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+}
+.openlegend.sheet .feature-item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: linear-gradient(90deg, rgba(48, 30, 105, 0.12), rgba(194, 146, 43, 0.08));
+  border-bottom: 1px solid rgba(48, 30, 105, 0.12);
+}
+.openlegend.sheet .feature-item-header img {
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+}
+.openlegend.sheet .feature-name {
+  flex: 1;
+  margin: 0;
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .feature-item-header .item-delete {
+  color: var(--ol-purple);
+  cursor: pointer;
+}
+.openlegend.sheet .feature-item-header .item-delete:hover {
+  color: var(--ol-gold);
+}
+.openlegend.sheet .feature-desc {
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.openlegend.sheet .feature-desc p {
+  margin: 0 0 6px;
+}
+.openlegend.sheet .feature-desc p:last-child {
+  margin-bottom: 0;
+}
+.openlegend.sheet .feature-empty {
+  padding: 8px;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.7;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .bio-heading {
+  margin: 12px 0 4px;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--ol-gold);
+  color: var(--ol-purple);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Rich-text editors (<prose-mirror>). A toggled editor sits at REST showing the
+   enriched text only — no box, no white background — and reveals the writable
+   surface (border + light background + min-height) only once clicked into edit
+   mode, which core marks with the `open` attribute. Always-active editors (not
+   toggled) and the open state get the full editing surface. Layout (flex column,
+   toggle-button placement) comes from core; we only theme on top of it. */
+.openlegend.sheet prose-mirror {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.openlegend.sheet prose-mirror[open],
+.openlegend.sheet prose-mirror:not([toggled]) {
+  /* Taller default editing area + a drag handle to resize it vertically.
+     `resize` needs a non-visible overflow; core already makes this a flex
+     column, and the inner .editor-content (absolute, inset:0) grows with the
+     box. The drag handle sits at the bottom-right corner. */
+  min-height: 280px;
+  max-height: 80vh;
+  height: 280px;
+  resize: vertical;
+  overflow: auto;
+  border-color: rgba(48, 30, 105, 0.3);
+  background: rgba(255, 255, 255, 0.6);
+}
+/* Resting toggled editor: reveal its pencil toggle on hover so it's clearly
+   editable, but keep the field flush with the surrounding text otherwise. */
+.openlegend.sheet prose-mirror[toggled]:not([open]):hover {
+  border-color: rgba(48, 30, 105, 0.2);
+}
+/* Ensure the inner ProseMirror content region and the read-only display div
+   both have comfortable padding regardless of how core structures the shadow. */
+.openlegend.sheet prose-mirror .editor-content,
+.openlegend.sheet prose-mirror .ProseMirror,
+.openlegend.sheet prose-mirror [contenteditable] {
+  padding: 6px 8px;
+}
+/* Spacing above each editor from its preceding heading / sibling. */
+.openlegend.sheet prose-mirror + prose-mirror,
+.openlegend.sheet h3 + prose-mirror,
+.openlegend.sheet h4 + prose-mirror {
+  margin-top: 6px;
+}
+/* The element's toggled-mode edit button (pencil). */
+.openlegend.sheet prose-mirror button.toggle {
+  background: var(--ol-purple);
+  border: 1px solid var(--ol-gold);
+  color: #fff;
+}
+
+
+/* ---- Active Effect config (system sheet) -------------------------------- */
+/* The Changes tab key cell holds our dropdown instead of core's text input;
+   let it fill the cell like the input did. */
+.application.active-effect-config .changes .key select {
+  width: 100%;
+}
+/* Our changes grid: Subject / Action / Modifier / Value / Level / controls.
+   (Native Type/Phase/Priority are hidden inputs, outside the grid columns.)
+   Core lays the grid on the <header> and the <ol>, and gives each <li>
+   `display: contents` so the row's cells become grid items of the <ol>. We
+   keep that model and only override the column template (core ships 5 columns;
+   we add the Level column for 6) — overriding `ol > li` to `grid` instead
+   fights core's <ol> grid and the columns never line up. */
+.application.ol-effect-config .tab.changes header,
+.application.ol-effect-config .tab.changes ol {
+  grid-template-columns: 10rem 7rem 8rem 4.5rem 3.5rem 1.5rem;
+}
+.application.ol-effect-config .tab.changes .action select,
+.application.ol-effect-config .tab.changes .modifier select,
+.application.ol-effect-config .tab.changes .value input,
+.application.ol-effect-config .tab.changes .level input {
+  width: 100%;
+}
+.application.ol-effect-config .tab.changes .level input,
+.application.ol-effect-config .tab.changes .value input {
+  text-align: center;
+}
+/* Half / Double disable the Value + Modifier inputs (the factor is the whole
+   operation) — mute them so it's clear they don't apply. */
+.application.ol-effect-config .tab.changes .value input[readonly],
+.application.ol-effect-config .tab.changes .modifier select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+/* The Power Level field sits above the grid, outside its columns. */
+.application.ol-effect-config .tab.changes .ol-effect-pl {
+  display: block;
+}
+.application.ol-effect-config .tab.changes .ol-effect-pl input {
+  width: 5rem;
+}
+
+
+/* ---- Roll dialog (advantage / disadvantage) ----------------------------- */
+/* The dialog app only carries `openlegend ol-roll-dialog-app` (not `sheet`),
+   so re-declare the palette here, and override v14's dark translucent window
+   background + light theme text so the dialog matches the parchment sheet. */
+.openlegend.ol-roll-dialog-app {
+  --ol-purple: #301e69;
+  --ol-purple-light: #4a3494;
+  --ol-purple-dark: #1d1240;
+  --ol-gold: #c2922b;
+  --ol-gold-light: #e3b94f;
+  --ol-ink: #2b2440;
+  --ol-parchment: #f6f3ec;
+  /* `--background` is what `.application { background: var(--background) }` uses;
+     overriding the variable recolors the whole window opaquely. */
+  --background: var(--ol-parchment);
+  color: var(--ol-ink);
+}
+.application.ol-roll-dialog-app,
+.application.ol-roll-dialog-app .window-content {
+  background: var(--ol-parchment);
+  color: var(--ol-ink);
+}
+/* Keep the window header on-theme to match the sheet frame. */
+.application.ol-roll-dialog-app .window-header {
+  background: linear-gradient(135deg, var(--ol-purple) 0%, var(--ol-purple-light) 100%);
+  color: #fff;
+  border-bottom: 1px solid var(--ol-gold);
+}
+/* Footer buttons: core's light-on-dark button vars are invisible on parchment,
+   so retheme them to the purple/gold buttons used elsewhere. */
+.application.ol-roll-dialog-app .form-footer button,
+.application.ol-roll-dialog-app .dialog-buttons button {
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+  color: #fff;
+}
+.application.ol-roll-dialog-app .form-footer button:hover,
+.application.ol-roll-dialog-app .dialog-buttons button:hover {
+  background: var(--ol-purple-light);
+  box-shadow: 0 0 6px rgba(194, 146, 43, 0.55);
+}
+.application.ol-roll-dialog-app .form-footer button i {
+  color: var(--ol-gold-light);
+}
+.ol-roll-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 320px;
+}
+.ol-roll-dialog .ol-roll-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ol-roll-dialog .ol-roll-row label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--ol-purple, #301e69);
+}
+.ol-roll-dialog input[name="bonusDice"] {
+  padding: 4px 8px;
+  border: 1px solid rgba(48, 30, 105, 0.4);
+  border-radius: 4px;
+}
+/* Augmentation picker: item select + dependent bane select, side by side. */
+.ol-roll-dialog .ol-augment-controls {
+  display: flex;
+  gap: 6px;
+}
+.ol-roll-dialog .ol-augment-controls select {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 4px 6px;
+  border: 1px solid rgba(48, 30, 105, 0.4);
+  border-radius: 4px;
+}
+/* Itemized advantage/disadvantage sources: how the seeded values came to be. */
+.ol-roll-dialog .ol-roll-sources {
+  list-style: none;
+  margin: 0;
+  padding: 4px 8px;
+  border: 1px solid rgba(48, 30, 105, 0.25);
+  border-radius: 4px;
+  background: rgba(48, 30, 105, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ol-roll-dialog .ol-source-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 12px;
+}
+.ol-roll-dialog .ol-source-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ol-roll-dialog .ol-source-vals {
+  flex: 0 0 auto;
+}
+.ol-roll-dialog .ol-src-adv {
+  color: #2e7d32;
+}
+.ol-roll-dialog .ol-src-dis {
+  color: #b5482b;
+}
+/* Optional roll toggles (e.g. Lethal Strike): checkbox rows above the steppers. */
+.ol-roll-dialog .ol-roll-toggles {
+  flex-direction: column;
+  gap: 4px;
+}
+.ol-roll-dialog .ol-roll-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 12px;
+  color: inherit;
+  cursor: pointer;
+}
+.ol-roll-dialog .ol-roll-toggle input { flex: 0 0 auto; margin: 0; }
+/* Legend Points row: a stepper plus the spend cap. */
+.ol-roll-dialog .ol-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ol-roll-dialog .ol-legend-row > label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-size: 11px;
+  color: var(--ol-gold, #b8973a);
+}
+.ol-roll-dialog .ol-legend-cap { font-size: 11px; color: #888; }
+/* Legend Points chat tag (action/defend cards). */
+/* (Legend Point spends on roll cards render as .ol-tag-legend pills.) */
+.ol-roll-dialog .ol-roll-advrow {
+  display: flex;
+  gap: 10px;
+}
+.ol-roll-dialog .ol-adv-control {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--ol-gold, #c2922b);
+  background: rgba(48, 30, 105, 0.04);
+}
+.ol-roll-dialog .ol-adv-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--ol-purple, #301e69);
+}
+.ol-roll-dialog .ol-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ol-roll-dialog .ol-step {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  line-height: 1;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid var(--ol-gold, #c2922b);
+  background: linear-gradient(180deg, var(--ol-purple-light, #4a3494), var(--ol-purple, #301e69));
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ol-roll-dialog .ol-step:hover {
+  background: var(--ol-purple-light, #4a3494);
+}
+.ol-roll-dialog .ol-adv-value {
+  min-width: 22px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ol-ink, #2b2440);
+}
+.ol-roll-dialog .ol-roll-net {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 2px solid var(--ol-gold, #c2922b);
+}
+.ol-roll-dialog .ol-net-text {
+  font-size: 13px;
+  color: var(--ol-ink, #2b2440);
+}
+.ol-roll-dialog .ol-formula-preview {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--ol-purple-dark, #1d1240);
+  color: var(--ol-gold-light, #e3b94f);
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+}
+
+/* ---- Defense breakdown dialog ------------------------------------------- */
+/* Same parchment palette + themed header/footer as the roll dialog (the dialog
+   carries `openlegend ol-defense-report`, not `sheet`). */
+.application.ol-defense-report {
+  --ol-purple: #301e69;
+  --ol-purple-light: #4a3494;
+  --ol-purple-dark: #1d1240;
+  --ol-gold: #c2922b;
+  --ol-gold-light: #e3b94f;
+  --ol-ink: #2b2440;
+  --ol-parchment: #f6f3ec;
+  --background: var(--ol-parchment);
+  color: var(--ol-ink);
+}
+.application.ol-defense-report,
+.application.ol-defense-report .window-content {
+  background: var(--ol-parchment);
+  color: var(--ol-ink);
+}
+.application.ol-defense-report .window-header {
+  background: linear-gradient(135deg, var(--ol-purple) 0%, var(--ol-purple-light) 100%);
+  color: #fff;
+  border-bottom: 1px solid var(--ol-gold);
+}
+.application.ol-defense-report .form-footer button,
+.application.ol-defense-report .dialog-buttons button {
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+  color: #fff;
+}
+.application.ol-defense-report .form-footer button i {
+  color: var(--ol-gold-light);
+}
+.ol-defense-breakdown {
+  min-width: 280px;
+}
+.ol-defense-breakdown .ol-defense-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.ol-defense-breakdown .ol-defense-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 3px 6px;
+  border-radius: 3px;
+}
+.ol-defense-breakdown .ol-defense-row:nth-child(odd) {
+  background: rgba(48, 30, 105, 0.05);
+}
+.ol-defense-breakdown .ol-defense-label {
+  color: var(--ol-purple);
+}
+.ol-defense-breakdown .ol-defense-val {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.ol-defense-breakdown .ol-defense-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 6px 0;
+  border-top: 2px solid var(--ol-gold);
+  font-size: 15px;
+}
+.ol-defense-breakdown .ol-defense-total .ol-defense-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.ol-defense-breakdown .ol-defense-total .ol-defense-val {
+  font-size: 18px;
+  color: var(--ol-purple);
+}
+
+/* ---- Inventory tab ------------------------------------------------------ */
+/* Sustain Slots banner at the top of the Actions tab (base 1 + Superior
+   Concentration tier). Informational; the value reads from derived.sustainSlots. */
+.openlegend.sheet .actions-sustain {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 6px 10px;
+  border: 1px solid var(--ol-gold);
+  border-left-width: 4px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  color: #fff;
+}
+.openlegend.sheet .actions-sustain > i { color: var(--ol-gold-light); }
+.openlegend.sheet .actions-sustain-label {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .actions-sustain-value {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+.openlegend.sheet .actions-sustain-hint {
+  margin-left: auto;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.openlegend.sheet .inv-section {
+  margin-bottom: 16px;
+}
+.openlegend.sheet .inv-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0 6px;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--ol-gold);
+}
+.openlegend.sheet .inv-section-head h2 {
+  margin: 0;
+  border: none;
+  padding: 0;
+  color: var(--ol-purple);
+  font-size: 16px;
+}
+.openlegend.sheet .inv-section-head .item-create {
+  margin-top: 0;
+}
+.openlegend.sheet .inv-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Shared grid across header + data rows so columns line up. A leading toggle
+   column holds the expand caret. */
+.openlegend.sheet .inv-row {
+  display: grid;
+  grid-template-columns: 20px 1fr 36px 28px 28px 48px 112px;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  border-radius: 5px;
+}
+/* Each item is a <details>; the <summary> is the row. */
+.openlegend.sheet .inv-item {
+  border-radius: 5px;
+}
+.openlegend.sheet .inv-item:nth-of-type(even) > summary {
+  background: rgba(48, 30, 105, 0.05);
+}
+.openlegend.sheet .inv-item > summary {
+  cursor: pointer;
+  list-style: none;          /* hide the native disclosure triangle */
+}
+.openlegend.sheet .inv-item > summary::-webkit-details-marker {
+  display: none;
+}
+.openlegend.sheet .inv-row.item:hover {
+  background: rgba(48, 30, 105, 0.1);
+}
+.openlegend.sheet .inv-col-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.openlegend.sheet .inv-caret {
+  font-size: 10px;
+  color: var(--ol-purple);
+  transition: transform 0.12s ease;
+}
+.openlegend.sheet .inv-item[open] > summary .inv-caret {
+  transform: rotate(90deg);
+}
+.openlegend.sheet .inv-head {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ol-purple);
+  border-bottom: 1px solid rgba(48, 30, 105, 0.25);
+  border-radius: 0;
+}
+/* Expanded detail panel under a row. */
+.openlegend.sheet .inv-details {
+  padding: 10px 12px 12px 30px;
+  border-left: 2px solid var(--ol-gold);
+  margin: 2px 0 6px 8px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* Uniform label-over-value stat grid. */
+.openlegend.sheet .inv-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 6px 12px;
+  margin: 0;
+}
+.openlegend.sheet .inv-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.openlegend.sheet .inv-stat dt {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ol-purple);
+  opacity: 0.7;
+  margin: 0;
+}
+.openlegend.sheet .inv-stat dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ol-ink);
+}
+/* Tag rows: a fixed-width label + a wrapping row of pills, aligned across rows. */
+.openlegend.sheet .inv-tag-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  align-items: start;
+  gap: 8px;
+}
+.openlegend.sheet .inv-tag-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ol-purple);
+  opacity: 0.7;
+  padding-top: 3px;
+}
+.openlegend.sheet .inv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.openlegend.sheet .inv-pill {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: rgba(48, 30, 105, 0.08);
+  border: 1px solid rgba(48, 30, 105, 0.25);
+  text-transform: capitalize;
+}
+/* Extraordinary block: a tinted card with its own header and colour-coded pills. */
+.openlegend.sheet .inv-extra {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--ol-gold);
+  border-radius: 6px;
+  background: rgba(194, 146, 43, 0.08);
+}
+.openlegend.sheet .inv-extra-head {
+  font-weight: 700;
+  color: var(--ol-purple);
+  font-size: 12px;
+}
+.openlegend.sheet .inv-extra-head i { color: var(--ol-gold); margin-right: 4px; }
+.openlegend.sheet .inv-pill-attr { background: var(--ol-purple); color: var(--ol-gold-light); border-color: var(--ol-purple); }
+.openlegend.sheet .inv-pill-boon { background: rgba(60, 140, 70, 0.15); border-color: rgba(60, 140, 70, 0.5); }
+.openlegend.sheet .inv-pill-bane { background: rgba(181, 72, 43, 0.15); border-color: rgba(181, 72, 43, 0.5); }
+.openlegend.sheet .inv-pill-prop { background: var(--ol-gold); color: var(--ol-purple-dark); border-color: var(--ol-purple-dark); cursor: help; }
+.openlegend.sheet .inv-detail-desc {
+  padding-top: 6px;
+  border-top: 1px dashed rgba(48, 30, 105, 0.2);
+}
+.openlegend.sheet .inv-detail-desc p:first-child { margin-top: 0; }
+.openlegend.sheet .inv-detail-line { margin: 0; }
+.openlegend.sheet .inv-flag-on { font-weight: 700; color: var(--ol-purple); }
+.openlegend.sheet .inv-col-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.openlegend.sheet .inv-col-name img {
+  flex: 0 0 22px;
+  border-radius: 4px;
+  border: 1px solid var(--ol-gold);
+}
+.openlegend.sheet .inv-col-name .item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.openlegend.sheet .inv-col-wl,
+.openlegend.sheet .inv-col-flag,
+.openlegend.sheet .inv-col-qty {
+  text-align: center;
+}
+.openlegend.sheet .inv-col-flag i {
+  color: var(--ol-gold);
+}
+.openlegend.sheet .inv-col-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.openlegend.sheet .inv-empty {
+  padding: 6px;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* ---- Gear item sheet stat row ------------------------------------------- */
+.openlegend.sheet .gear-stats {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.openlegend.sheet .gear-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.openlegend.sheet .gear-stat label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .gear-stat input,
+.openlegend.sheet .gear-stat select {
+  width: 70px;
+}
+.openlegend.sheet .gear-check {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+.openlegend.sheet .gear-check input {
+  width: auto;
+  margin: 0;
+}
+
+/* ---- Armor: derived modifiers & inventory row --------------------------- */
+/* Speed shown as base input -> effective value when armor penalizes it. */
+.openlegend.sheet .vital-speed-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.openlegend.sheet .vital-speed-content .sep {
+  color: var(--ol-gold-light);
+}
+/* Climb speed (Climbing feat), shown under the speed value. */
+.openlegend.sheet .vital-climb {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .vital-climb i {
+  margin-right: 3px;
+}
+/* Lethal damage is its own Stats tile (reduces max HP). It mirrors the Health
+   field: a label on top, then an editable "value / base" content row. */
+.openlegend.sheet .vital-lethal-section .lethal-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .vital-lethal-section .lethal-label i { margin-right: 0; }
+.openlegend.sheet .vital-lethal-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 20px;
+  font-weight: 700;
+}
+.openlegend.sheet .vital-lethal-content .sep {
+  opacity: 0.7;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .vital-lethal-section .lethal-max { color: #fff; }
+.openlegend.sheet .vital-lethal-section .lethal-out-tag {
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 700;
+  color: #fff;
+  background: #8a2526;
+  padding: 0 5px;
+  border-radius: 3px;
+}
+.openlegend.sheet .vital-health.is-lethal-out .vital-health-content,
+.openlegend.sheet .vital-lethal-section.is-lethal-out .vital-lethal-content { opacity: 0.7; }
+.openlegend.sheet .armor-mod {
+  font-size: 12px;
+  color: var(--ol-gold-light);
+}
+
+/* Armor inventory rows have their own column layout. */
+.openlegend.sheet .inv-armor-row {
+  grid-template-columns: 20px 28px 1fr 64px 40px 40px 44px 112px;
+}
+.openlegend.sheet .inv-col-equip,
+.openlegend.sheet .inv-col-num {
+  text-align: center;
+}
+.openlegend.sheet .inv-col-type {
+  text-transform: capitalize;
+  font-size: 12px;
+}
+.openlegend.sheet .equip-toggle {
+  cursor: pointer;
+  color: rgba(48, 30, 105, 0.4);
+}
+.openlegend.sheet .inv-armor-row.is-equipped .equip-toggle {
+  color: var(--ol-gold);
+}
+.openlegend.sheet .inv-armor-row.is-equipped {
+  background: rgba(194, 146, 43, 0.12);
+}
+.openlegend.sheet .fort-warn {
+  color: #b5482b;
+  margin-left: 4px;
+}
+
+/* Weapon inventory rows: equip toggle + a Hands column before WL. */
+.openlegend.sheet .inv-weapon-row {
+  grid-template-columns: 20px 28px 1fr 56px 36px 28px 28px 48px 112px;
+}
+.openlegend.sheet .inv-col-hands {
+  text-align: center;
+}
+.openlegend.sheet .inv-weapon-row.is-equipped .equip-toggle {
+  color: var(--ol-gold);
+}
+.openlegend.sheet .inv-weapon-row.is-equipped {
+  background: rgba(194, 146, 43, 0.12);
+}
+/* The "1H" / "2H" / "1H / 2H" badge in the Hands column. */
+.openlegend.sheet .hands-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: rgba(48, 30, 105, 0.1);
+  color: var(--ol-purple);
+}
+.openlegend.sheet .hands-badge.is-versatile {
+  background: rgba(194, 146, 43, 0.18);
+  color: var(--ol-gold-dark, #8a6516);
+}
+/* Hand-slot tally in the weapon section header (mirrors carry-stat styling). */
+.openlegend.sheet .weapon-hands-tally {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  margin-right: 10px;
+  font-size: 12px;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .weapon-hands-tally.over {
+  color: #b5482b;
+  font-weight: 700;
+}
+.openlegend.sheet .gear-flags {
+  margin-top: 2px;
+}
+
+/* ---- Armor Stats tab (gear fields on a light tab body) ------------------ */
+/* The .gear-stat labels and .gear-check text are gold/white for the dark
+   header; inside the parchment Stats tab body they need dark ink for contrast. */
+.openlegend.sheet .tab.stats .gear-stat label {
+  color: var(--ol-purple);
+}
+.openlegend.sheet .tab.stats .gear-check {
+  color: var(--ol-ink);
+}
+.openlegend.sheet .tab.stats .gear-stats {
+  gap: 16px;
+  margin-top: 4px;
+}
+.openlegend.sheet .tab.stats .gear-flags {
+  margin-top: 10px;
+}
+
+/* ---- Bane item sheet ---------------------------------------------------- */
+.openlegend.sheet .bane-heading {
+  margin: 12px 0 6px;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--ol-gold);
+  color: var(--ol-purple);
+  font-size: 14px;
+}
+.openlegend.sheet .bane-hint {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-style: italic;
+  opacity: 0.75;
+}
+.openlegend.sheet .bane-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.openlegend.sheet .bane-tag {
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+}
+.openlegend.sheet .bane-attacks,
+.openlegend.sheet .bane-power-list,
+.openlegend.sheet .bane-ae-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.openlegend.sheet .bane-attack-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .bane-attack-row:nth-child(even) {
+  background: rgba(48, 30, 105, 0.05);
+}
+.openlegend.sheet .bane-attack-head {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ol-purple);
+  border-bottom: 1px solid rgba(48, 30, 105, 0.25);
+  border-radius: 0;
+}
+/* Header Duration / Fail Duration row: each field flexes equally, so one field
+   fills the whole row and two split it half/half. Inputs override the compact
+   70px .gear-stat input width to fill their cell. */
+.openlegend.sheet .bane-duration-row .gear-stat {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.openlegend.sheet .bane-duration-row .gear-stat input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.openlegend.sheet .bane-special {
+  padding: 6px 8px;
+  border-left: 3px solid var(--ol-gold);
+  background: rgba(48, 30, 105, 0.05);
+  border-radius: 0 4px 4px 0;
+}
+/* Full effect text on bane/boon sheets (dice rendered as inline-roll links). */
+.openlegend.sheet .bane-effect-text {
+  padding: 6px 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.openlegend.sheet .bane-effect-text ul,
+.openlegend.sheet .bane-effect-text ol {
+  margin: 4px 0;
+  padding-left: 18px;
+}
+.openlegend.sheet .bane-power-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .bane-power-row:nth-child(odd) {
+  background: rgba(48, 30, 105, 0.04);
+}
+.openlegend.sheet .bane-pl {
+  flex: 0 0 48px;
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .bane-empty {
+  padding: 6px;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* ---- Editable bane/boon authoring (Details + Power Effects tabs) -------- */
+/* Section header with an inline "Add row" action on the right. */
+.openlegend.sheet .bane-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+.openlegend.sheet .bane-section-head .bane-heading {
+  flex: 1 1 auto;
+  margin-bottom: 0;
+}
+.openlegend.sheet .bane-row-add {
+  flex: 0 0 auto;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ol-purple);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.openlegend.sheet .bane-row-add:hover { color: var(--ol-gold); }
+.openlegend.sheet .bane-row-del {
+  color: var(--ol-purple);
+  opacity: 0.6;
+  cursor: pointer;
+}
+.openlegend.sheet .bane-row-del:hover { opacity: 1; color: #b33; }
+
+/* Editable attacks: attribute select | defense select | delete. */
+.openlegend.sheet .bane-attacks-edit,
+.openlegend.sheet .bane-power-edit {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.openlegend.sheet .bane-attack-erow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 24px;
+  gap: 8px;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .bane-attack-erow:nth-child(even) {
+  background: rgba(48, 30, 105, 0.05);
+}
+.openlegend.sheet .bane-attack-head {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ol-purple);
+  border-bottom: 1px solid rgba(48, 30, 105, 0.25);
+  border-radius: 0;
+}
+.openlegend.sheet .bane-attack-erow select { width: 100%; }
+
+/* Editable invoking attributes (boons): attribute select | delete. */
+.openlegend.sheet .bane-attr-erow {
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  gap: 8px;
+  align-items: center;
+  padding: 3px 6px;
+}
+.openlegend.sheet .bane-attr-erow select { width: 100%; }
+
+/* Editable power-level rows: PL number | effect text | delete. */
+.openlegend.sheet .bane-power-erow {
+  display: grid;
+  grid-template-columns: 64px 1fr 24px;
+  gap: 8px;
+  align-items: start;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .bane-power-erow:nth-child(odd) {
+  background: rgba(48, 30, 105, 0.04);
+}
+.openlegend.sheet .bane-pl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.openlegend.sheet .bane-pl-field label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .bane-pl-field input { width: 100%; text-align: center; }
+.openlegend.sheet .bane-pl-text {
+  width: 100%;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 12px;
+}
+.openlegend.sheet .bane-power-erow .bane-row-del { margin-top: 4px; }
+
+/* Effects tab: the Active Effects applied when the bane/boon is dropped on a
+   token. Row = icon + name/changes + edit/toggle/delete controls. */
+.openlegend.sheet .bane-ae-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.openlegend.sheet .bane-ae-header .bane-hint {
+  flex: 1 1 auto;
+}
+.openlegend.sheet .bane-ae-add {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border: 1px solid var(--ol-purple);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ol-purple);
+  white-space: nowrap;
+}
+.openlegend.sheet .bane-ae-add:hover {
+  color: #fff;
+  background: var(--ol-purple);
+  text-shadow: none;
+}
+.openlegend.sheet .bane-ae-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .bane-ae-row:nth-child(odd) {
+  background: rgba(48, 30, 105, 0.04);
+}
+.openlegend.sheet .bane-ae-row.is-disabled .bane-ae-main {
+  opacity: 0.5;
+}
+.openlegend.sheet .bane-ae-img {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+  object-fit: cover;
+}
+.openlegend.sheet .bane-ae-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.openlegend.sheet .bane-ae-name {
+  display: block;
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .bane-ae-changes {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  font-size: 12px;
+}
+.openlegend.sheet .bane-ae-changes .bane-pl {
+  flex: none;
+  display: inline-block;
+  min-width: 40px;
+  font-size: 11px;
+}
+.openlegend.sheet .bane-ae-desc {
+  font-size: 11px;
+  font-style: italic;
+  opacity: 0.7;
+}
+.openlegend.sheet .bane-ae-controls {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+}
+.openlegend.sheet .bane-ae-controls a {
+  color: var(--ol-purple);
+  opacity: 0.7;
+}
+.openlegend.sheet .bane-ae-controls a:hover {
+  opacity: 1;
+  text-shadow: 0 0 6px var(--ol-gold);
+}
+
+/* ---- Weapon item sheet -------------------------------------------------- */
+.openlegend.sheet .weapon-range {
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .weapon-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.openlegend.sheet .weapon-cat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(48, 30, 105, 0.3);
+  background: rgba(48, 30, 105, 0.04);
+  color: var(--ol-ink);
+  cursor: pointer;
+  font-size: 12px;
+}
+.openlegend.sheet .weapon-cat i {
+  color: rgba(48, 30, 105, 0.4);
+}
+.openlegend.sheet .weapon-cat.is-on {
+  border-color: var(--ol-gold);
+  background: rgba(194, 146, 43, 0.12);
+}
+.openlegend.sheet .weapon-cat.is-on i {
+  color: var(--ol-gold);
+}
+.openlegend.sheet .weapon-cat .cat-tag {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+.openlegend.sheet .weapon-prop-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.openlegend.sheet .weapon-prop-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .weapon-prop-row:nth-child(odd) {
+  background: rgba(48, 30, 105, 0.04);
+}
+.openlegend.sheet .weapon-prop-name {
+  flex: 1 1 auto;
+  font-weight: 700;
+}
+.openlegend.sheet .weapon-prop-value {
+  width: 48px;
+  text-align: center;
+}
+.openlegend.sheet .weapon-prop-detail {
+  width: 140px;
+}
+.openlegend.sheet .weapon-prop-remove {
+  color: #b5482b;
+  cursor: pointer;
+}
+.openlegend.sheet .weapon-add-property {
+  width: 100%;
+  max-width: 240px;
+}
+.openlegend.sheet .weapon-banes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+.openlegend.sheet .weapon-bane i {
+  color: var(--ol-gold);
+  margin-right: 4px;
+}
+
+/* ---- Draggable inventory rows ------------------------------------------- */
+.openlegend.sheet .inv-row.draggable {
+  cursor: grab;
+}
+.openlegend.sheet .inv-row.draggable:active {
+  cursor: grabbing;
+}
+
+/* ---- Carrying capacity bar (Inventory tab) ------------------------------ */
+.openlegend.sheet .carry-capacity {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.openlegend.sheet .carry-stat {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(48, 30, 105, 0.18);
+}
+.openlegend.sheet .carry-stat .carry-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .carry-stat .carry-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ol-ink);
+}
+.openlegend.sheet .carry-stat .carry-flag {
+  color: var(--ol-gold);
+  font-size: 11px;
+}
+/* Warn: at an encumbrance threshold (speed penalty). Over: exceeds a hard cap. */
+.openlegend.sheet .carry-stat.warn {
+  border-color: var(--ol-gold);
+  background: rgba(194, 146, 43, 0.12);
+}
+.openlegend.sheet .carry-stat.over {
+  border-color: #b5482b;
+  background: rgba(181, 72, 43, 0.12);
+}
+.openlegend.sheet .carry-stat.over .carry-value {
+  color: #b5482b;
+}
+.openlegend.sheet .carry-warn {
+  margin: 0 0 8px;
+  color: #b5482b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---- Actions tab rows --------------------------------------------------- */
+.openlegend.sheet .action-row {
+  grid-template-columns: 20px 1fr 90px 110px 80px 56px;
+}
+/* Bane/boon rows: the invoked bane/boon name moves next to the action name
+   (before Roll and Target) and shares the flexible width so it isn't clipped. */
+.openlegend.sheet .action-row.action-row-swap {
+  grid-template-columns: 20px minmax(0, 1fr) fit-content(240px) 90px 110px 56px;
+}
+.openlegend.sheet .action-row-swap .inv-col-toggle {
+  order: -3;
+}
+.openlegend.sheet .action-row-swap .inv-col-name {
+  order: -2;
+}
+.openlegend.sheet .action-row-swap .inv-col-range {
+  order: -1;
+  text-align: left;
+  padding-right: 18px;
+}
+.openlegend.sheet .action-row-swap .inv-col-invoke {
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+/* ---- Feats tab ---------------------------------------------------------- */
+.openlegend.sheet .feat-row {
+  grid-template-columns: 20px 1fr 120px 48px 56px;
+}
+.openlegend.sheet .feat-col-tier,
+.openlegend.sheet .feat-col-cost {
+  text-align: center;
+  font-size: 0.9em;
+}
+.openlegend.sheet .feat-tier-steps {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.openlegend.sheet .feat-tier-now {
+  min-width: 34px;
+  text-align: center;
+  font-weight: 700;
+}
+.openlegend.sheet .feat-step {
+  cursor: pointer;
+}
+.openlegend.sheet .feat-step.is-disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.openlegend.sheet .feat-warn {
+  color: #b3892d;
+  margin-left: 4px;
+}
+.openlegend.sheet .feat-warn-text {
+  color: #b32d2e;
+  font-size: 0.85em;
+}
+/* Feat-point budget bar (reuses creation-budget styling). */
+.openlegend.sheet .feat-budget {
+  margin-bottom: 8px;
+}
+.openlegend.sheet .feat-picker select {
+  max-width: 220px;
+}
+.openlegend.sheet .feat-effect {
+  white-space: pre-line;
+}
+/* Feat item-sheet tier table. */
+.openlegend.sheet .feat-tier-list {
+  list-style: none;
+  margin: 4px 0;
+  padding: 0;
+}
+.openlegend.sheet .feat-tier-row {
+  display: grid;
+  grid-template-columns: 48px 48px 1fr;
+  gap: 6px;
+  padding: 3px 4px;
+  align-items: baseline;
+}
+.openlegend.sheet .feat-tier-row.feat-tier-head {
+  font-weight: 700;
+  border-bottom: 1px solid var(--ol-gold, #c2922b);
+}
+.openlegend.sheet .feat-tier-row:nth-of-type(odd) {
+  background: rgba(48, 30, 105, 0.05);
+}
+.openlegend.sheet .feat-tier-row.feat-tier-head {
+  background: none;
+}
+
+/* ---- Effects tab rows --------------------------------------------------- */
+.openlegend.sheet .effect-row {
+  grid-template-columns: 28px 1fr 86px 130px 90px 56px;
+}
+/* Power-level column: a tier-stepper for leveled bane/boon conditions. */
+.openlegend.sheet .effect-col-level {
+  text-align: center;
+}
+.openlegend.sheet .effect-row.is-disabled .item-name,
+.openlegend.sheet .effect-row.is-disabled .inv-col-source,
+.openlegend.sheet .effect-row.is-disabled .inv-col-state {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+.openlegend.sheet .effect-toggle {
+  cursor: pointer;
+  color: var(--ol-gold);
+}
+.openlegend.sheet .effect-row.is-disabled .effect-toggle {
+  color: rgba(48, 30, 105, 0.4);
+}
+.openlegend.sheet .inv-col-source,
+.openlegend.sheet .inv-col-state {
+  font-size: 12px;
+}
+.openlegend.sheet .item-control.is-muted {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ---- Conditions (Active Conditions section) ------------------------------ */
+/* One collapsible block per bane/boon condition: header row + detail panel. */
+.openlegend.sheet .condition-row {
+  grid-template-columns: 28px 1fr 86px 90px 80px;
+}
+.openlegend.sheet .condition.is-expanded .condition-row {
+  background: rgba(48, 30, 105, 0.07);
+  border-radius: 4px 4px 0 0;
+}
+.openlegend.sheet .condition-expand {
+  cursor: pointer;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .condition-kind {
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+.openlegend.sheet .condition-kind-bane {
+  background: linear-gradient(180deg, #8a2b2b, #5e1717);
+}
+.openlegend.sheet .condition-kind-boon {
+  background: linear-gradient(180deg, #2b6e3f, #174d28);
+}
+.openlegend.sheet .condition.is-disabled .item-name {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+.openlegend.sheet .condition-details {
+  margin: 0 0 6px;
+  padding: 8px 10px 8px 38px;
+  background: rgba(48, 30, 105, 0.04);
+  border-radius: 0 0 4px 4px;
+  border-top: 1px solid rgba(48, 30, 105, 0.15);
+}
+.openlegend.sheet .condition-subhead {
+  margin: 6px 0 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .condition-notes {
+  font-size: 12px;
+}
+.openlegend.sheet .condition-notes p {
+  margin: 2px 0;
+}
+.openlegend.sheet .condition-changes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+.openlegend.sheet .condition-changes li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  opacity: 0.65;
+}
+.openlegend.sheet .condition-changes li.is-active {
+  opacity: 1;
+  font-weight: 700;
+  background: rgba(48, 30, 105, 0.08);
+}
+.openlegend.sheet .condition-changes li.is-active i {
+  color: var(--ol-gold);
+}
+.openlegend.sheet .inv-col-attr,
+.openlegend.sheet .inv-col-range {
+  font-size: 12px;
+}
+.openlegend.sheet .inv-col-range {
+  text-align: center;
+}
+/* The "vs. Defense / vs. CR / Defend|Improvise" qualifier after the attribute in
+   an action row — muted so the attribute reads as primary. */
+.openlegend.sheet .action-row-resolve {
+  color: var(--ol-purple);
+  opacity: 0.7;
+  font-size: 11px;
+  white-space: nowrap;
+}
+/* Bane/boon rows replace the Range cell with the invoked bane/boon name + a
+   book icon that opens the document to read. */
+.openlegend.sheet .inv-col-invoke {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+}
+.openlegend.sheet .action-invoke-name {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.openlegend.sheet .action-invoke-open {
+  flex: 0 0 auto;
+  color: var(--ol-purple);
+  opacity: 0.7;
+  cursor: pointer;
+}
+.openlegend.sheet .action-invoke-open:hover {
+  opacity: 1;
+  color: var(--ol-gold);
+}
+/* Dice icon prefixed to a rollable action name in the row. */
+.openlegend.sheet .action-name-roll {
+  font-size: 11px;
+  opacity: 0.65;
+  margin-right: 2px;
+}
+.openlegend.sheet .item-name.action-roll:hover .action-name-roll {
+  opacity: 1;
+  color: var(--ol-gold);
+}
+/* Draggable Aura radiated chip: grab affordance + grip handle. */
+.openlegend.sheet .action-aura-chip[draggable="true"] {
+  cursor: grab;
+}
+.openlegend.sheet .action-aura-chip[draggable="true"]:active {
+  cursor: grabbing;
+}
+.openlegend.sheet .action-aura-grip {
+  opacity: 0.5;
+  font-size: 9px;
+}
+/* The action name is a roll link: clickable, hover hint. */
+.openlegend.sheet .action-row .item-name.action-roll {
+  cursor: pointer;
+  color: var(--ol-purple);
+  text-decoration: none;
+}
+.openlegend.sheet .action-row .item-name.action-roll:hover {
+  color: var(--ol-gold);
+  text-shadow: 0 0 6px rgba(194, 146, 43, 0.4);
+}
+.openlegend.sheet .action-row .item-control.action-roll:hover {
+  color: var(--ol-gold);
+}
+
+/* ============================================================
+   Action detail panel (expanded action row on the Actions tab).
+   Category-coloured left accent + header badge, a clean stat grid,
+   colour-coded effect chips, and the enriched description.
+   ============================================================ */
+/* Per-category accent colour, surfaced through custom properties so the accent
+   border, header badge, roll button, and tinted header all stay in sync.
+   --act-accent: solid accent;  --act-tint/-edge/-glow: translucent variants. */
+.openlegend.sheet .action-card.act-cat-damaging {
+  --act-accent: #b5482b; --act-tint: rgba(181, 72, 43, 0.12); --act-edge: rgba(181, 72, 43, 0.32); --act-glow: rgba(181, 72, 43, 0.45);
+}
+.openlegend.sheet .action-card.act-cat-bane {
+  --act-accent: #7a3b8f; --act-tint: rgba(122, 59, 143, 0.12); --act-edge: rgba(122, 59, 143, 0.32); --act-glow: rgba(122, 59, 143, 0.45);
+}
+.openlegend.sheet .action-card.act-cat-boon {
+  --act-accent: #2f6b3a; --act-tint: rgba(47, 107, 58, 0.12); --act-edge: rgba(47, 107, 58, 0.32); --act-glow: rgba(47, 107, 58, 0.45);
+}
+.openlegend.sheet .action-card.act-cat-interrupt {
+  --act-accent: #2f5f8f; --act-tint: rgba(47, 95, 143, 0.12); --act-edge: rgba(47, 95, 143, 0.32); --act-glow: rgba(47, 95, 143, 0.45);
+}
+
+.openlegend.sheet .action-details {
+  padding: 0;
+  border-left: 3px solid var(--act-accent, var(--ol-gold));
+  background: rgba(255, 255, 255, 0.55);
+  gap: 0;
+}
+/* Header strip: category badge, action-economy badge, and the roll CTA. */
+.openlegend.sheet .action-detail-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  background: var(--act-tint, rgba(48, 30, 105, 0.08));
+  border-bottom: 1px solid var(--act-edge, rgba(48, 30, 105, 0.2));
+}
+.openlegend.sheet .action-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--act-accent, var(--ol-purple));
+}
+.openlegend.sheet .action-cat-badge i { font-size: 13px; }
+.openlegend.sheet .action-econ-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  color: var(--ol-purple);
+  background: rgba(48, 30, 105, 0.1);
+  border: 1px solid rgba(48, 30, 105, 0.25);
+  border-radius: 10px;
+  padding: 1px 8px;
+}
+/* Stat grid: label-over-value cells, evenly packed. */
+.openlegend.sheet .action-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px 14px;
+  margin: 0;
+  padding: 10px;
+}
+.openlegend.sheet .action-stat-grid .inv-stat dd.is-defense {
+  color: var(--act-accent, var(--ol-purple));
+  font-weight: 700;
+}
+/* Effect chips: colour-coded by what the action delivers. */
+.openlegend.sheet .action-effects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 10px 10px;
+}
+.openlegend.sheet .action-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 12px;
+  border: 1px solid;
+  text-transform: capitalize;
+}
+.openlegend.sheet .action-chip i { font-size: 10px; }
+.openlegend.sheet .action-chip.chip-damage { background: rgba(181, 72, 43, 0.12);  border-color: rgba(181, 72, 43, 0.5);  color: #8f3621; }
+.openlegend.sheet .action-chip.chip-bane   { background: rgba(122, 59, 143, 0.12); border-color: rgba(122, 59, 143, 0.5); color: #5e2c70; }
+.openlegend.sheet .action-chip.chip-boon   { background: rgba(47, 107, 58, 0.12);  border-color: rgba(47, 107, 58, 0.5);  color: #265730; }
+.openlegend.sheet .action-chip.chip-adv    { background: rgba(47, 107, 58, 0.12);  border-color: rgba(47, 107, 58, 0.5);  color: #265730; text-transform: none; }
+.openlegend.sheet .action-chip.chip-dis    { background: rgba(181, 72, 43, 0.12);  border-color: rgba(181, 72, 43, 0.5);  color: #8f3621; text-transform: none; }
+/* Dice-modifier preview: a compact list of the itemized adv/dis the roll dialog
+   will pre-fill, with a net summary in the header. */
+.openlegend.sheet .action-mods {
+  margin: 0 10px 10px;
+  border: 1px solid rgba(48, 30, 105, 0.18);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+}
+.openlegend.sheet .action-mods-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 9px;
+  background: rgba(48, 30, 105, 0.06);
+  border-bottom: 1px solid rgba(48, 30, 105, 0.12);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .action-mods-head i { margin-right: 4px; color: var(--ol-gold); }
+.openlegend.sheet .action-mods-net { font-size: 11px; color: #555; }
+.openlegend.sheet .action-mods-net.is-adv { color: #2f6b3a; }
+.openlegend.sheet .action-mods-net.is-dis { color: #b5482b; }
+.openlegend.sheet .action-mods-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.openlegend.sheet .action-mod-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 3px 9px;
+  font-size: 12px;
+}
+.openlegend.sheet .action-mod-row:nth-child(even) { background: rgba(48, 30, 105, 0.035); }
+.openlegend.sheet .action-mod-label { color: var(--ol-ink); min-width: 0; }
+.openlegend.sheet .action-mod-value { font-weight: 700; white-space: nowrap; }
+.openlegend.sheet .action-mod-value.is-adv { color: #2f6b3a; }
+.openlegend.sheet .action-mod-value.is-dis { color: #b5482b; }
+.openlegend.sheet .action-mods-hint {
+  margin: 0;
+  padding: 4px 9px 6px;
+  font-size: 10px;
+  font-style: italic;
+  color: #777;
+}
+
+/* Description: separated from the stats, never inheriting the old dashed rule. */
+.openlegend.sheet .action-detail-desc {
+  margin: 0;
+  padding: 10px;
+  border-top: 1px solid rgba(48, 30, 105, 0.15);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.openlegend.sheet .action-detail-desc p:first-child { margin-top: 0; }
+.openlegend.sheet .action-detail-desc p:last-child { margin-bottom: 0; }
+
+/* Smaller, muted parenthetical in roll chat flavor (legacy cards). */
+.ol-roll-sub {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+/* ---- Chat card header (title / context / tag pills) ---------------------- */
+/* Lives inside the message's flavor <span>, so every layer is a span styled as
+   a block. Hierarchy: bold title line → muted small-caps context line → pills. */
+.ol-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+.ol-card-title {
+  display: block;
+  font-size: 1.1em;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--ol-ink, #2a1d5e);
+}
+.ol-card-sub {
+  display: block;
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #756e8c;
+}
+.ol-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 2px;
+}
+/* Uniform tag pill; the modifier sets the hue. */
+.ol-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 7px;
+  font-size: 0.72em;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.7;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.ol-tag i { font-size: 0.95em; }
+.ol-tag-adv    { color: #1d6b34; background: rgba(29, 122, 58, 0.12);  border-color: rgba(29, 122, 58, 0.35); }
+.ol-tag-dis    { color: #96322c; background: rgba(176, 58, 58, 0.10);  border-color: rgba(176, 58, 58, 0.35); }
+.ol-tag-crit   { color: #fff;    background: linear-gradient(180deg, #b03a3a, #7a2020); }
+.ol-tag-legend { color: #6b511a; background: rgba(200, 164, 77, 0.18); border-color: rgba(200, 164, 77, 0.55); }
+.ol-tag-feat   { color: #21496b; background: rgba(44, 95, 138, 0.12);  border-color: rgba(44, 95, 138, 0.35); }
+.ol-tag-auto   { color: #6b511a; background: rgba(200, 164, 77, 0.18); border-color: rgba(200, 164, 77, 0.55); }
+
+/* ---- Action result target table (in chat cards) ------------------------- */
+/* Divider between the action header and the targeting results. (Also the
+   re-target anchor — retargetActionMessage splices the card at this element,
+   so it must stay in the markup even if visually subtle.) */
+.ol-card-divider {
+  margin: 7px 0 5px;
+  border: none;
+  border-top: 1px solid rgba(48, 30, 105, 0.18);
+}
+/* "<roller> targets <names>" context line: small caps, muted, names in ink;
+   the Change-targets control sits flush right. */
+.ol-target-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin: 0 0 5px;
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #756e8c;
+}
+.ol-target-line strong {
+  color: var(--ol-ink, #2a1d5e);
+  font-weight: 800;
+}
+.ol-target-line .ol-retarget {
+  margin-left: auto;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.ol-target-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* The ACTION-card results list (not the heal/damage rolled cards, which keep a
+   flat single-line row — see .ol-heal-targets below) is a stack of mini-cards. */
+.ol-target-results:not(.ol-heal-targets) {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+/* Each target is a scannable mini-card: a colored left bar keyed to the outcome,
+   a head line (token + name + status badge), a detail line (big roll total,
+   muted "vs", margin pill, note chips), then the apply-actions footer. */
+.ol-target-results:not(.ol-heal-targets) .ol-target-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px 6px 10px;
+  border: 1px solid rgba(48, 30, 105, 0.14);
+  border-left-width: 4px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 1px 2px rgba(20, 10, 50, 0.06);
+}
+.ol-target-results:not(.ol-heal-targets) .ol-target-row.is-hit {
+  border-left-color: #1d7a3a;
+  background: linear-gradient(90deg, rgba(29, 122, 58, 0.10), rgba(29, 122, 58, 0.03) 55%);
+}
+.ol-target-results:not(.ol-heal-targets) .ol-target-row.is-miss {
+  border-left-color: #b03a3a;
+  background: linear-gradient(90deg, rgba(176, 58, 58, 0.09), rgba(176, 58, 58, 0.025) 55%);
+}
+.ol-tr-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ol-target-row img {
+  border-radius: 4px;
+  border: 1px solid rgba(48, 30, 105, 0.25);
+  flex: 0 0 auto;
+}
+.ol-target-name {
+  font-weight: 800;
+  font-size: 0.95em;
+  color: var(--ol-ink, #2a1d5e);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Status badge (Hit / Miss / Success / Failed) — pill, colored by outcome. */
+.ol-tr-status {
+  flex: 0 0 auto;
+  font-weight: 800;
+  font-size: 0.72em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 1px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.ol-tr-status i { font-size: 0.95em; }
+.is-hit .ol-tr-status {
+  color: #fff;
+  background: #1d7a3a;
+}
+.is-miss .ol-tr-status {
+  color: #fff;
+  background: #b03a3a;
+}
+/* Detail line — math zone left (total / vs / margin), note chips right. */
+.ol-tr-detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 10px;
+  padding-left: 2px;
+}
+.ol-tr-math {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+/* The roll total is the anchor of the row — biggest number on the card. */
+.ol-tr-total {
+  font-size: 1.35em;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ol-ink, #2a1d5e);
+  font-variant-numeric: tabular-nums;
+}
+.ol-tr-total.ol-tr-auto { color: #b8973a; font-size: 1.1em; }
+/* "vs Guard 18" — quiet context next to the total. */
+.ol-tr-vs {
+  font-size: 0.82em;
+  font-weight: 600;
+  color: #6f6a84;
+}
+/* Signed margin pill — green when the roll made it, red when short. */
+.ol-tr-margin {
+  align-self: center;
+  padding: 0 6px;
+  font-size: 0.75em;
+  font-weight: 800;
+  line-height: 1.6;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+.ol-tr-margin.is-over  { color: #1d6b34; background: rgba(29, 122, 58, 0.14); }
+.ol-tr-margin.is-under { color: #96322c; background: rgba(176, 58, 58, 0.12); }
+/* Note chips (damage / resistance / lethal), pushed to the row's right edge. */
+.ol-tr-notes {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+}
+.ol-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 6px;
+  font-size: 0.78em;
+  font-weight: 700;
+  line-height: 1.7;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.ol-chip.ol-tr-damage { color: #8a2526; background: rgba(138, 37, 38, 0.10); border: 1px solid rgba(138, 37, 38, 0.30); }
+.ol-chip.ol-tr-resist { color: #2f6f9f; background: rgba(47, 111, 159, 0.10); border: 1px solid rgba(47, 111, 159, 0.30); }
+.ol-chip.ol-tr-lethal { color: #5b2d6b; background: rgba(91, 45, 107, 0.10);  border: 1px solid rgba(91, 45, 107, 0.30); }
+/* Slaying (legendary weapon): margin-5+ instant-death note. */
+.ol-chip.ol-tr-slay   { color: #3d1a1a; background: rgba(61, 26, 26, 0.10);   border: 1px solid rgba(61, 26, 26, 0.35); }
+/* Restoration "also reaches higher banes" note (roll met their CRs). */
+/* Restoration higher-bane line: full-width row listing every bane above the
+   chosen PL with its dispel CR — ✓ reached (dispellable) / ✗ short. Wraps so a
+   long list never overflows the card. */
+.ol-tr-hbanes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 6px;
+  margin-top: 3px;
+  padding: 3px 4px;
+  font-size: 0.78em;
+  line-height: 1.5;
+  border-radius: 4px;
+  background: rgba(200, 164, 77, 0.12);
+  border: 1px solid rgba(200, 164, 77, 0.35);
+}
+.ol-hbanes-label { font-weight: 700; color: #7a5a12; white-space: nowrap; }
+.ol-hbanes-label i { margin-right: 2px; }
+.ol-hbane {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+.ol-hbane.is-reached { color: #1d6b34; font-weight: 600; }
+.ol-hbane.is-short { color: #8a8676; }
+.ol-hbane-cr { opacity: 0.8; font-variant-numeric: tabular-nums; }
+/* Apply actions footer (Apply N / Grant boon / + Bane), set off by a hairline.
+   min-width:0 + flex-shrink let the boon PL picker and long Grant button wrap
+   and shrink inside the card instead of overflowing its right edge. */
+.ol-tr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(48, 30, 105, 0.15);
+  min-width: 0;
+}
+.ol-tr-actions > * { min-width: 0; max-width: 100%; }
+.ol-tr-actions button { flex: 0 1 auto; white-space: normal; text-align: left; }
+/* Back-compat aliases (used by some healing/damage rolled cards). */
+.ol-hit { color: #1d7a3a; font-weight: 700; }
+.ol-miss { color: #9aa0a6; font-weight: 700; }
+.ol-target-apply {
+  flex: 0 0 auto;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.ol-no-dmg {
+  opacity: 0.5;
+}
+/* Small per-row apply button (icon + tiny value). */
+button.ol-apply-mini {
+  padding: 2px 8px;
+  font-size: 0.8em;
+  line-height: 1.5;
+  border-radius: 4px;
+}
+/* Boon power-level picker on a grant row: the player may take the boon at any
+   level the roll reached (≤ the intended ceiling). Sits just before Grant. */
+select.ol-boon-pl {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 6.5em;      /* "PL 9" fits; never stretch across the row */
+  font-size: 0.8em;
+  line-height: 1.5;
+  padding: 1px 4px;
+  border: 1px solid rgba(48, 30, 105, 0.35);
+  border-radius: 4px;
+  background: rgba(48, 30, 105, 0.06);
+  color: #2a1d5e;
+  vertical-align: middle;
+}
+select.ol-boon-pl:disabled { opacity: 0.6; }
+/* Re-aim mini buttons (apply to current target / current selection): icon-only,
+   square, sitting beside the row's own apply button. */
+button.ol-aim-target,
+button.ol-aim-selected {
+  cursor: pointer;
+  padding: 1px 5px;
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: #2a1d5e;
+  background: rgba(48, 30, 105, 0.08);
+  border: 1px solid rgba(48, 30, 105, 0.35);
+  border-radius: 4px;
+}
+button.ol-aim-target:hover,
+button.ol-aim-selected:hover {
+  background: rgba(48, 30, 105, 0.18);
+}
+button.ol-aim-target.is-applied,
+button.ol-aim-selected.is-applied {
+  color: #1d7a3a;
+  border-color: #1d7a3a;
+  background: rgba(29, 122, 58, 0.12);
+}
+button.ol-aim-target i,
+button.ol-aim-selected i {
+  margin: 0;
+}
+/* Healing/damage ROLLED cards keep a flat single-line row (name + apply group),
+   unlike the action card's stacked mini-cards. */
+.ol-heal-targets .ol-target-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  border-top: 1px solid rgba(48, 30, 105, 0.15);
+}
+.ol-heal-targets .ol-target-name {
+  flex: 0 0 auto;
+}
+/* On healing/damage apply rows, push the 🎯/▢ re-aim buttons to the END of the
+   row (after any bound apply button), leaving them flush right. */
+.ol-heal-targets .ol-target-apply {
+  flex: 1 1 auto;
+}
+.ol-heal-targets .ol-target-apply .ol-aim-target {
+  margin-left: auto;
+}
+/* "Change targets" control (re-resolve this roll against a new selection). */
+button.ol-retarget {
+  cursor: pointer;
+  padding: 1px 8px;
+  font-size: 0.8em;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #2a1d5e;
+  background: rgba(48, 30, 105, 0.08);
+  border: 1px solid rgba(48, 30, 105, 0.35);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-retarget:hover {
+  background: rgba(48, 30, 105, 0.18);
+}
+button.ol-retarget:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+/* "<roller> — no targets" line: muted, with the Change-targets control inline. */
+.ol-target-line-empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.85;
+}
+button.ol-apply-damage {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: linear-gradient(180deg, #b5482b, #8f3219);
+  border: 1px solid #6e2611;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-apply-damage:hover {
+  filter: brightness(1.1);
+}
+button.ol-apply-damage.is-applied {
+  background: linear-gradient(180deg, #5a6066, #3f4348);
+  border-color: #2e3236;
+  cursor: default;
+}
+/* Apply Healing mini button (on healing-roll cards) — green counterpart. */
+button.ol-apply-healing {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: linear-gradient(180deg, #3f8f4a, #2a6e34);
+  border: 1px solid #1d4f24;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-apply-healing:hover {
+  filter: brightness(1.1);
+}
+button.ol-apply-healing.is-applied {
+  background: linear-gradient(180deg, #5a6066, #3f4348);
+  border-color: #2e3236;
+  cursor: default;
+}
+/* The per-target rows attached under a healing roll's flavor. */
+.ol-heal-targets {
+  margin-top: 6px;
+}
+/* "<Name> was dealt N <type> damage." chat message. */
+.ol-damage-applied {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+/* Lethal damage applied (max HP reduced). */
+.ol-lethal-applied {
+  border-left: 3px solid #8a2526;
+  padding-left: 6px;
+}
+.ol-lethal-out { color: #8a2526; }
+.ol-lethal-out i { margin-right: 2px; }
+/* Deathless Trance: trance ended at negative HP — collapse / 1-round death timer. */
+.ol-deathless-collapse {
+  padding: 5px 8px;
+  border-left: 4px solid #b03a3a;
+  background: rgba(176, 58, 58, 0.12);
+  border-radius: 4px;
+  font-weight: 600;
+}
+.ol-deathless-collapse i { color: #b03a3a; margin-right: 3px; }
+.ol-damage-text {
+  flex: 1 1 auto;
+}
+.ol-damage-actions {
+  flex: 0 0 auto;
+}
+.ol-damage-hp {
+  opacity: 0.7;
+  font-size: 0.9em;
+}
+.ol-damage-reverted {
+  padding: 2px 0;
+  font-style: italic;
+  opacity: 0.85;
+}
+/* Draggable handle that places an area MeasuredTemplate. */
+/* Draggable "place area template" handle on chat cards. Chat messages render
+   outside the .openlegend.sheet scope, so these rules are self-contained and
+   specific enough to beat core chat-log styles. It looks like a button but uses
+   a grab cursor (it is dragged, not clicked). */
+.chat-message .ol-template-handle,
+.message-content .ol-template-handle,
+.ol-template-handle {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 7px 10px;
+  cursor: grab;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  color: #fff !important;
+  background: linear-gradient(180deg, #5a3da8, #301e69) !important;
+  border: 1px solid #c2922b !important;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  user-select: none;
+}
+.chat-message .ol-template-handle:hover,
+.ol-template-handle:hover {
+  background: linear-gradient(180deg, #6b4cc0, #3a2580) !important;
+  border-color: #e3b94f !important;
+}
+.ol-template-handle:active {
+  cursor: grabbing;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.chat-message .ol-template-handle i,
+.ol-template-handle i {
+  color: #e3b94f !important;
+}
+/* Invocation-dice roll button (Heal's healing, Persistent Damage's per-round
+   damage): full-width purple block, clickable by any user. */
+.chat-message .ol-roll-invoke,
+.message-content .ol-roll-invoke,
+.ol-roll-invoke {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 7px 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  color: #fff !important;
+  background: linear-gradient(180deg, #4a3494, #301e69) !important;
+  border: 1px solid #c2922b !important;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+.chat-message .ol-roll-invoke:hover,
+.ol-roll-invoke:hover {
+  background: linear-gradient(180deg, #5a42ad, #3a2680) !important;
+  border-color: #e3b94f !important;
+}
+.chat-message .ol-roll-invoke i,
+.ol-roll-invoke i {
+  color: #e3b94f !important;
+}
+/* Bane drag handle — full-width block matching the measured-template handle
+   (skull icon, dark red); shows the bane name + PL. */
+.chat-message .ol-bane-handle,
+.message-content .ol-bane-handle,
+.ol-bane-handle {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 7px 10px;
+  cursor: grab;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  color: #fff !important;
+  background: linear-gradient(180deg, #7a2230, #4a121b) !important;
+  border: 1px solid #c2922b !important;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  user-select: none;
+}
+.chat-message .ol-bane-handle:hover,
+.ol-bane-handle:hover {
+  background: linear-gradient(180deg, #8f2a3a, #5a1722) !important;
+  border-color: #e3b94f !important;
+}
+.ol-bane-handle:active {
+  cursor: grabbing;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.chat-message .ol-bane-handle i,
+.ol-bane-handle i {
+  color: #e3b94f !important;
+}
+/* Apply Bane button (chat result rows) — dark red, skull. */
+button.ol-apply-bane {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: linear-gradient(180deg, #7a2230, #4a121b);
+  border: 1px solid #6e2611;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-apply-bane:hover {
+  filter: brightness(1.12);
+}
+button.ol-apply-bane.is-applied {
+  background: linear-gradient(180deg, #5a6066, #3f4348);
+  border-color: #2e3236;
+  cursor: default;
+}
+/* "+ Bane" margin-10 rider button on a damaging hit — purple to read as a
+   secondary action distinct from the red Apply-bane. */
+button.ol-attack-bane {
+  cursor: pointer;
+  padding: 2px 8px;
+  margin-left: 4px;
+  font-size: 0.82em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: linear-gradient(180deg, #4a2d7a, #2c1a4a);
+  border: 1px solid #3a2560;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-attack-bane:hover { filter: brightness(1.18); }
+.ol-bane-applied {
+  padding: 2px 0;
+}
+/* Boon drag handle — full-width block matching the bane handle, but green
+   (beneficial); hands icon; shows the boon name + PL. */
+/* Item-invocation chat card (extraordinary item → drag chip onto a token/hotbar) */
+.ol-item-invocation p { margin: 0 0 6px; }
+/* Muted how-to line under a card header (drag the chip / roll below …). */
+.ol-card-hint {
+  margin: 2px 0 6px;
+  font-size: 0.82em;
+  line-height: 1.4;
+  color: #6f6a84;
+}
+.ol-item-invocation .ol-invocation-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chat-message .ol-boon-handle,
+.message-content .ol-boon-handle,
+.ol-boon-handle {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 7px 10px;
+  cursor: grab;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  color: #fff !important;
+  background: linear-gradient(180deg, #1f6b4a, #0f3b29) !important;
+  border: 1px solid #c2922b !important;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  user-select: none;
+}
+.chat-message .ol-boon-handle:hover,
+.ol-boon-handle:hover {
+  background: linear-gradient(180deg, #268059, #134833) !important;
+  border-color: #e3b94f !important;
+}
+.ol-boon-handle:active {
+  cursor: grabbing;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.chat-message .ol-boon-handle i,
+.ol-boon-handle i {
+  color: #e3b94f !important;
+}
+/* Grant Boon button (chat result rows) — green, hands. */
+button.ol-apply-boon {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: linear-gradient(180deg, #1f6b4a, #0f3b29);
+  border: 1px solid #0c3322;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-apply-boon:hover {
+  filter: brightness(1.12);
+}
+button.ol-apply-boon.is-applied {
+  background: linear-gradient(180deg, #5a6066, #3f4348);
+  border-color: #2e3236;
+  cursor: default;
+}
+.ol-boon-applied {
+  padding: 2px 0;
+}
+button.ol-undo-damage,
+button.ol-undo-healing {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ol-ink);
+  background: linear-gradient(180deg, #efe7cf, #d9cda7);
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-undo-damage:hover,
+button.ol-undo-healing:hover {
+  filter: brightness(1.05);
+}
+button.ol-undo-damage:disabled,
+button.ol-undo-healing:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ---- Interrupt / Defend (attack chat card + dialog) --------------------- */
+/* "Interrupt?" bar on damaging/bane attack cards. */
+.ol-interrupt-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+button.ol-interrupt {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: linear-gradient(180deg, #2c5f8a, #16314a);
+  border: 1px solid #c2922b;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-interrupt:hover {
+  filter: brightness(1.12);
+  border-color: #e3b94f;
+}
+button.ol-interrupt i {
+  color: #e3b94f;
+}
+
+/* Inspiring Champion rider (attacker feat): shown on a damaging hit with margin
+   10+ — the in-range allies + healing dice, with a Roll Healing button. */
+.ol-inspiring-champion {
+  margin-top: 8px;
+  padding: 6px 9px;
+  border: 1px solid #b9892b;
+  border-left-width: 4px;
+  border-radius: 4px;
+  background: rgba(226, 185, 79, 0.10);
+}
+.ol-inspiring-champion .ol-ic-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+}
+.ol-inspiring-champion .ol-ic-head i {
+  color: #c2922b;
+}
+.ol-inspiring-champion .ol-ic-body {
+  margin: 3px 0 6px;
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+.ol-inspiring-champion .ol-ic-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Death Blow follow-up card (Lethal Strike: instant defeat / silence). */
+.ol-deathblow-card {
+  margin-top: 4px;
+  padding: 6px 9px;
+  border: 1px solid #7a2020;
+  border-left-width: 4px;
+  border-radius: 4px;
+  background: rgba(176, 58, 58, 0.10);
+}
+.ol-deathblow-card .ol-deathblow-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+}
+.ol-deathblow-card .ol-deathblow-head i { color: #b03a3a; }
+.ol-deathblow-card .ol-deathblow-body {
+  margin: 3px 0 6px;
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+.ol-deathblow-card .ol-deathblow-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Overpowering Strike / Crushing Blow rider (Forceful-weapon damaging hit). */
+.ol-overpowering-strike {
+  margin-top: 4px;
+  padding: 6px 9px;
+  border: 1px solid #5a6f2b;
+  border-left-width: 4px;
+  border-radius: 4px;
+  background: rgba(120, 150, 60, 0.10);
+}
+.ol-overpowering-strike .ol-ops-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+}
+.ol-overpowering-strike .ol-ops-head i { color: #6f8a33; }
+.ol-overpowering-strike .ol-ops-body {
+  margin: 3px 0 6px;
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+.ol-overpowering-strike .ol-ops-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Reckless Attack self-damage card (the Actions-section control / hotbar macro). */
+.ol-reckless-attack .fa-burst { color: #c8302a; }
+.ol-reckless-attack .ol-reckless-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Attack-miss options (SRD "on a miss" rule): a per-actor bar of three icon
+   buttons — deal 3 / inflict bane / move 10'. The GM and PC each choose one. */
+.ol-miss-options {
+  margin-top: 6px;
+  padding: 6px 8px;
+  border: 1px dashed rgba(138, 37, 38, 0.5);
+  border-radius: 6px;
+  background: rgba(138, 37, 38, 0.06);
+}
+.ol-miss-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8a2526;
+}
+.ol-miss-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.ol-miss-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 0;
+}
+.ol-miss-name { font-size: 0.9em; }
+.ol-miss-name em { opacity: 0.7; font-style: italic; }
+.ol-miss-buttons { display: inline-flex; gap: 4px; flex: 0 0 auto; }
+button.ol-miss-damage,
+button.ol-miss-bane,
+button.ol-miss-move {
+  cursor: pointer;
+  padding: 1px 6px;
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: #2a1d5e;
+  background: rgba(48, 30, 105, 0.08);
+  border: 1px solid rgba(48, 30, 105, 0.35);
+  border-radius: 4px;
+}
+button.ol-miss-damage:hover,
+button.ol-miss-bane:hover,
+button.ol-miss-move:hover {
+  background: rgba(48, 30, 105, 0.18);
+}
+button.ol-miss-damage i { color: #8a2526; margin: 0; }
+button.ol-miss-bane i { color: #8a2526; margin: 0; }
+button.ol-miss-move i { color: #2c5f8a; margin: 0; }
+button.ol-miss-damage.is-applied,
+button.ol-miss-bane.is-applied,
+button.ol-miss-move.is-applied {
+  color: #1d7a3a;
+  border-color: #1d7a3a;
+  background: rgba(29, 122, 58, 0.12);
+}
+
+/* Defend dialog rows (Defender / Defending / Defend Action selects). */
+.ol-defend-dialog .ol-defend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.ol-defend-dialog .ol-defend-row label {
+  flex: 0 0 96px;
+  font-weight: 700;
+}
+.ol-defend-dialog .ol-defend-row select {
+  flex: 1 1 auto;
+}
+.ol-defend-dialog .ol-defend-hint {
+  margin: 4px 0 0;
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+/* Defend follow-up chat message. */
+.ol-defend-card {
+  font-weight: 700;
+}
+.ol-defend-line {
+  margin-top: 3px;
+}
+.ol-defend-apply {
+  margin-top: 6px;
+}
+/* Battlefield Retribution rider on a defend card: a warm-tinted callout with the
+   retribution damage + its apply / aim buttons. */
+.ol-retribution {
+  margin-top: 8px;
+  padding: 5px 8px;
+  border-left: 4px solid #b03a3a;
+  background: rgba(176, 58, 58, 0.10);
+  border-radius: 4px;
+  font-weight: 600;
+}
+.ol-retribution i { color: #b03a3a; }
+.ol-retribution-apply {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+/* Battlefield Punisher "Punish" button on a defend card — purple, like the
+   margin-10 "+ Bane" rider. */
+button.ol-defend-punish {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 0.82em;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  background: linear-gradient(180deg, #4a2d7a, #2c1a4a);
+  border: 1px solid #3a2560;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+button.ol-defend-punish:hover { filter: brightness(1.18); }
+button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
+
+/* Boon Focus reminder note on a boon invocation card (Tier 2+ faster invocation,
+   Tier 3 free-action sustain) — gold, applied manually by the GM. */
+.ol-boon-focus-note {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-left: 4px solid var(--ol-gold, #c8a44d);
+  background: rgba(200, 164, 77, 0.10);
+  border-radius: 4px;
+}
+.ol-boon-focus-note p {
+  margin: 2px 0;
+  font-size: 0.85em;
+  line-height: 1.35;
+}
+.ol-boon-focus-note i { color: var(--ol-gold, #c8a44d); margin-right: 3px; }
+
+/* Aura note on a boon card: what the aura radiates + its per-kind behaviour. */
+.ol-aura-note {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-left: 4px solid #2f6b3a;
+  background: rgba(47, 107, 58, 0.10);
+  border-radius: 4px;
+}
+.ol-aura-note p { margin: 2px 0; font-size: 0.85em; line-height: 1.35; }
+.ol-aura-note i { color: #2f6b3a; margin-right: 3px; }
+
+/* Barrier properties note on the granted effect (effects-panel hover card). */
+.ol-barrier-note {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-left: 4px solid #4a6fa5;
+  background: rgba(74, 111, 165, 0.10);
+  border-radius: 4px;
+}
+.ol-barrier-note p { margin: 2px 0; font-size: 0.85em; line-height: 1.35; }
+.ol-barrier-note ul { margin: 2px 0 0; padding-left: 18px; font-size: 0.82em; line-height: 1.3; }
+.ol-barrier-note i { color: #4a6fa5; margin-right: 3px; }
+
+/* Resistance boon — the chosen damage type + defense bonus, on the applied effect. */
+.ol-resistance-note {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-left: 4px solid #4a6fa5;
+  background: rgba(74, 111, 165, 0.10);
+  border-radius: 4px;
+  font-size: 0.85em;
+  line-height: 1.35;
+}
+.ol-resistance-note i { color: #4a6fa5; margin-right: 3px; }
+
+/* Barrier property checkboxes on the action sheet. */
+.openlegend.sheet .action-barrier-props {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.openlegend.sheet .action-barrier-prop-row { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+/* Aura bane-attack card: posted when a bane aura attacks an entering enemy. */
+.ol-aura-attack {
+  margin: 2px 0;
+  padding: 4px 8px;
+  border-left: 4px solid #b5482b;
+  background: rgba(181, 72, 43, 0.10);
+  border-radius: 4px;
+}
+.ol-aura-attack p { margin: 2px 0; font-size: 0.9em; line-height: 1.35; }
+.ol-aura-attack i { color: #b5482b; margin-right: 3px; }
+.ol-aura-attack .ol-aura-hit { color: #2f6b3a; font-weight: 700; }
+.ol-aura-attack .ol-aura-miss { color: #b5482b; font-weight: 700; }
+.ol-aura-attack .ol-aura-feat { margin-left: 4px; font-size: 0.85em; opacity: 0.85; }
+.ol-aura-attack .ol-aura-feat i { color: #7a3b8f; margin-right: 2px; }
+
+/* Extraordinary Healing note on a Heal action card: this roll also heals lethal. */
+.ol-xhealing-note {
+  margin-top: 6px;
+  padding: 4px 8px;
+  font-size: 0.85em;
+  line-height: 1.35;
+  border-left: 4px solid #8a2526;
+  background: rgba(138, 37, 38, 0.08);
+  border-radius: 4px;
+}
+.ol-xhealing-note i { color: #8a2526; margin-right: 3px; }
+
+/* ---- Action item sheet (flat form, no tabs) ----------------------------- */
+/* Header description textarea sits in the dark header beside the name. */
+.openlegend.sheet .action-description {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 6px 8px;
+  resize: vertical;
+  min-height: 48px;
+  font-family: "Signika", sans-serif;
+  font-size: 13px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid transparent;
+  border-bottom: 2px solid var(--ol-gold);
+  border-radius: 4px;
+}
+.openlegend.sheet .action-description:hover,
+.openlegend.sheet .action-description:focus {
+  background: rgba(255, 255, 255, 0.16);
+  border-bottom-color: var(--ol-gold-light);
+  box-shadow: 0 0 8px rgba(194, 146, 43, 0.5);
+}
+/* Flat form body: responsive field grid on the parchment background. */
+.openlegend.sheet .action-form {
+  padding: 12px 14px;
+}
+.openlegend.sheet .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 16px;
+}
+.openlegend.sheet .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.openlegend.sheet .form-field-wide {
+  grid-column: 1 / -1;
+}
+/* Extraordinary Healing toggle: a full-width checkbox row under the Boon grid
+   (its label text would clip if squeezed into a grid column). */
+.openlegend.sheet .ol-xhealing-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .ol-xhealing-toggle input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0;
+}
+.openlegend.sheet .form-field label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .form-field select,
+.openlegend.sheet .form-field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.openlegend.sheet .form-readout {
+  padding: 5px 0;
+  font-weight: 700;
+  color: var(--ol-purple);
+}
+/* The category select is locked (set by the Add section); show it as read-only. */
+.openlegend.sheet .form-field select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.openlegend.sheet .form-section-title {
+  margin: 16px 0 8px;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--ol-gold);
+  color: var(--ol-purple);
+  font-size: 14px;
+}
+.openlegend.sheet .form-hint {
+  margin: 6px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  opacity: 0.75;
+}
+.openlegend.sheet .form-hint-inline {
+  font-size: 10px;
+  font-style: italic;
+  opacity: 0.7;
+}
+.openlegend.sheet .form-hint.form-warn {
+  color: #b5482b;
+  opacity: 1;
+  font-weight: 600;
+}
+.openlegend.sheet .form-hint.form-hint-deadly {
+  color: var(--ol-gold);
+  opacity: 1;
+  font-weight: 600;
+  font-style: normal;
+}
+/* Grip radios on the action sheet's Weapon section (one-handed / dual wield /
+   two-handed). Laid out inline to read like a compact toggle group. */
+.openlegend.sheet .action-grip-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 26px;
+}
+.openlegend.sheet .action-grip-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.openlegend.sheet .action-grip-choice input {
+  margin: 0;
+}
+.openlegend.sheet .action-grip-choice input:disabled + span {
+  opacity: 0.8;
+}
+/* On-roll macro field: a drop zone (drag a Macro from the directory) plus its
+   text input and a clear (✕) button. */
+.openlegend.sheet .action-macro-drop {
+  border: 1px dashed transparent;
+  border-radius: 4px;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.openlegend.sheet .action-macro-drop.drag-over {
+  border-color: var(--color-border-highlight, #ff6400);
+  background: rgba(255, 100, 0, 0.08);
+}
+.openlegend.sheet .action-macro-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.openlegend.sheet .action-macro-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.openlegend.sheet .action-macro-clear {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+/* +/- stepper around a number input (e.g. Area Length); the native spinner is
+   hidden by core so we provide explicit clickable buttons. */
+.openlegend.sheet .ol-stepper-field {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.openlegend.sheet .ol-stepper-field input[type="number"] {
+  width: 100%;
+  text-align: center;
+  border-radius: 0;
+  min-width: 0;
+}
+.openlegend.sheet .ol-step-btn {
+  flex: 0 0 28px;
+  width: 28px;
+  padding: 0;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+}
+.openlegend.sheet .ol-step-btn:first-child {
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+}
+.openlegend.sheet .ol-step-btn:last-child {
+  border-radius: 0 4px 4px 0;
+  border-left: none;
+}
+.openlegend.sheet .ol-step-btn:hover {
+  background: linear-gradient(180deg, var(--ol-gold), var(--ol-gold-light));
+  color: var(--ol-purple);
+}
+/* Extraordinary Area size: a compact ± stepper (matches the action dialog). */
+.openlegend.sheet .ol-xtra-area-stepper {
+  display: inline-flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+}
+.openlegend.sheet .ol-xtra-area-stepper .ol-step-btn {
+  flex: 0 0 24px;
+  width: 24px;
+  font-size: 14px;
+}
+.openlegend.sheet .ol-xtra-area-stepper .ol-xtra-area-size {
+  flex: 0 0 46px;
+  width: 46px;
+  text-align: center;
+  border-radius: 0;
+}
+/* Dice Modifiers list (derived multi-target / area disadvantage). */
+.openlegend.sheet .dice-modifiers {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.openlegend.sheet .dice-modifier-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .dice-modifier-row:nth-child(odd) {
+  background: rgba(48, 30, 105, 0.05);
+}
+.openlegend.sheet .dice-modifier-label {
+  color: var(--ol-purple);
+}
+.openlegend.sheet .dice-modifier-value {
+  font-weight: 700;
+  color: #555;
+}
+.openlegend.sheet .dice-modifier-value.is-advantage {
+  color: #2f6b3a;
+}
+.openlegend.sheet .dice-modifier-value.is-disadvantage {
+  color: #b5482b;
+}
+.openlegend.sheet .dice-modifier-total {
+  border-top: 1px solid var(--ol-gold);
+  margin-top: 2px;
+  font-weight: 700;
+}
+.openlegend.sheet .dice-modifier-total .dice-modifier-label {
+  font-weight: 700;
+}
+
+/* ============================================================
+   Effects Panel (PF2e-style condition/effect icon column)
+   A frameless, non-positioned ApplicationV2 pinned to the top-right
+   of the canvas, just left of the sidebar. Each icon shows a level
+   badge and reveals a hover card with the effect's details + controls.
+   ============================================================ */
+#openlegend-effects-panel {
+  /* The palette vars are otherwise only declared on .openlegend.sheet — the
+     panel isn't a sheet, so re-declare them here or every var() falls back to
+     nothing (which made the hover card render with no/translucent fill). */
+  --ol-purple: #301e69;
+  --ol-purple-light: #4a3494;
+  --ol-purple-dark: #1d1240;
+  --ol-gold: #c2922b;
+  --ol-gold-light: #e3b94f;
+  --ol-ink: #2b2440;
+  --ol-parchment: #f6f3ec;
+
+  position: fixed;
+  top: 12px;
+  /* Sit left of the right-hand sidebar (≈300px) with a small gap. */
+  right: 320px;
+  /* Match the sidebar's slide (margin-right 250ms ease) so the panel animates
+     WITH it when it collapses/expands instead of snapping at the end. */
+  transition: right 250ms ease;
+  z-index: 70;          /* above the canvas/HUD, below dialogs */
+  pointer-events: none; /* the list re-enables it on the items */
+  width: auto;
+  /* Core's .application paints a translucent dark --background on the root;
+     the panel itself must be invisible (only its icons/cards show). */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+#openlegend-effects-panel .ol-ep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+#openlegend-effects-panel .ol-ep-item {
+  position: relative;
+  pointer-events: all;
+}
+#openlegend-effects-panel .ol-ep-item.is-disabled .ol-ep-icon {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+/* Icon */
+#openlegend-effects-panel .ol-ep-icon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border: 2px solid var(--ol-gold);
+  border-radius: 6px;
+  background: var(--ol-purple-dark);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+#openlegend-effects-panel .ol-ep-icon:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 8px var(--ol-gold-light);
+}
+#openlegend-effects-panel .ol-ep-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+  border-radius: 4px;
+}
+/* Level / stack badge, bottom-right of the icon. */
+#openlegend-effects-panel .ol-ep-badge {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--ol-gold);
+  color: var(--ol-purple-dark);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 18px;
+  text-align: center;
+  border: 1px solid var(--ol-purple-dark);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Hover card */
+#openlegend-effects-panel .ol-ep-card {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 12px);  /* opens to the LEFT of the icon column */
+  width: 280px;
+  padding: 10px 12px;
+  /* Solid, fully opaque background (dark base under the gradient) so the canvas
+     never shows through. */
+  background-color: var(--ol-purple-dark);
+  background-image: linear-gradient(135deg, var(--ol-purple) 0%, var(--ol-purple-light) 100%);
+  border: 1px solid var(--ol-gold);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+  color: var(--ol-parchment);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(8px);
+  transition: opacity 0.12s ease, transform 0.12s ease, visibility 0s linear 0.12s;
+  pointer-events: none;
+  z-index: 1;
+}
+/* Invisible bridge spanning the icon→card gap, so moving the pointer onto the
+   card never crosses an un-hovered region (which would close it). */
+#openlegend-effects-panel .ol-ep-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -14px;     /* covers the gap back to the icon */
+  width: 14px;
+}
+#openlegend-effects-panel .ol-ep-item:hover .ol-ep-card,
+#openlegend-effects-panel .ol-ep-card:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition-delay: 0s;
+  pointer-events: all;
+}
+#openlegend-effects-panel .ol-ep-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--ol-gold);
+  padding-bottom: 5px;
+  margin-bottom: 6px;
+}
+#openlegend-effects-panel .ol-ep-card-head h4 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ol-gold-light);
+}
+#openlegend-effects-panel .ol-ep-card-level {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ol-purple-dark);
+  background: var(--ol-gold);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+#openlegend-effects-panel .ol-ep-changes {
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+}
+#openlegend-effects-panel .ol-ep-changes li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 0;
+  font-size: 12px;
+}
+#openlegend-effects-panel .ol-ep-change-label { color: var(--ol-parchment); }
+#openlegend-effects-panel .ol-ep-change-value {
+  font-weight: 700;
+  color: var(--ol-gold-light);
+  white-space: nowrap;
+}
+#openlegend-effects-panel .ol-ep-desc {
+  font-size: 12px;
+  line-height: 1.4;
+  max-height: 160px;
+  overflow-y: auto;
+  border-top: 1px solid rgba(194, 146, 43, 0.4);
+  padding-top: 6px;
+  margin-top: 2px;
+}
+#openlegend-effects-panel .ol-ep-desc p { margin: 0 0 4px; }
+
+/* Hover-card footer controls */
+#openlegend-effects-panel .ol-ep-card-foot {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--ol-gold);
+}
+#openlegend-effects-panel .ol-ep-ctl {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+  background: var(--ol-purple-dark);
+  color: var(--ol-gold-light);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+#openlegend-effects-panel .ol-ep-ctl:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--ol-gold), var(--ol-gold-light));
+  color: var(--ol-purple);
+}
+#openlegend-effects-panel .ol-ep-ctl:disabled { opacity: 0.4; cursor: default; }
+#openlegend-effects-panel .ol-ep-remove { margin-left: auto; }
+#openlegend-effects-panel .ol-ep-remove:hover:not(:disabled) {
+  background: #b5482b;
+  border-color: #b5482b;
+  color: #fff;
+}
+#openlegend-effects-panel .ol-ep-fromitem {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ol-gold-light);
+  opacity: 0.85;
+}
+/* Push the suspend button to the right of "From an item". */
+#openlegend-effects-panel .ol-ep-fromitem + .ol-ep-suspend { margin-left: auto; }
+/* Potent toggle (bane effects): lit green when on. */
+#openlegend-effects-panel .ol-ep-potent.is-on {
+  background: #1d7a3a;
+  border-color: #1d7a3a;
+  color: #fff;
+}
+/* Suspend toggle: amber when the effect is currently suspended. */
+#openlegend-effects-panel .ol-ep-suspend.is-on {
+  background: #8a6d1f;
+  border-color: #c2922b;
+  color: #fff;
+}
+/* "Suspended" tag on the hover-card head. */
+#openlegend-effects-panel .ol-ep-card-suspended {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #8a6d1f;
+  border-radius: 3px;
+  padding: 0 5px;
+}
+/* Failed-resist tally on a bane's hover card (this application only). */
+#openlegend-effects-panel .ol-ep-card-fails {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #8a2526;
+  border-radius: 3px;
+  padding: 0 5px;
+}
+#openlegend-effects-panel .ol-ep-card-fails i { margin-right: 3px; }
+
+/* Potent toggle on the Conditions tab row + the "Potent" chat tag. */
+.openlegend.sheet .item-control.ol-potent-toggle { opacity: 0.55; }
+.openlegend.sheet .item-control.ol-potent-toggle.is-on { opacity: 1; color: #1d7a3a; }
+.openlegend.sheet .item-control.ol-potent-toggle:hover { opacity: 1; }
+/* Battle Trance feat toggle: dim when off, glowing flame when on. Draggable to
+   the hotbar (cursor hint). The Activate/Deactivate label sits beside the flame. */
+.openlegend.sheet .item-control.feat-toggle {
+  opacity: 0.55;
+  cursor: grab;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  flex: 0 0 auto;
+  margin-left: 2px;
+  white-space: nowrap;
+}
+.openlegend.sheet .item-control.feat-toggle:hover { opacity: 0.9; }
+.openlegend.sheet .item-control.feat-toggle.is-on {
+  opacity: 1;
+  color: #d9531e;
+  text-shadow: 0 0 7px rgba(217, 83, 30, 0.7);
+}
+.openlegend.sheet .feat-toggle-label {
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.ol-potent-tag {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 6px;
+  font-size: 0.8em;
+  font-weight: 700;
+  color: #1d7a3a;
+  border: 1px solid #1d7a3a;
+  border-radius: 4px;
+}
+/* Inline checkbox label (e.g. the bane-action Potent box). */
+.openlegend.sheet .ol-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+/* The generic .form-field input { width:100% } rule stretches a checkbox to fill
+   the field, pushing its label far to the right — keep checkboxes intrinsic-width. */
+.openlegend.sheet .ol-check input[type="checkbox"] {
+  width: auto;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* Resist Banes dialog (classes ["openlegend"], not .sheet). */
+.ol-resist-dialog .ol-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.ol-resist-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+.ol-resist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 2px;
+  border-top: 1px solid rgba(48, 30, 105, 0.15);
+}
+.ol-resist-row .ol-resist-potent { flex: 0 0 auto; opacity: 0.85; }
+/* Resist result chat lines. */
+.ol-resist-result ul { list-style: none; margin: 4px 0 0; padding: 0; }
+.ol-resist-result li { padding: 1px 0; }
+.ol-resist-ok { color: #1d7a3a; }
+.ol-resist-fail { color: #9aa0a6; }
+.ol-resist-adv { color: #2f7a2f; font-size: 0.9em; }
+.ol-resist-dis { color: #9a2f2f; font-size: 0.9em; }
+/* Per-application failed-resist tally, on resist cards and the resist dialog. */
+.ol-resist-fails { color: #9a2f2f; font-size: 0.85em; font-weight: 600; }
+
+/* Rest / Heal Lethal Damage dialog (classes ["openlegend"], not .sheet). */
+.ol-rest-dialog .ol-rest-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+.ol-rest-dialog .ol-rest-field label { font-weight: 600; }
+.ol-rest-dialog .ol-rest-field input { width: 80px; text-align: center; }
+.ol-rest-dialog .ol-rest-summary {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(48, 30, 105, 0.2);
+}
+.ol-rest-dialog .ol-rest-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
+}
+.ol-rest-dialog .ol-rest-line > span:first-child { opacity: 0.8; }
+.ol-rest-dialog .ol-rest-line > span:last-child { font-weight: 600; }
+.ol-rest-dialog .ol-rest-total {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(48, 30, 105, 0.25);
+  font-size: 15px;
+}
+.ol-rest-dialog .ol-rest-total > span:last-child { font-weight: 700; color: var(--ol-purple); }
+.ol-rest-result i { color: #8a2526; margin-right: 4px; }
+
+/* ============================================================
+   Feat-choice open field: a Suggestions <select> stacked above a free-text input
+   (replacing the native <datalist> popup, which floats unstyled to a corner).
+   ============================================================ */
+.ol-choice-open {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ol-choice-open .ol-choice-suggest,
+.ol-choice-open input {
+  width: 100%;
+}
+
+/* ============================================================
+   Extraordinary Item editor (weapon/armor/gear "Extraordinary" tab)
+   ============================================================ */
+.openlegend.sheet .ol-xtra-toggle {
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--ol-gold);
+  border-radius: 6px;
+  background: rgba(48, 30, 105, 0.06);
+  color: var(--ol-purple);
+}
+.openlegend.sheet .ol-xtra-toggle > span {
+  font-weight: 700;
+}
+.openlegend.sheet .ol-xtra-toggle i { color: var(--ol-gold); }
+.openlegend.sheet .ol-xtra-toggle .ol-xtra-hint {
+  margin: 2px 0 0;
+}
+.openlegend.sheet .ol-xtra-section {
+  margin-bottom: 14px;
+  border: 1px solid rgba(194, 146, 43, 0.45);
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: rgba(48, 30, 105, 0.03);
+}
+.openlegend.sheet .ol-xtra-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ol-gold);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+.openlegend.sheet .ol-xtra-head h3 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ol-purple);
+}
+.openlegend.sheet .ol-xtra-head h3 i { color: var(--ol-gold); margin-right: 4px; }
+/* Legendary section: a stronger gold accent to set it apart from the
+   extraordinary sections above it. */
+.openlegend.sheet .ol-xtra-section.ol-xtra-legendary {
+  border-color: var(--ol-gold);
+  background: rgba(194, 146, 43, 0.06);
+}
+.openlegend.sheet .ol-xtra-legendary .ol-xtra-head h3 { color: #8a6413; }
+.openlegend.sheet .ol-xtra-hint {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ol-ink);
+  opacity: 0.7;
+}
+.openlegend.sheet .ol-xtra-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+.openlegend.sheet .ol-xtra-row > select { flex: 1; min-width: 0; }
+.openlegend.sheet .ol-xtra-row .ol-xtra-narrow { flex: 0 0 70px; }
+.openlegend.sheet .ol-xtra-row .ol-xtra-propval { flex: 1; min-width: 0; }
+/* Special property: a free-text area for the unique-property detail. */
+.openlegend.sheet .ol-xtra-row .ol-xtra-proptext {
+  resize: vertical;
+  min-height: 2.4em;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.3;
+}
+/* The Special row grows to fit its textarea (don't vertically center the cells). */
+.openlegend.sheet .ol-xtra-row:has(.ol-xtra-proptext) { align-items: flex-start; }
+/* Flag property (no value): a muted, read-only label; the rules show on hover. */
+.openlegend.sheet .ol-xtra-row .ol-xtra-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ol-ink);
+  opacity: 0.6;
+  cursor: help;
+}
+.openlegend.sheet .ol-xtra-row .ol-xtra-flag i { color: var(--ol-gold); opacity: 0.9; }
+/* Persistent auto-apply toggle beside the boon select. */
+.openlegend.sheet .ol-xtra-row .ol-xtra-persist-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.openlegend.sheet .ol-xtra-row .ol-xtra-persist-toggle i { color: var(--ol-gold); }
+/* Aura boon row: the radiated bane/boon sub-row, indented under its Aura row. */
+.openlegend.sheet .ol-xtra-row.ol-xtra-aura {
+  margin-left: 14px;
+  padding-top: 0;
+}
+.openlegend.sheet .ol-xtra-row.ol-xtra-aura .ol-xtra-aura-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: help;
+}
+.openlegend.sheet .ol-xtra-row.ol-xtra-aura .ol-xtra-aura-label i { color: var(--ol-gold); }
+.openlegend.sheet .ol-xtra-row.ol-xtra-aura .ol-xtra-aura-pick { flex: 2; min-width: 0; }
+
+/* Row +/-/invoke buttons */
+.openlegend.sheet .ol-row-add,
+.openlegend.sheet .ol-row-del,
+.openlegend.sheet .ol-row-generate {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+  background: var(--ol-purple);
+  color: var(--ol-gold-light);
+  cursor: pointer;
+  padding: 0;
+}
+.openlegend.sheet .ol-row-add:hover,
+.openlegend.sheet .ol-row-generate:hover {
+  background: linear-gradient(180deg, var(--ol-gold), var(--ol-gold-light));
+  color: var(--ol-purple);
+}
+.openlegend.sheet .ol-row-del:hover {
+  background: #b5482b;
+  border-color: #b5482b;
+  color: #fff;
+}
+
+/* ============================================================
+   Extraordinary-item attributes (separate section under the
+   actor's own attributes; granted by active extraordinary items)
+   ============================================================ */
+.openlegend.sheet .item-attributes {
+  margin-top: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--ol-gold);
+  border-radius: 6px;
+  background: rgba(194, 146, 43, 0.07);
+}
+.openlegend.sheet .item-attributes .category-label i { color: var(--ol-gold); margin-right: 4px; }
+.openlegend.sheet .item-attribute {
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+.openlegend.sheet .item-attribute .attribute-roll { flex: 0 0 auto; }
+.openlegend.sheet .item-attribute .attribute-source {
+  flex: 1;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ol-ink);
+  opacity: 0.75;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.openlegend.sheet .ia-tag {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 5px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--ol-gold);
+  color: var(--ol-purple-dark);
+  vertical-align: middle;
+}
+.openlegend.sheet .ia-tag-item {
+  background: var(--ol-purple);
+  color: var(--ol-gold-light);
+}
+
+/* ---- Damage Types configuration menu ------------------------------------ */
+/* Fill the window so the body can scroll and the footer stays pinned. */
+.ol-damage-types-config .window-content { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.ol-damage-types-config .ol-dt-config {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 8px;
+}
+/* The scrollable region: everything above the footer. */
+.ol-damage-types-config .ol-dt-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+.ol-damage-types-config .form-footer {
+  flex: 0 0 auto;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+.ol-damage-types-config .ol-dt-scroll > .hint { margin: 0 0 4px; font-size: 12px; }
+.ol-damage-types-config .ol-dt-category,
+.ol-damage-types-config .ol-dt-add {
+  border: 1px solid var(--ol-gold, #c8a44d);
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin: 0;
+}
+.ol-damage-types-config legend { font-weight: 700; padding: 0 4px; }
+.ol-damage-types-config .ol-dt-list { list-style: none; margin: 0; padding: 0; }
+.ol-damage-types-config .ol-dt-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.ol-damage-types-config .ol-dt-row:last-child { border-bottom: none; }
+.ol-damage-types-config .ol-dt-name { font-weight: 600; flex: 0 0 28%; }
+.ol-damage-types-config .ol-dt-desc { font-size: 12px; opacity: 0.85; flex: 1 1 auto; }
+.ol-damage-types-config .ol-dt-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-left: 4px;
+}
+.ol-damage-types-config .ol-dt-fields { display: flex; gap: 6px; flex: 1 1 auto; }
+.ol-damage-types-config .ol-dt-fields input { flex: 1 1 auto; }
+.ol-damage-types-config .ol-dt-fields input:first-child { flex: 0 0 30%; }
+.ol-damage-types-config .ol-dt-remove { flex: 0 0 auto; cursor: pointer; color: #b03a3a; }
+.ol-damage-types-config .ol-dt-empty { opacity: 0.6; font-style: italic; }
+.ol-damage-types-config .ol-dt-add-fields { display: flex; gap: 6px; align-items: center; }
+.ol-damage-types-config .ol-dt-add-fields select { flex: 0 0 26%; }
+.ol-damage-types-config .ol-dt-add-fields input { flex: 1 1 auto; }
+.ol-damage-types-config .ol-dt-add-btn { flex: 0 0 auto; white-space: nowrap; }
+
+/* ---- Locked sheets (read-only view) ------------------------------------ */
+/* A non-editable item sheet (locked compendium, observer permission) gets
+   .ol-locked from _onRender. Core auto-disables every form field on such a
+   sheet (DocumentSheetV2#_toggleDisabled); these rules restyle those disabled
+   fields as plain readable text — no sunken boxes, borders, or dimming — so
+   the sheet reads like a clean stat-block instead of a dead form. */
+.openlegend.sheet.item.ol-locked input:disabled,
+.openlegend.sheet.item.ol-locked select:disabled,
+.openlegend.sheet.item.ol-locked textarea:disabled {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: inherit;
+  -webkit-text-fill-color: currentColor;
+  opacity: 1;
+  cursor: default;
+  pointer-events: none;
+}
+/* Selects: drop the dropdown chrome so only the chosen value shows. */
+.openlegend.sheet.item.ol-locked select:disabled {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: none;
+  padding-right: 0;
+  text-overflow: ellipsis;
+}
+/* Number inputs: no spinners in the read-only view. */
+.openlegend.sheet.item.ol-locked input[type="number"]:disabled {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.openlegend.sheet.item.ol-locked input[type="number"]:disabled::-webkit-inner-spin-button,
+.openlegend.sheet.item.ol-locked input[type="number"]:disabled::-webkit-outer-spin-button {
+  display: none;
+}
+/* Checkboxes stay visible (their checked state is information), just undimmed. */
+.openlegend.sheet.item.ol-locked input[type="checkbox"]:disabled {
+  opacity: 1;
+  pointer-events: none;
+}
+/* The item name reads as a title, not a boxed field. */
+.openlegend.sheet.item.ol-locked input.charname:disabled {
+  border-bottom-color: var(--ol-gold-light);
+  font-weight: 700;
+}
+/* Mutation-only controls that aren't {{#if editable}}-gated in templates:
+   effect enable/disable + delete (the edit/eye control stays — the config
+   sheet opens read-only and is worth viewing). */
+.openlegend.sheet.item.ol-locked a[data-action="effectToggle"],
+.openlegend.sheet.item.ol-locked a[data-action="effectDelete"],
+.openlegend.sheet.item.ol-locked a[data-action="stepField"] {
+  display: none;
+}
+/* Rich-text fields: hide the ProseMirror edit affordance; the enriched HTML
+   body already renders read-only. */
+.openlegend.sheet.item.ol-locked prose-mirror button.toggle,
+.openlegend.sheet.item.ol-locked prose-mirror .editor-edit {
+  display: none;
+}
+/* Row add/remove controls that templates don't gate on {{editable}} (boon/bane
+   attack & power-effect rows, the extraordinary editor): all mutation-only, so
+   hide them wholesale in the read-only view by action-name suffix. */
+.openlegend.sheet.item.ol-locked a[data-action$="Add"],
+.openlegend.sheet.item.ol-locked a[data-action$="Delete"],
+.openlegend.sheet.item.ol-locked a[data-action="weaponRemoveProperty"],
+.openlegend.sheet.item.ol-locked a[data-action="clearMacro"] {
+  display: none;
+}
+
+/* ---- Mount / Vehicle sheet ---------------------------------------------- */
+/* Disabled banner: shown when the damage level reaches the damage threshold. */
+.openlegend.sheet .mount-disabled-banner {
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  color: #fff;
+  background: linear-gradient(180deg, rgba(160, 40, 40, 0.9), rgba(120, 25, 25, 0.9));
+  border: 1px solid rgba(255, 120, 100, 0.6);
+}
+.openlegend.sheet .mount-disabled-banner i { margin-right: 4px; }
+
+/* Damage Level / Damage Threshold tile (Stats row), mirroring the Lethal tile. */
+.openlegend.sheet .vital-mount-damage .mount-damage-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.openlegend.sheet .vital-mount-damage .mount-dis-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  color: #ffd9a0;
+  background: rgba(160, 60, 20, 0.55);
+  border: 1px solid rgba(255, 160, 90, 0.5);
+  white-space: nowrap;
+}
+.openlegend.sheet .vital-mount-damage.is-disabled {
+  box-shadow: 0 0 10px rgba(200, 40, 40, 0.7) inset, 0 0 8px rgba(200, 40, 40, 0.5);
+}
+
+/* Immune defenses: the toggle sits INLINE beside the value input (there's room
+   left and right; stacking under the value overflowed the block). When Immune is
+   on, the input is omitted and the checked toggle itself reads as the value. */
+.openlegend.sheet .defense .defense-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.openlegend.sheet .defense .defense-immune-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ol-gold-light);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.openlegend.sheet .defense.is-immune {
+  background: linear-gradient(180deg, rgba(70, 70, 80, 0.9), rgba(45, 45, 55, 0.9));
+}
+/* Immune on: the toggle IS the displayed value — sized like the defense number. */
+.openlegend.sheet .defense.is-immune .defense-immune-toggle {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+/* Checkboxes on the dark pills: Foundry v12+ redraws checkboxes as a ~20px font
+   glyph (via --checkbox-size), which overflows small layouts and reads near-black
+   on the purple. Take rendering over completely: appearance none, our own gold
+   box, our own check glyph — identical on every core version. */
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"],
+.openlegend.sheet .mount-property input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--ol-gold-light);
+  border-radius: 3px;
+  cursor: pointer;
+  outline: none;
+}
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"] {
+  width: 11px;
+  height: 11px;
+}
+/* Suppress core's glyphs on BOTH pseudo-elements in every state (core versions
+   differ on which one carries the check — leaving either alive doubles the icon),
+   then draw our single check on ::before. */
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"]::before,
+.openlegend.sheet .mount-property input[type="checkbox"]::before,
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"]::after,
+.openlegend.sheet .mount-property input[type="checkbox"]::after,
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"]:checked::after,
+.openlegend.sheet .mount-property input[type="checkbox"]:checked::after {
+  content: "" !important;
+  font-size: 0 !important;
+  width: 0;
+  height: 0;
+}
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"]:checked::before,
+.openlegend.sheet .mount-property input[type="checkbox"]:checked::before {
+  content: "\f00c" !important;
+  font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free", FontAwesome, sans-serif;
+  font-weight: 900;
+  font-size: 9px !important;
+  line-height: 1;
+  width: auto;
+  height: auto;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"]:checked::before {
+  font-size: 8px !important;
+}
+.openlegend.sheet .defense .defense-immune-toggle input[type="checkbox"]:checked,
+.openlegend.sheet .mount-property input[type="checkbox"]:checked {
+  border-color: var(--ol-gold);
+  background: rgba(194, 146, 43, 0.25);
+}
+
+/* Properties section: an equal 3-column grid — checkbox pills on the first row,
+   the numeric fields lining up beneath them. */
+.openlegend.sheet .mount-properties {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px 10px;
+  margin-top: 2px;
+}
+.openlegend.sheet .mount-property {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.85em;
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  border: 1px solid var(--ol-gold);
+  color: #fff;
+  cursor: pointer;
+}
+.openlegend.sheet .mount-property i {
+  margin-right: 2px;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .mount-property-number {
+  cursor: default;
+  justify-content: space-between;
+}
+.openlegend.sheet .mount-property-number label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ol-gold-light);
+}
+.openlegend.sheet .mount-property-number input[type="number"] {
+  width: 42px;
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(227, 185, 79, 0.45);
+  border-radius: 4px;
+}
+
+/* Damage-level chip in the "damage applied" chat line. */
+.ol-damage-applied .ol-mount-dl {
+  color: #a33c1c;
+  white-space: nowrap;
+}
+
+/* Pilot seats: drop-target squares, one per Multi-Pilot (max 12). Drop an actor
+   on a seat to link them; a filled tile shows portrait + name (click opens the
+   pilot's sheet, X unseats). */
+.openlegend.sheet .mount-pilots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 8px;
+  margin-top: 2px;
+}
+.openlegend.sheet .mount-pilot-slot {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+}
+.openlegend.sheet .mount-pilot-slot.is-empty {
+  border: 2px dashed rgba(194, 146, 43, 0.55);
+  color: var(--ol-purple);
+  opacity: 0.8;
+}
+.openlegend.sheet .mount-pilot-slot.is-empty i {
+  font-size: 18px;
+  color: var(--ol-gold);
+}
+.openlegend.sheet .mount-pilot-slot.is-empty .mount-pilot-name {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.openlegend.sheet .mount-pilot-slot.is-filled {
+  border: 1px solid var(--ol-gold);
+  background: linear-gradient(180deg, var(--ol-purple-light), var(--ol-purple));
+  cursor: pointer;
+}
+.openlegend.sheet .mount-pilot-slot.is-filled img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border: none;
+}
+.openlegend.sheet .mount-pilot-slot.is-filled .mount-pilot-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2px 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(20, 10, 40, 0.78);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.openlegend.sheet .mount-pilot-slot.is-filled:hover {
+  box-shadow: 0 0 6px rgba(194, 146, 43, 0.6);
+}
+.openlegend.sheet .mount-pilot-clear {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 10px;
+  color: #fff;
+  background: rgba(20, 10, 40, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+.openlegend.sheet .mount-pilot-clear:hover {
+  background: rgba(170, 45, 45, 0.9);
+  color: #fff;
+}

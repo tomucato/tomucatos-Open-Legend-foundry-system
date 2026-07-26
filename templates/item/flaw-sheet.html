@@ -1,0 +1,19 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="header-fields">
+    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Flaw Name"/></h1>
+  </div>
+</header>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+  <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the character while they have this flaw."}}
+  </div>
+</section>

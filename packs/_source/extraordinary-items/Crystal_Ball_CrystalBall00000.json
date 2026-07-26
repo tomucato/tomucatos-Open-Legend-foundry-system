@@ -1,0 +1,29 @@
+{
+  "_id": "CrystalBall00000",
+  "name": "Crystal Ball",
+  "type": "gear",
+  "img": "icons/svg/circle.svg",
+  "system": {
+    "description": "<p>No mystic should go without this quintessential tool for peering beyond the limits of normal sight.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Spying",
+        "powerLevel": 6
+      }
+    ],
+    "extraordinaryProperties": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

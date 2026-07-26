@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxfcdzGu2GeEU",
+  "name": "Naive",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>Whether you are innocent, uninformed, or inexperienced, the results are the same: you are pretty gullible. You get to define the scope of your naivety. For example, maybe you're a greenhorn from a big city on the east coast, so you are unlearned in the ways of the Wild West. Or maybe your memory was completely wiped out a few weeks ago and you are relearning the rules of civilization, thus your naivety presents itself much more universally.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

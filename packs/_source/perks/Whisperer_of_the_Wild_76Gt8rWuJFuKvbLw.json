@@ -1,0 +1,14 @@
+{
+  "_id": "76Gt8rWuJFuKvbLw",
+  "name": "Whisperer of the Wild",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Once per game session, you can ask a single 'yes' or 'no' question of a plant or animal within earshot. The plant or animal automatically trusts you at least enough to answer the question truthfully. You receive the answer by way of an inner sense, and so this ability cannot be used for further two-way communication.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

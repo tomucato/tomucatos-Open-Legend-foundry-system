@@ -1,0 +1,43 @@
+{
+  "_id": "HelmOfTruth0001A",
+  "name": "Helm of Truth",
+  "type": "gear",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>This shining jeweled helm fills the wielder's heart with a sense of courage, truth, and justice. Though, some say it imbues just a bit too much of the truth, as the wearer finds themself completely unable to tell a lie.</p>",
+    "notes": "",
+    "wealthLevel": 5,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [
+      {
+        "name": "Bolster",
+        "powerLevel": 3
+      }
+    ],
+    "extraordinaryBanes": [
+      {
+        "name": "Truthfulness",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "persistent",
+        "value": ""
+      },
+      {
+        "name": "cursed",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

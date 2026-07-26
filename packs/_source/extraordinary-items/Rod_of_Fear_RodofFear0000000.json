@@ -1,0 +1,29 @@
+{
+  "_id": "RodofFear0000000",
+  "name": "Rod of Fear",
+  "type": "gear",
+  "img": "icons/svg/lightning.svg",
+  "system": {
+    "description": "<p>This short rod is crafted of human bone and bears the skull of a screaming human at its head.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Fear",
+        "powerLevel": 7
+      }
+    ],
+    "extraordinaryProperties": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

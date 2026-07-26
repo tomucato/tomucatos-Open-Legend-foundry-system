@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbMHXs4BX9zRx",
+  "name": "Merchant",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You know the art of economics as well as the best of businessmen. A master of supply and demand, you have a knack for knowing when to buy and when to sell. You cannot be swindled when it comes to bartering, and you always know whether or not you are getting a fair price. Furthermore, you have friends in merchant circles and guilds in your home city, and you can easily gain them in new locations.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

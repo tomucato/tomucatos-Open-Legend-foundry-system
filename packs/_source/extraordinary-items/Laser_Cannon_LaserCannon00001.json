@@ -1,0 +1,42 @@
+{
+  "_id": "LaserCannon00001",
+  "name": "Laser Cannon",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>This laser gun turret unleashes a massive beam of highly charged photons to decimate foes. Its immense power is balanced by the time it takes to recharge after each use.</p>",
+    "notes": "",
+    "wealthLevel": 6,
+    "bulky": false,
+    "heavy": true,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "area",
+        "value": "line:50"
+      },
+      {
+        "name": "deadly",
+        "value": 2
+      }
+    ],
+    "baseType": "Cannon",
+    "categories": [
+      "extreme-ranged"
+    ],
+    "rangeIncrement": 300,
+    "properties": [],
+    "banes": [],
+    "equipped": false,
+    "equipHands": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

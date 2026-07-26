@@ -1,0 +1,83 @@
+{
+  "_id": "6y265nKyy4bHoP3V",
+  "name": "Flight",
+  "type": "boon",
+  "img": "icons/magic/air/wind-weather-snow-gusts.webp",
+  "system": {
+    "description": "<p>By sprouting wings, activating an anti-gravity device, focusing telekinetic power, or similar means, the target takes to the skies.</p>",
+    "effect": "<ul>\n<li><strong>Power Level 5</strong> - The target gains a flight speed of 10'.</li>\n<li><strong>Power Level 6</strong> - The target gains a flight speed of 30'.</li>\n<li><strong>Power Level 8</strong> - The target gains a flight speed of 60'.</li>\n</ul>\nIf the boon is dispelled while the target is still in flight, they plummet to the ground immediately.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Movement"
+    ],
+    "powerLevel": 5,
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "The target gains a flight speed of 10'"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "The target gains a flight speed of 30'"
+      },
+      {
+        "powerLevel": 8,
+        "effect": "The target gains a flight speed of 60'"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target gains a flight speed of 10'"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target gains a flight speed of 30'"
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target gains a flight speed of 60'"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "2wpe8TDuxCUIfEeG",
+      "name": "Flight",
+      "type": "base",
+      "img": "icons/magic/air/wind-weather-snow-gusts.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Flight",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "_id": "riXuaOVpwIZD3cRz",
+  "name": "Literal Minded",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You struggle with concepts and turns of phrase that are not literally true, such as idioms and metaphors. You might think sorcery is afoot if someone tells you it is “raining cats and dogs”. If a friend exaggerated by saying “I'd kill myself if Melzak were elected Supreme Justice”, you would be genuinely concerned for your friend's life if Melzak did get elected.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

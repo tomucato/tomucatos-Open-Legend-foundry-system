@@ -1,0 +1,90 @@
+{
+  "_id": "M6hm5pbLlqoNXkl4",
+  "name": "Aura",
+  "type": "boon",
+  "img": "icons/magic/sonic/explosion-shock-sound-wave.webp",
+  "system": {
+    "description": "<p>You surround a willing target in an aura that hurts their foes or helps their allies. A shield of gamma radiation that burns attackers, a circle of healing, and an aura of elemental protection are all examples of this boon in action.</p>",
+    "effect": "An aura extends from a willing target to a distance determined by the power level of this boon:\n<ul>\n<li><strong>Power Level 4</strong> - 5' radius</li>\n<li><strong>Power Level 6</strong> - 10' radius</li>\n<li><strong>Power Level 8</strong> - 15' radius</li>\n</ul>\nChoose a single bane or boon which uses the same attribute that you used to invoke Aura. The maximum power level for the chosen bane or boon is one-half the power level of your aura. Your aura radiates the chosen bane or boon as follows:\n<ul>\n<li><strong>If the aura radiates a bane,</strong> then the target of the aura is not affected by it. All other creatures (friend or foe) who willingly enter the area of the aura or end their turn within it suffer a bane attack to inflict the chosen bane. No creature may be subject to a bane attack from the same creature's aura more than once per round.</li>\n<li><strong>If the aura radiates a boon,</strong> then the target of the aura is also affected by it. The target and all allies who end their turn within the area of the aura automatically gain the chosen boon. Upon leaving the area of the aura, the boon is immediately removed. No creature may gain a boon from the same creature's aura more than once per round.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Creation",
+      "Energy",
+      "Entropy",
+      "Influence",
+      "Movement",
+      "Presence",
+      "Prescience",
+      "Protection"
+    ],
+    "powerLevel": 4,
+    "powerEffects": [
+      {
+        "powerLevel": 4,
+        "effect": "5' radius"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "10' radius"
+      },
+      {
+        "powerLevel": 8,
+        "effect": "15' radius"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "5' radius"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "10' radius"
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "15' radius"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "QGXyw2lpa8OkRA2q",
+      "name": "Aura",
+      "type": "base",
+      "img": "icons/magic/sonic/explosion-shock-sound-wave.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Aura",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

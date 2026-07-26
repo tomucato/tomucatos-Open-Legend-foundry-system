@@ -1,0 +1,57 @@
+{
+  "_id": "f2Dr4bUiypBJdnQM",
+  "name": "Mimic",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You have honed your shapeshifting abilities to be able to not only change your form, but to even imitate specific creatures. Your powers may stem from studying the arts of deceptive magic, from a gene mutation, or even from innate extraordinary abilities.</p>",
+    "effect": "When you use the <em>shapeshift</em> boon, you may take on the features of a specific creature. For example, instead of merely transforming into an elf, you can assume the guise of Galdion the elven king. The disguise is near perfect for those examining you visually. If your behavior or other signs provide reasonable suspicion, an onlooker can attempt a Perception roll with a Challenge Rating equal to 10 + triple your Alteration or Deception score, whichever is higher. If they succeed, they will recognize your disguise.",
+    "special": "",
+    "tags": [
+      "Extraordinary",
+      "Feat Chain",
+      "Alteration"
+    ],
+    "cost": [
+      2
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "alteration",
+              "label": "Alteration",
+              "min": 4
+            },
+            {
+              "key": "deception",
+              "label": "Deception",
+              "min": 3
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Mimic"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

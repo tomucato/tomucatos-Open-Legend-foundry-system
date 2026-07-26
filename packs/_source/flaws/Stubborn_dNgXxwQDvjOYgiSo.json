@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxwQDvjOYgiSo",
+  "name": "Stubborn",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>It's your way or the highway. Maybe not all of the time, but once you've made your mind up on an important matter, you won't budge. You probably won't even compromise.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

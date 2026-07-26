@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbdLKstXD3lHl",
+  "name": "Brute",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>While others might convince with a silver tongue, you speak the universal language of fear. Once per game session, if you make a show of physical force, you can use your <em>Might</em> attribute for a <em>Persuasion</em> roll. If your <em>Persuasion</em> score is already equal to or greater than your <em>Might</em> score, you get advantage 1 on the roll.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

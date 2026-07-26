@@ -1,0 +1,104 @@
+{
+  "_id": "y0D6Sb5cJcuvRAz7",
+  "name": "Truesight",
+  "type": "boon",
+  "img": "icons/magic/perception/eye-slit-red-orange.webp",
+  "system": {
+    "description": "<p>You grant yourself or an ally the ability to perceive that which cannot be detected with mundane senses, piercing impediments that would block or deceive normal sight, including darkness, solid objects, illusions, and even the barrier between alternate planes of reality. This power may stem from extrasensory perception, divine blessing, cybernetically enhanced senses, or similar means.</p>",
+    "effect": "<ul>\n<li><strong>Power Level 5</strong> - The target sees the presence of extraordinary effects such as magic, cloaking technology, and other effects that could be seen through extra-visual perception. In addition, this boon grants advantage 1 on rolls used to detect mundane concealment such as hidden passages, furniture with hidden storage, and concealed traps or other hazards.</li>\n<li><strong>Power Level 6</strong> - The target's extraordinary sight pierces natural and magical darkness.</li>\n<li><strong>Power Level 7</strong> - The target's extraordinary sight pierces through all illusory effects, allowing them to see a <em>phantasm</em> for what it is.</li>\n<li><strong>Power Level 8</strong> - The target can see through solid objects and their natural visual range is unhindered by them.</li>\n<li><strong>Power Level 9</strong> - The extraordinary sight enables the target to peer into alternate planes or dimensions. They can see into dimensional pockets and other planes that overlap with the one they are currently on. In addition, the target's visual range becomes supercharged.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Prescience"
+    ],
+    "powerLevel": 5,
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "The target sees the presence of extraordinary effects such as magic, cloaking technology, and other effects that could be seen through extra-visual perception. In addition, this boon grants advantage 1 on rolls used to detect mundane concealment such as hidden passages, furniture with hidden storage, and concealed traps or other hazards"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "The target's extraordinary sight pierces natural and magical darkness"
+      },
+      {
+        "powerLevel": 7,
+        "effect": ""
+      },
+      {
+        "powerLevel": 8,
+        "effect": "The target can see through solid objects and their natural visual range is unhindered by them"
+      },
+      {
+        "powerLevel": 9,
+        "effect": "The extraordinary sight enables the target to peer into alternate planes or dimensions. They can see into dimensional pockets and other planes that overlap with the one they are currently on. In addition, the target's visual range becomes supercharged"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target sees the presence of extraordinary effects such as magic, cloaking technology, and other effects that could be seen through extra-visual perception. In addition, this boon grants advantage 1 on rolls used to detect mundane concealment such as hidden passages, furniture with hidden storage, and concealed traps or other hazards"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target's extraordinary sight pierces natural and magical darkness"
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": ""
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target can see through solid objects and their natural visual range is unhindered by them"
+      },
+      {
+        "powerLevel": 9,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The extraordinary sight enables the target to peer into alternate planes or dimensions. They can see into dimensional pockets and other planes that overlap with the one they are currently on. In addition, the target's visual range becomes supercharged"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "PakheDoGYqhKKukQ",
+      "name": "Truesight",
+      "type": "base",
+      "img": "icons/magic/perception/eye-slit-red-orange.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Truesight",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

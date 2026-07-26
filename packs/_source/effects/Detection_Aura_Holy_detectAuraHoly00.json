@@ -1,0 +1,36 @@
+{
+    "_id": "detectAuraHoly00",
+    "name": "Detection Aura (Holy)",
+    "type": "effect",
+    "img": "icons/svg/angel.svg",
+    "system": {
+        "description": "<p>GM marker: this creature or object radiates <strong>Holy</strong>. Drop it on a token to mark it.</p><p>The marker shows no icon to players. It appears as a colored glow around the token \u2014 visible to the GM, and to any player whose character bears a Detection (Holy) boon.</p>"
+    },
+    "effects": [
+        {
+            "_id": "detectEffHoly000",
+            "name": "Detection Aura (Holy)",
+            "type": "base",
+            "img": "icons/svg/angel.svg",
+            "disabled": false,
+            "transfer": false,
+            "showIcon": 0,
+            "description": "<p>Radiates Holy. Perceived only through the Detection (Holy) boon (or by the GM).</p>",
+            "system": {
+                "changes": []
+            },
+            "flags": {
+                "openlegend": {
+                    "detectionAura": "holy",
+                    "fromEffectItem": "Detection Aura (Holy)",
+                    "changeLevels": [],
+                    "changeModes": []
+                }
+            }
+        }
+    ],
+    "flags": {},
+    "_stats": {
+        "systemId": "tomucatos-open-legend-rpg-system"
+    }
+}

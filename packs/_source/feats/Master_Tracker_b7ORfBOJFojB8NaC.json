@@ -1,0 +1,52 @@
+{
+  "_id": "b7ORfBOJFojB8NaC",
+  "name": "Master Tracker",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You were made for the hunt. Whether you gained this ability through years of practice or possess it through heightened senses, the effect is the same: once you've picked up a trail, you almost never lose track of your quarry.</p>",
+    "effect": "Unless blinded or thwarted through extraordinary means, you always know the direction of true north. In addition, once you successfully locate the trail of a target, you automatically succeed at all tracking attempts to continue following that trail for 7 days after the time you first picked it up. Only extraordinary concealment, targets in flight, or similarly exceptional cases can cause you to lose your mark.",
+    "special": "",
+    "tags": [
+      "Non-Combat",
+      "Mental",
+      "Perception"
+    ],
+    "cost": [
+      1
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "perception",
+              "label": "Perception",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Master Tracker"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

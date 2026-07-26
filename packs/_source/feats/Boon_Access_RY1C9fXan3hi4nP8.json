@@ -1,0 +1,44 @@
+{
+  "_id": "RY1C9fXan3hi4nP8",
+  "name": "Boon Access",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You have a special gift: it might be the result of your heritage, a close encounter with magical energy, or the result of years of training with a master. In any case, although you do not necessarily possess the aptitude to work extraordinary powers for yourself or create a desired effect with your physical capabilities alone, you are able to reliably replicate a single boon.</p>",
+    "effect": "When you choose this feat, choose one boon that you do not have the requisite attribute to invoke. The cost of this feat is equal to the power level of the chosen boon. You can invoke the chosen boon despite lacking the necessary attribute. For invocation rolls, treat your attribute score as the power level of the boon. If the boon has multiple attribute prerequisite options, you choose one attribute when you take this feat. Additionally, you count as having access to the chosen boon for the purpose of meeting feat prerequisites, and your attribute for meeting such prerequisites is equal to the power level of the boon. The Boon Access feat bypasses the normal attribute score restrictions based on character level, so a first level character could spend all 6 of their feat points to begin play with access to a power level 6 boon.\nYou may acquire this feat multiple times. Each time, select a new boon.",
+    "special": "You may take this feat multiple times. Each time you do, choose a new boon to gain access to.\nNote that this feat can give access to high-powered boons with a potential for very dramatic impact on the storyline of a game. As such, using this feat to access a boon of power level 6 or higher should be approved by the GM before using it in a game.\nIf you ever meet the attribute prerequisite for the chosen boon, you may choose at that time to lose this feat and regain the feat points spent. Re-allocate them as you choose.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "cost": [
+      1
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "boon",
+      "label": "Boon",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Boon Access"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxjI05ewbXNtL",
+  "name": "Vengeful",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You let no slight go unpunished. While some might be able to shake off an insult from a tavern drunk, you take it as a personal assault that demands satisfaction. The more severe the crime, the greater the vengeance you will mete out.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

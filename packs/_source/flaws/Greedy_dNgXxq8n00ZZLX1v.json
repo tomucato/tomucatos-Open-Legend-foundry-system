@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxq8n00ZZLX1v",
+  "name": "Greedy",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You can't help it: you just like things. Money, gems, items of power - they beckon you at every turn and you'll often take great risks and maybe even betray your allies if the monetary reward is great enough. You're easy to bribe, and you will often push the limits of negotiation or bartering in order to increase your share in the profits, even if it makes you a few enemies.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

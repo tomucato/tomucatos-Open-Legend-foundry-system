@@ -1,0 +1,14 @@
+{
+  "_id": "MHrIckdX2cj7kuNE",
+  "name": "Divine Insight",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You possess a supernatural connection to a deity, demi-god, or other divine being which grants you otherworldly insight. Once per game session, you can choose a topic relevant to the story. The GM shares some information about that topic which might be useful. If you've just failed a <em>Learning</em> attribute roll and use this ability, the GM decides whether to give you information related to that roll or to give you knowledge that is completely unrelated.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

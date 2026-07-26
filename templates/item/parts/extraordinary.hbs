@@ -1,0 +1,221 @@
+{{!--
+  Extraordinary Item editor — shared by weapon/armor/gear sheets.
+  The config is always editable; `system.extraordinary` is derived (in the Item
+  document) from whether any grant exists — adding the first attribute/boon/bane/
+  property makes the item extraordinary, clearing them all makes it mundane.
+  Edits four arrays: granted attributes, boons, banes, and properties.
+--}}
+<div class="ol-xtra">
+
+  <div class="ol-xtra-toggle">
+    {{#if item.system.legendary}}
+    <span><i class="fas fa-crown"></i> Legendary Item</span>
+    {{else}}
+    <span><i class="fas fa-wand-sparkles"></i> Extraordinary Item</span>
+    {{/if}}
+    <p class="ol-xtra-hint">Add an attribute, boon, bane, or property below and this item becomes extraordinary automatically — a legendary property makes it legendary.</p>
+  </div>
+
+  <div class="ol-xtra-body">
+
+    {{!-- Granted Attributes --}}
+    <section class="ol-xtra-section">
+      <header class="ol-xtra-head">
+        <h3><i class="fas fa-dice-d20"></i> Attributes</h3>
+        <button type="button" class="ol-row-add" data-action="xtraAttributeAdd" data-tooltip="Add attribute"><i class="fas fa-plus"></i></button>
+      </header>
+      <p class="ol-xtra-hint">An attribute the item grants — its score is the power level it invokes its boons/banes at.</p>
+      {{#each xtraAttributes as |row|}}
+      <div class="ol-xtra-row" data-index="{{row.index}}">
+        <select name="system.extraordinaryAttributes.{{row.index}}.key" data-dtype="String">
+          {{selectOptions ../attributeOptions selected=row.key}}
+        </select>
+        <select name="system.extraordinaryAttributes.{{row.index}}.score" data-dtype="Number" class="ol-xtra-narrow">
+          {{selectOptions ../scoreOptions selected=row.score}}
+        </select>
+        <button type="button" class="ol-row-del" data-action="xtraAttributeDelete" data-tooltip="Remove"><i class="fas fa-trash"></i></button>
+      </div>
+      {{/each}}
+    </section>
+
+    {{!-- Boons --}}
+    <section class="ol-xtra-section">
+      <header class="ol-xtra-head">
+        <h3><i class="fas fa-hand-sparkles"></i> Boons</h3>
+        <button type="button" class="ol-row-add" data-action="xtraBoonAdd" data-tooltip="Add boon"><i class="fas fa-plus"></i></button>
+      </header>
+      {{#each xtraBoons as |row|}}
+      <div class="ol-xtra-row" data-index="{{row.index}}">
+        <select name="system.extraordinaryBoons.{{row.index}}.name" data-dtype="String">
+          {{selectOptions ../boonOptions selected=row.name}}
+        </select>
+        <select name="system.extraordinaryBoons.{{row.index}}.powerLevel" data-dtype="Number" class="ol-xtra-narrow" data-tooltip="Power level — only the levels this boon defines are offered">
+          {{selectOptions row.plOptions selected=row.powerLevel}}
+        </select>
+        <button type="button" class="ol-row-generate" data-action="xtraGenerateBoon" data-tooltip="Generate an action for this boon"><i class="fas fa-wand-magic-sparkles"></i></button>
+        <button type="button" class="ol-row-del" data-action="xtraBoonDelete" data-tooltip="Remove"><i class="fas fa-trash"></i></button>
+      </div>
+      {{#if row.isAura}}
+      {{!-- Aura: pick the bane/boon it radiates (SRD: same invoking attributes,
+            max PL = half the aura's PL). The picker has no name= — its value is
+            "kind|uuid" and #onXtraAuraPick writes kind+uuid+name and resets the
+            radiated PL. The PL / Resistance-type selects submit normally. --}}
+      <div class="ol-xtra-row ol-xtra-aura" data-index="{{row.index}}">
+        <span class="ol-xtra-aura-label" data-tooltip="An aura radiates a single bane or boon that shares its invoking attributes, at up to HALF the aura's power level."><i class="fas fa-circle-notch"></i> Radiates</span>
+        {{#if row.auraNeedsPl}}
+        <span class="ol-xtra-flag">Pick the aura's power level first (PL 2+ — it radiates at up to half that level).</span>
+        {{else}}
+        <select class="ol-xtra-aura-pick" data-tooltip="The bane or boon this aura radiates (max PL {{row.auraMaxPl}})">
+          <option value="">&mdash; Nothing &mdash;</option>
+          {{#each row.auraOptions as |opt|}}
+          <option value="{{opt.value}}" data-name="{{opt.name}}" data-power-level="{{opt.powerLevel}}" {{#if (eq opt.value row.auraSelectedValue)}}selected{{/if}}>
+            {{#if (eq opt.kind "bane")}}&#128128; {{else}}&#129309; {{/if}}{{opt.name}} (PL {{opt.powerLevel}})
+          </option>
+          {{/each}}
+        </select>
+        {{#if row.auraChosen}}
+        <select name="system.extraordinaryBoons.{{row.index}}.auraRadiatePowerLevel" data-dtype="Number" class="ol-xtra-narrow" data-tooltip="Radiated power level — capped at half the aura's PL">
+          {{selectOptions row.auraPlOptions selected=row.auraRadiatePowerLevel}}
+        </select>
+        {{/if}}
+        {{#if row.auraRadiateIsResistance}}
+        <select name="system.extraordinaryBoons.{{row.index}}.auraRadiateResistanceType" class="ol-xtra-propval" data-tooltip="The damage type each ally's Resistance defends against — chosen here so the aura grants it automatically.">
+          <option value="">&mdash; Choose type &mdash;</option>
+          {{selectOptions row.auraResistanceTypeOptions selected=row.auraRadiateResistanceType}}
+        </select>
+        {{/if}}
+        {{#if row.auraStale}}
+        <span class="ol-xtra-flag" data-tooltip="The previously chosen radiated invocation needs a power level above half this aura's PL — pick another (or raise the aura's PL).">Prior pick exceeds the PL cap</span>
+        {{/if}}
+        {{/if}}
+      </div>
+      {{/if}}
+      {{/each}}
+    </section>
+
+    {{!-- Banes --}}
+    <section class="ol-xtra-section">
+      <header class="ol-xtra-head">
+        <h3><i class="fas fa-skull"></i> Banes</h3>
+        <button type="button" class="ol-row-add" data-action="xtraBaneAdd" data-tooltip="Add bane"><i class="fas fa-plus"></i></button>
+      </header>
+      {{#each xtraBanes as |row|}}
+      <div class="ol-xtra-row" data-index="{{row.index}}">
+        <select name="system.extraordinaryBanes.{{row.index}}.name" data-dtype="String">
+          {{selectOptions ../baneOptions selected=row.name}}
+        </select>
+        <select name="system.extraordinaryBanes.{{row.index}}.powerLevel" data-dtype="Number" class="ol-xtra-narrow" data-tooltip="Power level — only the levels this bane defines are offered">
+          {{selectOptions row.plOptions selected=row.powerLevel}}
+        </select>
+        <button type="button" class="ol-row-generate" data-action="xtraGenerateBane" data-tooltip="Generate an action for this bane"><i class="fas fa-wand-magic-sparkles"></i></button>
+        <button type="button" class="ol-row-del" data-action="xtraBaneDelete" data-tooltip="Remove"><i class="fas fa-trash"></i></button>
+      </div>
+      {{/each}}
+    </section>
+
+    {{!-- Properties --}}
+    <section class="ol-xtra-section">
+      <header class="ol-xtra-head">
+        <h3><i class="fas fa-gem"></i> Properties</h3>
+        <button type="button" class="ol-row-add" data-action="xtraPropertyAdd" data-tooltip="Add property"><i class="fas fa-plus"></i></button>
+      </header>
+      {{#each xtraProperties as |row|}}
+      <div class="ol-xtra-row ol-xtra-prop" data-index="{{row.index}}" {{#if row.hint}}data-tooltip="{{row.hint}}"{{/if}}>
+        <select name="system.extraordinaryProperties.{{row.index}}.name" data-dtype="String">
+          {{selectOptions ../propertyOptions selected=row.name}}
+        </select>
+        {{#if row.hasRanks}}
+        <select name="system.extraordinaryProperties.{{row.index}}.value" data-dtype="Number" class="ol-xtra-narrow" data-tooltip="Rank">
+          {{selectOptions row.rankOptions selected=row.value}}
+        </select>
+        {{else if row.hasChoices}}
+        <select name="system.extraordinaryProperties.{{row.index}}.value" data-dtype="String" class="ol-xtra-propval" data-tooltip="Value">
+          {{selectOptions row.choiceOptions selected=row.value}}
+        </select>
+        {{else if row.isArea}}
+        {{!-- Area: shape + size are NAMED sub-fields (_areaShape / _areaSize). They go
+              through the normal submitOnChange path; _prepareSubmitData combines them
+              into the row's "shape:size" value and snaps the size to whole 5' squares
+              (feet) for cone/cube, or whole lines for a Line. The ± buttons nudge the
+              size input then submit, like the action dialog. --}}
+        <select class="ol-xtra-area-shape ol-xtra-narrow" name="system.extraordinaryProperties.{{row.index}}._areaShape" data-tooltip="Shape">
+          {{selectOptions ../areaShapeOptions selected=row.areaShape}}
+        </select>
+        <span class="ol-xtra-area-stepper">
+          <button type="button" class="ol-step-btn" data-action="xtraAreaStep" data-step="-{{row.areaStep}}" tabindex="-1" data-tooltip="{{#if row.areaIsLine}}Fewer lines{{else}}Decrease by 5 ft{{/if}}">&minus;</button>
+          <input type="number" class="ol-xtra-area-size" name="system.extraordinaryProperties.{{row.index}}._areaSize" min="{{row.areaMin}}" step="{{row.areaStep}}" value="{{row.areaSize}}" data-tooltip="{{#if row.areaIsLine}}Number of lines{{else}}Size in feet (whole 5' squares){{/if}}"/>
+          <button type="button" class="ol-step-btn" data-action="xtraAreaStep" data-step="{{row.areaStep}}" tabindex="-1" data-tooltip="{{#if row.areaIsLine}}More lines{{else}}Increase by 5 ft{{/if}}">+</button>
+        </span>
+        {{else if row.isBane}}
+        {{!-- Bane-valued property (Baneful, Cursed): pick the delivered bane. The
+              value is the bane's NAME (shared baneOptions map). Plain name= so it
+              auto-submits like the other property value controls. --}}
+        <select name="system.extraordinaryProperties.{{row.index}}.value" data-dtype="String" class="ol-xtra-propval" data-tooltip="Bane">
+          {{selectOptions ../baneOptions selected=row.value}}
+        </select>
+        {{else if row.isBoon}}
+        {{!-- Boon-valued property (Persistent): pick the sustained boon (must match one
+              of the item's listed boons for a PL). A toggle enables/disables the
+              turn-start auto-apply for this item. --}}
+        <select name="system.extraordinaryProperties.{{row.index}}.value" data-dtype="String" class="ol-xtra-propval" data-tooltip="Boon">
+          {{selectOptions ../boonOptions selected=row.value}}
+        </select>
+        {{#if row.isPersistent}}
+        <label class="ol-xtra-persist-toggle" data-tooltip="Auto-apply this boon to the wielder at the start of their turn (uses the boon's listed power level).">
+          <input type="checkbox" data-action="xtraPersistentToggle" {{checked row.persistentAutoOn}}/>
+          <span><i class="fas fa-arrows-rotate"></i> Auto</span>
+        </label>
+        {{/if}}
+        {{else if row.isText}}
+        <textarea name="system.extraordinaryProperties.{{row.index}}.value" class="ol-xtra-propval ol-xtra-proptext" rows="2" placeholder="Describe this special property…">{{row.value}}</textarea>
+        {{else if row.isFlag}}
+        {{!-- Flag property (e.g. Reliable): no value, read-only — the rules are in
+              the row's hover tooltip. A spacer keeps the row aligned. --}}
+        <span class="ol-xtra-propval ol-xtra-flag" data-tooltip="{{row.hint}}"><i class="fas fa-circle-info"></i> No value</span>
+        {{else}}
+        <input type="text" name="system.extraordinaryProperties.{{row.index}}.value" value="{{row.value}}" placeholder="—" class="ol-xtra-propval"/>
+        {{/if}}
+        <button type="button" class="ol-row-del" data-action="xtraPropertyDelete" data-tooltip="Remove"><i class="fas fa-trash"></i></button>
+      </div>
+      {{/each}}
+    </section>
+
+    {{!-- Legendary properties --}}
+    <section class="ol-xtra-section ol-xtra-legendary">
+      <header class="ol-xtra-head">
+        <h3><i class="fas fa-crown"></i> Legendary</h3>
+        <button type="button" class="ol-row-add" data-action="xtraLegendaryAdd" data-tooltip="Add legendary property"><i class="fas fa-plus"></i></button>
+      </header>
+      <p class="ol-xtra-hint">Legendary items may possess any of the extraordinary properties above — plus these. Adding one makes the item legendary.</p>
+      {{#each xtraLegendary as |row|}}
+      <div class="ol-xtra-row ol-xtra-prop" data-index="{{row.index}}" {{#if row.hint}}data-tooltip="{{row.hint}}"{{/if}}>
+        <select name="system.legendaryProperties.{{row.index}}.name" data-dtype="String">
+          {{selectOptions ../legendaryOptions selected=row.name}}
+        </select>
+        {{#if row.isAttrMod}}
+        {{!-- Attribute bonus/penalty: attribute + signed amount are NAMED sub-fields
+              (_attrKey / _attrAmount) combined into the row's "key:amount" value in
+              _prepareSubmitData — the same submit path as the Area sub-fields. --}}
+        <select name="system.legendaryProperties.{{row.index}}._attrKey" data-tooltip="The owner's attribute to modify while wielding the item">
+          {{selectOptions ../attributeOptions selected=row.attrKey}}
+        </select>
+        <select name="system.legendaryProperties.{{row.index}}._attrAmount" class="ol-xtra-narrow" data-tooltip="Bonus or penalty">
+          {{selectOptions ../attrModOptions selected=row.attrAmount valueAttr="value" labelAttr="label"}}
+        </select>
+        {{else if row.isText}}
+        <textarea name="system.legendaryProperties.{{row.index}}.value" class="ol-xtra-propval ol-xtra-proptext" rows="2" placeholder="Attribute scores &amp; communication limits…">{{row.value}}</textarea>
+        {{else if row.isCreature}}
+        <input type="text" name="system.legendaryProperties.{{row.index}}.value" value="{{row.value}}" placeholder="Creature type (e.g. dragons)" class="ol-xtra-propval"/>
+        {{else if row.isFlag}}
+        <span class="ol-xtra-propval ol-xtra-flag" data-tooltip="{{row.hint}}"><i class="fas fa-circle-info"></i> No value</span>
+        {{else}}
+        <input type="text" name="system.legendaryProperties.{{row.index}}.value" value="{{row.value}}" placeholder="—" class="ol-xtra-propval"/>
+        {{/if}}
+        <button type="button" class="ol-row-del" data-action="xtraLegendaryDelete" data-tooltip="Remove"><i class="fas fa-trash"></i></button>
+      </div>
+      {{/each}}
+    </section>
+
+  </div>
+
+</div>

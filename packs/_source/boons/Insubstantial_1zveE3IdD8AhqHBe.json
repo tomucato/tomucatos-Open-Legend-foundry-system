@@ -1,0 +1,61 @@
+{
+  "_id": "1zveE3IdD8AhqHBe",
+  "name": "Insubstantial",
+  "type": "boon",
+  "img": "icons/magic/light/projectile-smoke-pink.webp",
+  "system": {
+    "description": "<p>When a creature becomes insubstantial, it is no longer bound by physical barriers. Ghosts, wizards assuming gaseous form, and creatures who blink between dimensions are all exemplars of the insubstantial boon in action.</p>",
+    "effect": "The target gains the ability to pass freely through all physical barriers as if they were unoccupied spaces. In addition, they gain the ability to freely move in any direction in both the horizontal and vertical planes at their base speed (30' for most characters). While insubstantial, the target becomes immune to all attacks that target either Guard or Toughness. However, they also cannot deliver any attacks that target Guard or Toughness.\nIf concentration is interrupted or the boon ends while the target is inside of a solid structure, then the target is forcibly transported to the alternate plane they were traveling by way of at the time (typically an alternate dimension or plane).",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Entropy"
+    ],
+    "powerLevel": 7,
+    "powerEffects": [
+      {
+        "powerLevel": 7,
+        "effect": "The target gains the ability to pass freely through all physical barriers as if they were unoccupied spaces. In addition, they gain the ability to freely move in any direction in both the horizontal and vertical planes at their base speed (30' for most characters). While insubstantial, the target becomes immune to all attacks that target either Guard or Toughness. However, they also cannot deliver any attacks that target Guard or Toughness. If concentration is interrupted or the boon ends while the target is inside of a solid structure, then the target is forcibly transported to the alternate plane they were traveling by way of at the time (typically an alternate dimension or plane)."
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target gains the ability to pass freely through all physical barriers as if they were unoccupied spaces. In addition, they gain the ability to freely move in any direction in both the horizontal and vertical planes at their base speed (30' for most characters). While insubstantial, the target becomes immune to all attacks that target either Guard or Toughness. However, they also cannot deliver any attacks that target Guard or Toughness. If concentration is interrupted or the boon ends while the target is inside of a solid structure, then the target is forcibly transported to the alternate plane they were traveling by way of at the time (typically an alternate dimension or plane)."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "0CAH9iyIEJqPnpZ6",
+      "name": "Insubstantial",
+      "type": "base",
+      "img": "icons/magic/light/projectile-smoke-pink.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Insubstantial",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

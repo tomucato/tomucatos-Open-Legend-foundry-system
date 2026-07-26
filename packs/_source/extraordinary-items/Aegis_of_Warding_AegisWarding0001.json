@@ -1,0 +1,38 @@
+{
+  "_id": "AegisWarding0001",
+  "name": "Aegis of Warding",
+  "type": "gear",
+  "img": "icons/svg/circle.svg",
+  "system": {
+    "description": "<p>These magical glyphs are usually created to guard items of power. While diverse in pattern and style, they are usually ornately designed and appear as art objects affixed to a wall until triggered.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [
+      {
+        "key": "energy",
+        "score": 5
+      }
+    ],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "autonomous",
+        "value": ""
+      },
+      {
+        "name": "special",
+        "value": "Once activated and affixed to a surface, an Aegis of Warding cannot be moved. A successful removal destroys it in the process. In addition, all damage dealt by the Aegis is lethal damage."
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

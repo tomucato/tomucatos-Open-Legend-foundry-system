@@ -1,0 +1,48 @@
+{{!-- Damage Types configuration menu. Shows each attribute category's built-in
+      (read-only) and custom (editable/removable) damage types, plus an add form. --}}
+<div class="ol-dt-config">
+  <div class="ol-dt-scroll">
+  <p class="hint">Built-in damage types are shown per attribute. Add your own to any attribute; custom types are loaded everywhere damage types appear (action sheets, attack specialization, chat cards).</p>
+
+  {{#each categories as |cat|}}
+  <fieldset class="ol-dt-category">
+    <legend>{{cat.label}}</legend>
+    <ul class="ol-dt-list">
+      {{#each cat.builtins as |t|}}
+      <li class="ol-dt-row is-builtin">
+        <span class="ol-dt-name">{{t.label}} <span class="ol-dt-tag">built-in</span></span>
+        {{#if t.description}}<span class="ol-dt-desc">{{t.description}}</span>{{/if}}
+      </li>
+      {{/each}}
+      {{#each cat.customs as |t|}}
+      <li class="ol-dt-row is-custom">
+        <div class="ol-dt-fields">
+          <input type="text" name="label.{{cat.key}}.{{t.key}}" value="{{t.label}}" placeholder="Name"/>
+          <input type="text" name="desc.{{cat.key}}.{{t.key}}" value="{{t.description}}" placeholder="Description (optional)"/>
+        </div>
+        <a class="ol-dt-remove" data-action="removeType" data-key="{{t.key}}" data-attribute="{{cat.key}}" title="Remove this custom damage type"><i class="fas fa-trash"></i></a>
+      </li>
+      {{/each}}
+      {{#unless cat.customs.length}}{{#unless cat.builtins.length}}<li class="ol-dt-empty">None.</li>{{/unless}}{{/unless}}
+    </ul>
+  </fieldset>
+  {{/each}}
+
+  <fieldset class="ol-dt-add">
+    <legend>Add a Damage Type</legend>
+    <div class="ol-dt-add-fields">
+      <select name="newAttribute" title="The attribute this damage type belongs to.">
+        {{selectOptions attributeOptions}}
+      </select>
+      <input type="text" name="newLabel" placeholder="Name (e.g. Radiant)"/>
+      <input type="text" name="newDescription" placeholder="Description (optional)"/>
+      <button type="button" class="ol-dt-add-btn" data-action="addType"><i class="fas fa-plus"></i> Add</button>
+    </div>
+    <p class="hint">The key is derived from the name (lowercased). It must be unique across all damage types.</p>
+  </fieldset>
+  </div>
+
+  <footer class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> Save Changes</button>
+  </footer>
+</div>

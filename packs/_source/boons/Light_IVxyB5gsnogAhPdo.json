@@ -1,0 +1,149 @@
+{
+  "_id": "IVxyB5gsnogAhPdo",
+  "name": "Light",
+  "type": "boon",
+  "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
+  "system": {
+    "description": "<p>Whether through magical summoning, energy manipulation, or some other means, you illuminate an area with a bright light. An android activating its head lamp, a fire mage creating a dancing torch flame, and an alchemist cracking a glow globe are all examples of this boon in play.</p>",
+    "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Creation",
+      "Energy"
+    ],
+    "powerLevel": 1,
+    "powerEffects": [
+      {
+        "powerLevel": 1,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 2,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 3,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 4,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 5,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 7,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 9,
+        "effect": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      }
+    ],
+    "invocationTime": "1 Minor Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 1,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 2,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 3,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      },
+      {
+        "powerLevel": 9,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Choose a space or object within range. Extraordinary light emanates from the target to a radius equal five feet per power level of the boon. If the light area overlaps an area affected by the darkness boon, then the one of greater power level supersedes the other. If the power level of both is equal, then they cancel each other out."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "VC3QigceBK7sfcL7",
+      "name": "Light",
+      "type": "base",
+      "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Light",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

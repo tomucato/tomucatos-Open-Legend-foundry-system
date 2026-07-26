@@ -1,0 +1,14 @@
+{
+  "_id": "Hsulb7Q7oA2YztKc",
+  "name": "Local Hero",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You are well-known and respected as a protector of the common folk in a small region. The average citizen look up to you, and will offer you food, shelter, and other necessities. They will even take risks or assume minor costs to aid or protect you, so long as the risk is not death.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

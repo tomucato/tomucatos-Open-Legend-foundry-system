@@ -1,0 +1,50 @@
+{
+  "name": "Death",
+  "type": "bane",
+  "_id": "TWIMRFa8TrGkUiBl",
+  "img": "icons/magic/death/grave-tombstone-glow-tan.webp",
+  "system": {
+    "description": "<p>Utilizing either incredible precision or the power of entropy, you snuff out the target's life force completely. The deadliest assassins and most powerful necromancers are known for such legendary skill at ending life.</p>",
+    "powerLevel": 9,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (special)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "Fail x 3 = Permanent",
+    "special": "While most banes last until the target actively attempts to resist it, this bane renders the target incapable of taking actions and thus prevents them from actively attempting to break free. However, the target's body fights to regain consciousness and resist the impending death. As such, at the end of each of its turns, the target receives a resist roll as a free action to break free from the effect. When the target succeeds at a resist roll against this bane, they become immune to all subsequent attempts by you to inflict the bane for the next 24 hours.",
+    "gameEffects": [],
+    "effect": "Upon a successful invocation, the target is immediately rendered immobile, unconscious, and unable to take actions. They have disadvantage 5 on all Perception rolls, and any damaging attacks against them count as finishing blows.\nIf the target fails three resist rolls to shake off this bane, they die. The death is permanent and can only be reversed if the GM allows a special mission, use of a rare technology, or long-forgotten magic to restore the target to life."
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781690880095,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

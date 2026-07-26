@@ -1,0 +1,60 @@
+{
+  "_id": "f1GM4dISf1qxdw55",
+  "name": "Two Weapon Brute",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Being both physically powerful and incredibly agile, you are able to wield a weapon in one-hand that requires two hands for others. Good examples of this feat in action include an orcish barbarian wielding a great axe and shield and a survivor in the zombie apocalypse wielding two chainsaws.</p>",
+    "effect": "You can wield weapons with the two-handed property in one hand and you gain the benefits of both the two-handed and one-handed property while doing so. This means that you gain a total of advantage 2 when wielding a two-handed weapon in each hand, advantage 1 from the power of a two-handed weapon plus advantage 1 from having one weapon in each hand.",
+    "special": "",
+    "tags": [
+      "Combat",
+      "Physical",
+      "Agility",
+      "Might"
+    ],
+    "cost": [
+      3
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 5
+            }
+          ],
+          "feats": [
+            "Multi-Attack Specialist"
+          ],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Two Weapon Brute"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

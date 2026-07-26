@@ -1,0 +1,42 @@
+{
+  "_id": "z1u1DQLHRgXjwWAW",
+  "name": "Katana",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Versatile Melee. Forceful, Precise.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Katana",
+    "categories": [
+      "versatile-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      },
+      {
+        "key": "precise"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Disarmed",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.jCPR9yNXDnmISc4I"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

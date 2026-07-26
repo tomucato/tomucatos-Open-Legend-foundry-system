@@ -1,0 +1,159 @@
+{{!-- Conditions tab body. Two sections:
+      1. Active Conditions — each bane/boon afflicting the actor as ONE
+         collapsible row (the dropped document + its applied leveled effect),
+         expanding to the per-level effects the document offers.
+      2. Other Effects — every remaining Active Effect (directly applied or
+         transferred from a non-bane/boon item).
+      Included by the character, NPC and boss sheets. --}}
+<div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
+
+  <div class="inv-section">
+    <div class="inv-section-head">
+      <h2>Active Boons/Banes</h2>
+    </div>
+    <div class="inv-list">
+      {{#each conditions as |cond|}}
+      <div class="condition {{#if cond.disabled}}is-disabled{{/if}} {{#if cond.expanded}}is-expanded{{/if}}"
+           data-effect-id="{{cond.id}}" {{#if cond.itemId}}data-doc-id="{{cond.itemId}}"{{/if}}>
+        <div class="inv-row condition-row item">
+          <span class="inv-col-toggle">
+            <a class="condition-expand" data-action="conditionExpand"
+               title="{{#if cond.expanded}}Collapse{{else}}Show the effects this {{cond.kind}} offers{{/if}}">
+              <i class="fas {{#if cond.expanded}}fa-chevron-down{{else}}fa-chevron-right{{/if}}"></i>
+            </a>
+          </span>
+          <span class="inv-col-name">
+            <img src="{{cond.img}}" title="{{cond.name}}" width="22" height="22"/>
+            <span class="item-name">{{cond.name}}</span>
+            <span class="condition-kind condition-kind-{{cond.kind}}">{{cond.kind}}</span>
+          </span>
+          <span class="effect-col-level">
+            {{#if cond.hasLevels}}
+            <span class="feat-tier-steps">
+              <a class="item-control feat-step {{#unless cond.canLower}}is-disabled{{/unless}}" data-action="effectLevelStep" data-direction="down" title="{{#if cond.stacking}}Remove a level{{else}}Lower power level{{/if}}"><i class="fas fa-minus"></i></a>
+              <span class="feat-tier-now" title="{{cond.levelLabel}}">{{cond.powerLevel}}</span>
+              <a class="item-control feat-step {{#unless cond.canRaise}}is-disabled{{/unless}}" data-action="effectLevelStep" data-direction="up" title="{{#if cond.stacking}}Add a level{{else}}Raise power level{{/if}}"><i class="fas fa-plus"></i></a>
+            </span>
+            {{else if cond.powerLevel}}
+            <span class="feat-tier-now">{{cond.powerLevel}}</span>
+            {{else}}
+            <span class="feat-tier-now">&mdash;</span>
+            {{/if}}
+          </span>
+          <span class="inv-col-state">{{#if cond.disabled}}Suppressed{{else}}Active{{/if}}</span>
+          <span class="inv-col-controls item-controls">
+            {{#if cond.isBane}}
+            <a class="item-control ol-potent-toggle {{#if cond.potent}}is-on{{/if}}" data-action="conditionTogglePotent"
+               title="{{#if cond.potent}}Potent — target resists at disadvantage 1 (click to clear){{else}}Mark Potent (target resists at disadvantage 1){{/if}}">
+              <i class="fas fa-biohazard"></i>
+            </a>
+            {{/if}}
+            <a class="item-control" data-action="effectToggle"
+               title="{{#if cond.disabled}}Enable{{else}}Suppress{{/if}} condition">
+              <i class="fas {{#if cond.disabled}}fa-toggle-off{{else}}fa-toggle-on{{/if}}"></i>
+            </a>
+            <a class="item-control" data-action="effectEdit" title="Edit Effect"><i class="fas fa-edit"></i></a>
+            <a class="item-control" data-action="conditionDelete" title="Remove condition (effect + document)"><i class="fas fa-trash"></i></a>
+          </span>
+        </div>
+
+        {{#if cond.expanded}}
+        <div class="condition-details">
+          {{#if cond.description}}
+          <div class="condition-notes">{{{cond.description}}}</div>
+          {{/if}}
+
+          {{#if cond.changes.length}}
+          <h4 class="condition-subhead">Mechanical Effects</h4>
+          <ul class="condition-changes">
+            {{#each cond.changes as |ch|}}
+            <li class="{{#if ch.active}}is-active{{/if}}">
+              <span class="bane-pl">{{#if ../cond.stacking}}Lvl{{else}}PL{{/if}} {{ch.level}}</span>
+              <span>{{ch.label}}: {{ch.value}}</span>
+              {{#if ch.active}}<i class="fas fa-bolt" title="Active at the current {{#if ../cond.stacking}}stack level{{else}}power level{{/if}}"></i>{{/if}}
+            </li>
+            {{/each}}
+          </ul>
+          {{/if}}
+
+          {{#if cond.powerEffects.length}}
+          <h4 class="condition-subhead">Effects by Power Level</h4>
+          <ol class="bane-power-list">
+            {{#each cond.powerEffects as |pe|}}
+            <li class="bane-power-row">
+              <span class="bane-pl">PL {{pe.powerLevel}}</span>
+              <span class="bane-pl-effect">{{{pe.enriched}}}</span>
+            </li>
+            {{/each}}
+          </ol>
+          {{/if}}
+        </div>
+        {{/if}}
+      </div>
+      {{else}}
+      <div class="inv-empty">No active conditions. Drop a bane or boon onto this character to apply one.</div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="inv-section">
+    <div class="inv-section-head">
+      <h2>Other Effects</h2>
+      <a class="item-create" data-action="effectCreate" title="Create a new effect">
+        <i class="fas fa-plus"></i> Add Effect
+      </a>
+    </div>
+    <div class="inv-list">
+      <div class="inv-row effect-row inv-head">
+        <span class="inv-col-toggle"></span>
+        <span class="inv-col-name">Name</span>
+        <span class="effect-col-level" title="Power Level">PL</span>
+        <span class="inv-col-source">Source</span>
+        <span class="inv-col-state">State</span>
+        <span class="inv-col-controls"></span>
+      </div>
+      {{#each effects as |effect|}}
+      <div class="inv-row effect-row item {{#if effect.disabled}}is-disabled{{/if}}"
+           data-effect-id="{{effect.id}}" {{#if effect.itemId}}data-item-id="{{effect.itemId}}"{{/if}}>
+        <span class="inv-col-toggle">
+          <a class="effect-toggle" data-action="effectToggle"
+             title="{{#if effect.disabled}}Enable{{else}}Disable{{/if}} effect">
+            <i class="fas {{#if effect.disabled}}fa-toggle-off{{else}}fa-toggle-on{{/if}}"></i>
+          </a>
+        </span>
+        <span class="inv-col-name">
+          <img src="{{effect.img}}" title="{{effect.name}}" width="22" height="22"/>
+          <span class="item-name">{{effect.name}}</span>
+        </span>
+        <span class="effect-col-level">
+          {{#if effect.hasLevels}}
+          <span class="feat-tier-steps">
+            <a class="item-control feat-step {{#unless effect.canLower}}is-disabled{{/unless}}" data-action="effectLevelStep" data-direction="down" title="Lower power level"><i class="fas fa-minus"></i></a>
+            <span class="feat-tier-now">{{effect.powerLevel}}</span>
+            <a class="item-control feat-step {{#unless effect.canRaise}}is-disabled{{/unless}}" data-action="effectLevelStep" data-direction="up" title="Raise power level"><i class="fas fa-plus"></i></a>
+          </span>
+          {{else if effect.powerLevel}}
+          <span class="feat-tier-now">{{effect.powerLevel}}</span>
+          {{else}}
+          <span class="feat-tier-now">&mdash;</span>
+          {{/if}}
+        </span>
+        <span class="inv-col-source">
+          {{#if effect.itemId}}<i class="fas fa-link" title="From an item"></i> {{/if}}{{effect.sourceName}}
+        </span>
+        <span class="inv-col-state">{{#if effect.disabled}}Suppressed{{else}}Active{{/if}}</span>
+        <span class="inv-col-controls item-controls">
+          <a class="item-control effect-edit" data-action="effectEdit" title="Edit Effect"><i class="fas fa-edit"></i></a>
+          {{#if effect.editable}}
+          <a class="item-control effect-delete" data-action="effectDelete" title="Delete Effect"><i class="fas fa-trash"></i></a>
+          {{else}}
+          <span class="item-control is-muted" title="Managed on its source item"><i class="fas fa-lock"></i></span>
+          {{/if}}
+        </span>
+      </div>
+      {{else}}
+      <div class="inv-empty">No other effects.</div>
+      {{/each}}
+    </div>
+  </div>
+</div>

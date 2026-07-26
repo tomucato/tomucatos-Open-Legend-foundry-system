@@ -1,0 +1,42 @@
+{
+  "_id": "bvarV2MX10dGKwkH",
+  "name": "Scimitar",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>One-handed Melee. Forceful, Precise.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Scimitar",
+    "categories": [
+      "one-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      },
+      {
+        "key": "precise"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Disarmed",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.jCPR9yNXDnmISc4I"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

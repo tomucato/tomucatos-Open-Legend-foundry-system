@@ -1,0 +1,66 @@
+{
+  "name": "Mind Dredge",
+  "type": "bane",
+  "_id": "KD3vdDJLDYBb53nA",
+  "img": "icons/magic/perception/third-eye-blue-red.webp",
+  "system": {
+    "description": "<p>You gaze into the mind of another creature and read their thoughts. The most powerful wielders of this bane can even pry into the distant memories of their subjects. Fortune tellers, psychics, and mentalists all use mind dredge to learn the deepest dreams and darkest secrets of others.</p>",
+    "powerLevel": 2,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends ",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Prescience",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 2,
+        "effect": " This power may only target creatures of animal intelligence or lower. You gain access to the target's current thoughts."
+      },
+      {
+        "powerLevel": 4,
+        "effect": "This power may target creatures of any intelligence. You gain access to the target's current thoughts."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "This power may target creatures of any intelligence. You gain access to the target's current thoughts as well as its recent memories. Initially, you may probe 1 day into the past. For every round that the bane persists, you gain access to an additional day's worth of memories."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "This power may target creatures of any intelligence. You gain access to the target's current thoughts as well as its distant memories. Initially, you may probe 1 year into the past. For every round that the bane persists, you gain access to an additional year's worth of memories. Alternatively, you may choose to access the memories associated with a particular place, object, or event.\n"
+      },
+      {
+        "powerLevel": 9,
+        "effect": "This power may target creatures of any intelligence. You gain access to the target's current thoughts as well as all of its memories, without limitation by time. Alternatively, you may choose to access the memories associated with a particular place, object, or event."
+      }
+    ],
+    "failDuration": "Fail x 3 = 1 minute",
+    "special": "When your target succeeds at a resist roll against this bane, they become immune to all subsequent attempts by you to inflict the bane for the next 24 hours.",
+    "gameEffects": [],
+    "effect": ""
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781693456374,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

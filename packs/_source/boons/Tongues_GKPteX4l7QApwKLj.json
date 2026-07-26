@@ -1,0 +1,71 @@
+{
+  "_id": "GKPteX4l7QApwKLj",
+  "name": "Tongues",
+  "type": "boon",
+  "img": "icons/skills/trades/music-singing-voice-blue.webp",
+  "system": {
+    "description": "<p>You or an ally temporarily gains the ability to read, write, and speak languages that they are otherwise unfamiliar with. This ability may come by channeling interplanar spirits, tapping the power of a super intelligence, making deductions based on an extraordinary understanding of the science of communication, or similar means.</p>",
+    "effect": "<ul>\n<li><strong>Power Level 5</strong> - Your target can understand and speak a language of your choice.</li>\n<li><strong>Power Level 6</strong> - Your target can read a language of your choice.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Prescience"
+    ],
+    "powerLevel": 5,
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "Your target can understand and speak a language of your choice"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Your target can read a language of your choice"
+      }
+    ],
+    "invocationTime": "10 Minutes",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Your target can understand and speak a language of your choice"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Your target can read a language of your choice"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "G7PcVXgMTuvgczB3",
+      "name": "Tongues",
+      "type": "base",
+      "img": "icons/skills/trades/music-singing-voice-blue.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Tongues",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

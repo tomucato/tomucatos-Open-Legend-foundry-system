@@ -1,0 +1,46 @@
+{
+  "_id": "6twY9NvEyuzbx2Q2",
+  "name": "Hatchet",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Close Ranged, One-handed Melee. Forceful, Precise, Swift.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Hatchet",
+    "categories": [
+      "close-ranged",
+      "one-handed-melee"
+    ],
+    "rangeIncrement": 25,
+    "properties": [
+      {
+        "key": "forceful"
+      },
+      {
+        "key": "precise"
+      },
+      {
+        "key": "swift"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Disarmed",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.jCPR9yNXDnmISc4I"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

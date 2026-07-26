@@ -1,0 +1,82 @@
+{
+  "name": "Nullify",
+  "type": "bane",
+  "_id": "kcgeMMjJq045zajF",
+  "img": "icons/magic/symbols/runes-star-pentagon-orange-purple.webp",
+  "system": {
+    "description": "<p>Through magical power, technological hacking, or similar means, you are able to nullify your enemy's boons. The nullify bane is often used by abjurers, engineers, bards, and similar characters built to neutralize the powers of their enemy.</p>",
+    "powerLevel": 1,
+    "invocationTime": "1 Major Action",
+    "duration": "Instantaneous",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Protection",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 1,
+        "effect": "Cancel a boon of Power Level 1. You can cancel a boon that must be actively invoked. In addition, the target cannot benefit from or have the target boon invoked upon them for 1 minute."
+      },
+      {
+        "powerLevel": 2,
+        "effect": "Cancel a boon of Power Level 2."
+      },
+      {
+        "powerLevel": 3,
+        "effect": "Cancel a boon of Power Level 3."
+      },
+      {
+        "powerLevel": 4,
+        "effect": "Cancel a boon of Power Level 4."
+      },
+      {
+        "powerLevel": 5,
+        "effect": "Cancel a boon of Power Level 5."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Cancel a boon of Power Level 6. You can cancel a boon that is permanent, passive, or inherent to the target (e.g. the invisibility of a Will o' Wisp). Effects that would prevent Nullify from being invoked in this way have no effect. In addition, the target cannot benefit from or have the target boon invoked upon them for 1 minute."
+      },
+      {
+        "powerLevel": 7,
+        "effect": "Cancel a boon of Power Level 7."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "Cancel a boon of Power Level 8."
+      },
+      {
+        "powerLevel": 9,
+        "effect": "Cancel a boon of Power Level 9."
+      }
+    ],
+    "failDuration": "",
+    "special": "If the targeted boon covers a large area, you can cancel all of it by targeting any portion of the effect you can see, or multi-targeting a number of 5' cubes you believe it to be in. If the targeted boon is affecting an area rather than a creature, you roll against the CR of the boon instead of a Resolve defense. The CR is 10 + 2 x the boon's invoked power level.",
+    "gameEffects": [],
+    "effect": "<p>You cancel a single boon currently in effect if it is of this bane's power level or lower. The invoking power level further impacts the effect as follows:</p>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781694727897,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

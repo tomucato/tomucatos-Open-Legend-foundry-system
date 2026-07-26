@@ -1,0 +1,55 @@
+{
+  "_id": "QwQoyeVfeyedrKDa",
+  "name": "Armor Mastery (I - II)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether you are a heavily armored mechanized knight or a nimble rogue in studded leather, you and your armor are one. Your training and experience at wearing armor allows you to maximize its protection and minimize its drawbacks.</p>",
+    "effect": "Your training allows you to sleep in armor without gaining one level of the <em>fatigued</em> bane. In addition, while wearing armor, you gain the following benefits:\n<ul>\n<li><strong>Tier 1</strong> - The Fortitude prerequisite for wearing armor is reduced by 1. When wearing armor, you get a +1 armor bonus to your Guard defense.</li>\n<li><strong>Tier 2</strong> - The Fortitude prerequisite for wearing armor is reduced by 2. When wearing armor, you get a +2 armor bonus to your Guard defense. Any movement penalty is reduced by 5'.</li>\n</ul>",
+    "special": "",
+    "tags": [
+      "No Prerequisite"
+    ],
+    "cost": [
+      3,
+      3
+    ],
+    "maxTier": 2,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Armor Mastery (I - II)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

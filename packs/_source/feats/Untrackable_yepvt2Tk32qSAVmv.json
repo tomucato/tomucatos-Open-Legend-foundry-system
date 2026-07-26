@@ -1,0 +1,63 @@
+{
+  "_id": "yepvt2Tk32qSAVmv",
+  "name": "Untrackable",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether this power manifests itself as vines that grow in your wake, a magical ward against detection, or an illusory veil, the effect is the same: you are protected from being tracked.</p>",
+    "effect": "Your travel is veiled by special means that conceal your tracks and any evidence of your passage even after you are far away. It is impossible to follow your tracks except by extraordinary means.",
+    "special": "",
+    "tags": [
+      "Non-Combat",
+      "Protection",
+      "Alteration",
+      "Influence"
+    ],
+    "cost": [
+      1
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 3
+            },
+            {
+              "key": "alteration",
+              "label": "Alteration",
+              "min": 3
+            },
+            {
+              "key": "influence",
+              "label": "Influence",
+              "min": 3
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Untrackable"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

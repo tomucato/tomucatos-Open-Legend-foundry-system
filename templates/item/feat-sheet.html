@@ -1,0 +1,71 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="header-fields">
+    <div class="gear-stat field-name">
+      <label>Name</label>
+      <input class="charname" name="name" type="text" value="{{item.name}}" placeholder="Feat Name"/>
+    </div>
+    <div class="item-stats flexrow gear-stats">
+      <div class="gear-stat">
+        <label>Tiers</label>
+        <input type="number" min="1" step="1" name="system.maxTier" value="{{system.maxTier}}" data-dtype="Number"/>
+      </div>
+      {{#if system.choice.type}}
+      <div class="gear-stat">
+        <label>{{system.choice.label}}</label>
+        <input type="text" name="system.choice.value" value="{{system.choice.value}}" placeholder="—"/>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</header>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab details {{tabs.details.cssClass}}" data-group="primary" data-tab="details">
+
+    {{#if system.tags.length}}
+    <div class="bane-tags">
+      {{#each system.tags as |tag|}}<span class="bane-tag">{{tag}}</span>{{/each}}
+    </div>
+    {{/if}}
+
+    <h3 class="bane-heading">{{#if featMultiTier}}Tiers{{else}}Cost &amp; Prerequisite{{/if}}</h3>
+    <ol class="feat-tier-list">
+      <li class="feat-tier-row feat-tier-head">
+        <span class="feat-tier-n">Tier</span>
+        <span class="feat-tier-cost">Cost</span>
+        <span class="feat-tier-pre">Prerequisite</span>
+      </li>
+      {{#each featTiers as |t|}}
+      <li class="feat-tier-row">
+        <span class="feat-tier-n">{{t.tier}}</span>
+        <span class="feat-tier-cost">{{t.cost}}</span>
+        <span class="feat-tier-pre">{{t.prerequisite}}</span>
+      </li>
+      {{else}}
+      <li class="bane-empty">No tier data.</li>
+      {{/each}}
+    </ol>
+
+    {{#if system.effect}}
+    <h3 class="bane-heading">Effect</h3>
+    <div class="feat-effect">{{{system.effect}}}</div>
+    {{/if}}
+
+    {{#if system.special}}
+    <h3 class="bane-heading">Special</h3>
+    <div class="feat-special">{{{system.special}}}</div>
+    {{/if}}
+  </div>
+
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+  <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the character while they have this feat."}}
+  </div>
+</section>

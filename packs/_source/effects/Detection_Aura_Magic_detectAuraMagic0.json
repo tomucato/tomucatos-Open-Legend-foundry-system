@@ -1,0 +1,36 @@
+{
+    "_id": "detectAuraMagic0",
+    "name": "Detection Aura (Magic)",
+    "type": "effect",
+    "img": "icons/svg/explosion.svg",
+    "system": {
+        "description": "<p>GM marker: this creature or object radiates <strong>Magic</strong>. Drop it on a token to mark it.</p><p>The marker shows no icon to players. It appears as a colored glow around the token \u2014 visible to the GM, and to any player whose character bears a Detection (Magic) boon.</p>"
+    },
+    "effects": [
+        {
+            "_id": "detectEffMagic00",
+            "name": "Detection Aura (Magic)",
+            "type": "base",
+            "img": "icons/svg/explosion.svg",
+            "disabled": false,
+            "transfer": false,
+            "showIcon": 0,
+            "description": "<p>Radiates Magic. Perceived only through the Detection (Magic) boon (or by the GM).</p>",
+            "system": {
+                "changes": []
+            },
+            "flags": {
+                "openlegend": {
+                    "detectionAura": "magic",
+                    "fromEffectItem": "Detection Aura (Magic)",
+                    "changeLevels": [],
+                    "changeModes": []
+                }
+            }
+        }
+    ],
+    "flags": {},
+    "_stats": {
+        "systemId": "tomucatos-open-legend-rpg-system"
+    }
+}

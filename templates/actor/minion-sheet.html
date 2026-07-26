@@ -1,0 +1,137 @@
+<header class="sheet-header">
+  <div class="portrait">
+    <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    <a class="portrait-popout" data-action="imagePopout" data-tooltip="Show portrait full-size" aria-label="Show portrait full-size">
+      <i class="fas fa-expand"></i>
+    </a>
+  </div>
+  <div class="header-fields">
+    <div class="name-row">
+      <div class="field field-name">
+        <label>Name</label>
+        <input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Minion Name"/>
+      </div>
+    </div>
+
+    <div class="identity-fields">
+      <div class="field field-power-level" title="Minion power level (4–9). Sets Hit Points, Defenses, and the attribute-point spread to assign. Minion attributes do not affect HP or defenses.">
+        <label>Power Level</label>
+        <select name="system.powerLevel" data-dtype="Number">
+          {{selectOptions minionPowerLevels selected=system.powerLevel}}
+        </select>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="vitals stats-section">
+  <h3 class="vitals-title">Stats</h3>
+  <div class="vitals-row">
+    <div class="vital vital-health {{#if derived.lethalUnconscious}}is-lethal-out{{/if}}" title="Hit Points are fixed by the minion's power level.">
+      <label>Health</label>
+      <div class="vital-health-content">
+        <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+        <span class="sep">/</span>
+        <span class="derived" title="Max HP (fixed from Power Level{{#if derived.lethal}}, reduced by lethal damage{{/if}}).">{{derived.healthMax}}</span>
+      </div>
+    </div>
+    <div class="vital vital-lethal-section {{#if derived.lethalUnconscious}}is-lethal-out{{/if}}" title="Lethal damage reduces the maximum HP by its amount. At lethal ≥ max the minion is unconscious until at least 1 is healed.">
+      <label class="lethal-label">
+        <i class="fas fa-skull"></i> Lethal
+        {{#if derived.lethalUnconscious}}<span class="lethal-out-tag" title="Unconscious from lethal damage."><i class="fas fa-bed"></i> Out</span>{{/if}}
+      </label>
+      <div class="vital-lethal-content">
+        <input type="text" class="lethal-input" name="system.health.lethal" value="{{system.health.lethal}}" data-dtype="Number"/>
+        {{#if derived.healthMaxBase}}<span class="sep">/</span><span class="lethal-max">{{derived.healthMaxBase}}</span>{{/if}}
+      </div>
+    </div>
+    <div class="vital vital-speed" title="Base speed; armor/effect modifiers apply to the effective value.">
+      <label>Speed</label>
+      <div class="vital-speed-content">
+        <input type="text" name="system.speed.value" value="{{system.speed.value}}" data-dtype="Number"/>
+        {{#unless (eq derived.speed system.speed.value)}}
+        <span class="sep">&rarr;</span>
+        <span class="derived">{{derived.speed}}</span>
+        {{/unless}}
+      </div>
+    </div>
+    <div class="vital vital-initiative" title="Roll initiative (1d20 + Agility dice). The minion acts on your initiative count.">
+      <label>Initiative</label>
+      <a class="initiative-roll" data-action="initiativeRoll" role="button">
+        <i class="fas fa-dice-d20"></i>
+        <span class="derived">{{derived.initiative}}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="vitals defenses-section">
+  <h3 class="vitals-title">Defenses <span class="minion-fixed-note">(fixed by Power Level)</span></h3>
+  <div class="defenses">
+    <div class="defense" title="All three defenses equal the minion's power-level defense value.">
+      <label>Guard</label>
+      <span class="derived">{{derived.guard}}</span>
+    </div>
+    <div class="defense">
+      <label>Toughness</label>
+      <span class="derived">{{derived.toughness}}</span>
+    </div>
+    <div class="defense">
+      <label>Resolve</label>
+      <span class="derived">{{derived.resolve}}</span>
+    </div>
+  </div>
+</section>
+
+<section class="vitals actions-section">
+  <h3 class="vitals-title">Actions</h3>
+  <div class="vitals-row">
+    <div class="vital vital-resist vital-small" title="Resist (shake off) banes — 1d20, 10+ succeeds; a Potent bane rolls 2d20 and takes the lower.">
+      <label>Resist</label>
+      <a class="resist-banes" data-action="resistBanes" role="button" draggable="true">
+        <i class="fas fa-hand-fist"></i>
+        <span>Banes</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab attributes {{tabs.attributes.cssClass}}" data-group="primary" data-tab="attributes">
+    {{#if minionBuild}}
+    <div class="creation-budget minion-budget {{#if minionBuild.over}}over-budget{{/if}}" title="Assign these attribute points (Power Level {{minionBuild.powerLevel}} spread: {{minionBuild.spreadText}}) among the six attributes. Minion attributes do not affect HP or defenses.">
+      <span>Attribute Points (PL {{minionBuild.powerLevel}} — spread {{minionBuild.spreadText}}):</span>
+      <strong>{{minionBuild.spent}}</strong> / {{minionBuild.total}}
+      <span class="remaining">({{minionBuild.remaining}} remaining)</span>
+    </div>
+    {{/if}}
+    <div class="attribute-categories">
+      {{#each attributeGroups as |group|}}
+      <div class="attribute-category category-{{group.key}}">
+        <h3 class="category-label">{{group.label}}</h3>
+        {{#each group.attributes as |attr|}}
+        <div class="attribute flexrow">
+          <a class="attribute-roll" data-action="attributeRoll" data-attribute="{{attr.key}}" draggable="true" title="Roll {{attr.label}} (1d20{{#if attr.dice}} + {{attr.dice}}{{/if}}). Drag to the hotbar for a macro.">
+            <i class="fas fa-dice-d20"></i> {{attr.label}}
+          </a>
+          <span class="attribute-dice" title="Bonus dice granted by this attribute score">{{#if attr.dice}}{{attr.dice}}{{else}}&mdash;{{/if}}</span>
+          <input type="number" min="0" max="10" step="1" name="system.attributes.{{attr.key}}.value" value="{{attr.value}}" data-dtype="Number"/>
+        </div>
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/actions.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/effects.html"}}
+</section>

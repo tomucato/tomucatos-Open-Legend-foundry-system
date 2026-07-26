@@ -1,0 +1,160 @@
+{
+  "_id": "G3wb8Y6RmXhgY8CX",
+  "name": "Haste",
+  "type": "boon",
+  "img": "icons/magic/movement/acceleration-speed-tech-blue.webp",
+  "system": {
+    "description": "<p>The target moves with extraordinary speed, dodging attacks more deftly and accomplishing actions at an uncanny rate. This may be the result of a chemical injection, psychic enhancement, time-altering magic, or similar means.</p>",
+    "effect": "<ul>\n<li><strong>Power Level 2</strong> - The target's speed is increased by 10'. </li>\n<li><strong>Power Level 4</strong> - The target's speed is increased by 15', and it gains +1 to Guard. </li>\n<li><strong>Power Level 6</strong> - The target's speed is increased by 20', and it gains +2 to Guard. Additionally, the target can make one extra major action on each of its turns. This action cannot be used to perform an interrupt action. If the action requires a roll, it suffers disadvantage 3.</li>\n<li><strong>Power Level 8</strong> - The target's speed is increased by 30', and it gains +3 to Guard. Additionally, the target can make up to two extra major actions on each of its turns. These actions cannot be used to perform an interrupt action. If the target takes 1 extra action that action has disadvantage 3, if they take a 2nd extra action, that action has disadvantage 6.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Movement"
+    ],
+    "powerLevel": 2,
+    "powerEffects": [
+      {
+        "powerLevel": 2,
+        "effect": "The target's speed is increased by 10'"
+      },
+      {
+        "powerLevel": 4,
+        "effect": "The target's speed is increased by 15', and it gains +1 to Guard"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "The target's speed is increased by 20', and it gains +2 to Guard. Additionally, the target can make one extra major action on each of its turns. This action cannot be used to perform an interrupt action. If the action requires a roll, it suffers disadvantage 3"
+      },
+      {
+        "powerLevel": 8,
+        "effect": "The target's speed is increased by 30', and it gains +3 to Guard. Additionally, the target can make up to two extra major actions on each of its turns. These actions cannot be used to perform an interrupt action. If the target takes 1 extra action that action has disadvantage 3, if they take a 2nd extra action, that action has disadvantage 6"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 2,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target's speed is increased by 10'"
+      },
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target's speed is increased by 15', and it gains +1 to Guard"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target's speed is increased by 20', and it gains +2 to Guard. Additionally, the target can make one extra major action on each of its turns. This action cannot be used to perform an interrupt action. If the action requires a roll, it suffers disadvantage 3"
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target's speed is increased by 30', and it gains +3 to Guard. Additionally, the target can make up to two extra major actions on each of its turns. These actions cannot be used to perform an interrupt action. If the target takes 1 extra action that action has disadvantage 3, if they take a 2nd extra action, that action has disadvantage 6"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "naleiUSMNNgjyUFt",
+      "name": "Haste",
+      "type": "base",
+      "img": "icons/magic/movement/acceleration-speed-tech-blue.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": [
+          {
+            "key": "speed",
+            "type": "add",
+            "value": "10",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "speed",
+            "type": "add",
+            "value": "15",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "guard",
+            "type": "add",
+            "value": "1",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "speed",
+            "type": "add",
+            "value": "20",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "guard",
+            "type": "add",
+            "value": "2",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "speed",
+            "type": "add",
+            "value": "30",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "guard",
+            "type": "add",
+            "value": "3",
+            "phase": "final",
+            "priority": 20
+          }
+        ]
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Haste",
+          "powerLevel": 0,
+          "changeLevels": [
+            2,
+            4,
+            4,
+            6,
+            6,
+            8,
+            8
+          ],
+          "changeModes": [
+            "flat",
+            "flat",
+            "flat",
+            "flat",
+            "flat",
+            "flat",
+            "flat"
+          ]
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

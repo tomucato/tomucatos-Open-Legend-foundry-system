@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxlAJtCXMME2Q",
+  "name": "Zealous",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You stand for a cause - whether it is a religion, a nation, a code, a way of life, or otherwise - and you will push the boundaries of normal behavior to uphold your cause. This might mean that you make yourself a social outcast by attempting to convert others to your cause, or it could mean that you are willing to perform an act you might otherwise consider evil, such as putting innocent lives in danger, if doing so would promote your cause.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

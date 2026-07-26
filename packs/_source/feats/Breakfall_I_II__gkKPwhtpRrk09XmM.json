@@ -1,0 +1,65 @@
+{
+  "_id": "gkKPwhtpRrk09XmM",
+  "name": "Breakfall (I - II)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You are as graceful as a swan. Like the martial artists and swashbucklers of legendary tales, your agility enables you to fall from deadly heights unharmed.</p>",
+    "effect": "<ul>\n<li><strong>Tier 1</strong> - As long as you are conscious and able to act, reduce all falling damage by half.</li>\n<li><strong>Tier 2</strong> - As long as you are conscious and able to act, you do not suffer falling damage.</li>\n</ul>",
+    "special": "",
+    "tags": [],
+    "cost": [
+      2,
+      2
+    ],
+    "maxTier": 2,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Breakfall (I - II)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

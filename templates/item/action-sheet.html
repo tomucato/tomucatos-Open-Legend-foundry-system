@@ -1,0 +1,453 @@
+<header class="sheet-header action-header">
+  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="header-fields">
+    <div class="gear-stat field-name">
+      <label>Name</label>
+      <input class="charname" name="name" type="text" value="{{item.name}}" placeholder="Action Name"/>
+    </div>
+    <div class="gear-stat field-name">
+      <label>Description</label>
+      <textarea class="action-description" name="system.description" rows="3" placeholder="Describe what this action does…">{{system.description}}</textarea>
+    </div>
+  </div>
+</header>
+
+<section class="sheet-body action-form">
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Action Category</label>
+      <select name="system.actionCategory" disabled title="The category is set by the section this action was added from and cannot be changed.">
+        {{selectOptions actionCategories selected=system.actionCategory}}
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Action Type</label>
+      <select name="system.actionType" {{#if showInterruptType}}disabled title="Interrupt actions are always an Interrupt Action."{{/if}}>
+        {{selectOptions actionTypes selected=system.actionType}}
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Attribute</label>
+      {{#if invocationFromItem}}
+      {{!-- An item invocation (extraordinary item / Boon Access) supplies the dice
+            from the item's value, so the attribute is irrelevant. Show the source
+            item's name and disable the select (a disabled select doesn't submit,
+            so keep the stored attribute via a hidden input). --}}
+      <select name="system.attribute" disabled title="This bane/boon is invoked from {{invocationItemName}} — its value supplies the dice, so no attribute is used.">
+        <option selected>{{invocationItemName}}</option>
+      </select>
+      <input type="hidden" name="system.attribute" value="{{system.attribute}}"/>
+      {{else}}
+      <select name="system.attribute">
+        {{selectOptions attributeLabels selected=system.attribute}}
+      </select>
+      {{/if}}
+    </div>
+    {{#if showInterruptType}}
+    <div class="form-field">
+      <label>Interrupt Type</label>
+      <select name="system.interruptType">
+        {{selectOptions interruptTypes selected=system.interruptType}}
+      </select>
+    </div>
+    {{/if}}
+    {{#if showTargetDefense}}
+    <div class="form-field">
+      <label>Target Defense</label>
+      <select name="system.targetDefense">
+        {{selectOptions targetDefenses selected=system.targetDefense}}
+      </select>
+    </div>
+    {{/if}}
+    {{#if showMountPilot}}
+    <div class="form-field">
+      <label>Pilot</label>
+      <select name="system.pilotUuid" title="The pilot operating the vehicle for this action. With Targeted Weapons, the attack gains advantage equal to how much this pilot's Agility exceeds the vehicle's attacking attribute (read live at roll time). Seat pilots on the mount sheet's Pilots section.">
+        {{selectOptions mountPilotOptions selected=system.pilotUuid}}
+      </select>
+    </div>
+    {{/if}}
+    {{#if showDamageType}}
+    <div class="form-field">
+      <label>Damage Type</label>
+      <select name="system.damageType" title="Damage types are grouped by the action's attribute; a selected Damage (type) weapon adds its type.">
+        {{selectOptions damageTypeOptions selected=system.damageType}}
+      </select>
+      {{#if damageTypeDescription}}<p class="form-hint">{{damageTypeDescription}}</p>{{/if}}
+      {{#if weaponDamageTypeHint}}<p class="form-hint form-hint-deadly"><i class="fas fa-droplet"></i> {{weaponDamageTypeHint}}</p>{{/if}}
+    </div>
+    {{/if}}
+    <div class="form-field">
+      <label>Targets</label>
+      <select name="system.targets" {{#if areaWeaponLocked}}disabled title="Locked to Area by the selected Area weapon."{{/if}}>
+        {{selectOptions targetModes selected=system.targets}}
+      </select>
+    </div>
+  </div>
+
+  {{#if showWeapon}}
+  <h3 class="form-section-title">Weapon</h3>
+  <div class="form-grid">
+    <div class="form-field form-field-wide">
+      <label>Weapon</label>
+      <select name="system.weaponId" title="{{weaponPickerTitle}}">
+        <option value="">— None —</option>
+        {{#each weaponOptions as |w|}}
+        <option value="{{w.id}}" {{#if w.selected}}selected{{/if}}>{{w.name}}{{#if w.equipped}} (equipped){{/if}}</option>
+        {{/each}}
+      </select>
+    </div>
+    {{#if gripOptions.length}}
+    <div class="form-field">
+      <label>Grip</label>
+      <div class="action-grip-options">
+        {{#each gripOptions as |g|}}
+        <label class="action-grip-choice">
+          <input type="radio" name="system.grip" value="{{g.key}}" {{#if g.checked}}checked{{/if}} {{#if g.disabled}}disabled{{/if}}/>
+          <span>{{g.label}}</span>
+        </label>
+        {{/each}}
+      </div>
+    </div>
+    {{/if}}
+  </div>
+  {{#if weaponPickerHint}}<p class="form-hint">{{weaponPickerHint}}</p>{{/if}}
+  {{#if gripHint}}<p class="form-hint">{{gripHint}}</p>{{/if}}
+  {{#if deadlyHint}}<p class="form-hint form-hint-deadly"><i class="fas fa-burst"></i> {{deadlyHint}}</p>{{/if}}
+  {{#if areaWeaponNote}}<p class="form-hint form-hint-deadly"><i class="fas fa-circle-nodes"></i> {{areaWeaponNote}}</p>{{/if}}
+  {{/if}}
+
+  {{#if (eq system.targets "multiple")}}
+  <h3 class="form-section-title">Targets</h3>
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Number of Targets</label>
+      <input type="number" min="1" step="1" name="system.targetCount" value="{{system.targetCount}}" data-dtype="Number"/>
+    </div>
+  </div>
+  {{#if rangedTargetWarning}}
+  <p class="form-hint form-warn">Ranged multi-targeting allows at most 5 foes, all within a 25' square.</p>
+  {{/if}}
+  {{/if}}
+
+  {{#if showSummonCount}}
+  <h3 class="form-section-title">Summoning</h3>
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Number of Creatures</label>
+      <input type="number" min="1" step="1" name="system.summonCount" value="{{summonCount}}" data-dtype="Number"/>
+    </div>
+  </div>
+  <p class="form-hint">One creature: no penalty. Each additional creature adds disadvantage 2 (a multi-targeting penalty — Multi-Target Boon Specialist offsets it as normal). Summoned creatures are permanently dead at 0 HP and cannot invoke this boon.</p>
+  {{/if}}
+
+  {{#if (eq system.targets "area")}}
+  <h3 class="form-section-title">Area</h3>
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Area Shape</label>
+      <select name="system.area.shape" {{#if areaWeaponLocked}}disabled title="Set by the selected Area weapon."{{/if}}>
+        {{selectOptions areaShapes selected=system.area.shape}}
+      </select>
+    </div>
+    {{#if (eq system.area.shape "line")}}
+    <div class="form-field">
+      <label>Number of Lines</label>
+      <input type="number" min="1" step="1" name="system.area.lines" value="{{system.area.lines}}" data-dtype="Number" {{#if areaWeaponLocked}}disabled{{/if}}/>
+    </div>
+    <div class="form-field">
+      <label>Dimensions</label>
+      <span class="form-readout">{{areaLineDimensions}}</span>
+    </div>
+    {{else}}
+    <div class="form-field">
+      <label>Length (ft)</label>
+      <div class="ol-stepper-field">
+        <button type="button" class="ol-step-btn" data-action="stepField" data-field="system.area.length" data-step="-5" data-min="5" title="Decrease by 5" {{#if areaWeaponLocked}}disabled{{/if}}>&minus;</button>
+        <input type="number" min="5" step="5" name="system.area.length" value="{{system.area.length}}" data-dtype="Number" {{#if areaWeaponLocked}}disabled{{/if}}/>
+        <button type="button" class="ol-step-btn" data-action="stepField" data-field="system.area.length" data-step="5" title="Increase by 5" {{#if areaWeaponLocked}}disabled{{/if}}>+</button>
+      </div>
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{#if showBane}}
+  <h3 class="form-section-title">Bane</h3>
+  <div class="form-grid">
+    <div class="form-field form-field-wide">
+      <label>Bane ({{baneAttributeLabel}}{{#unless (eq baneActorScore null)}} {{baneActorScore}}{{/unless}})</label>
+      {{!-- No name= : the composite item value would corrupt baneUuid on
+            auto-submit; #onBanePick parses it and writes the proper fields. --}}
+      <select class="action-bane-pick" {{#if multiBaneOn}}disabled title="Multi-Bane Specialist is on — this attack applies the feat's chosen pair instead."{{/if}}>
+        <option value="">— None —</option>
+        {{#each baneOptions as |bane|}}
+        <option value="{{bane.value}}" data-name="{{bane.name}}" data-power-level="{{bane.powerLevel}}" data-defense="{{bane.defense}}" data-potent="{{#if bane.potent}}1{{else}}0{{/if}}" {{#if (eq bane.value ../baneSelectedValue)}}selected{{/if}}>
+          {{#if bane.fromItem}}&#10024; {{bane.name}} — {{bane.itemName}} ({{bane.itemScore}}){{else}}{{#if bane.weapon}}&#9876; {{/if}}{{bane.name}} (PL {{bane.powerLevel}}){{/if}}
+        </option>
+        {{/each}}
+      </select>
+    </div>
+    {{#if showMultiBane}}
+    <div class="form-field form-field-wide">
+      <label class="ol-check" title="Multi-Bane Specialist: invoke your two chosen banes with a single attack. On a hit, both banes are applied (each resisted separately) against this action's target defense.">
+        <input type="checkbox" name="system.multiBane" {{checked system.multiBane}}/>
+        <span><i class="fas fa-skull-crossbones"></i> Multi-Bane Specialist{{#unless showMultiBanePicker}}{{#if multiBanePairLabel}} — {{multiBanePairLabel}}{{/if}}{{/unless}}</span>
+      </label>
+    </div>
+    {{#if multiBaneOn}}{{#if showMultiBanePicker}}
+    <div class="form-field form-field-wide">
+      <label>Bane pair</label>
+      <select name="system.multiBanePair">
+        {{#each multiBanePairOptions as |opt|}}
+        <option value="{{opt.value}}" {{#if (eq opt.value ../multiBanePairValue)}}selected{{/if}}>{{opt.label}}</option>
+        {{/each}}
+      </select>
+      {{#if multiBanePairLabel}}<p class="form-hint">{{multiBanePairLabel}}</p>{{/if}}
+    </div>
+    {{/if}}{{/if}}
+    {{/if}}
+    {{#if baneChosen}}
+    <div class="form-field">
+      <label>Power Level</label>
+      <select name="system.invokePowerLevel" data-dtype="Number">
+        {{selectOptions powerLevelOptions selected=system.invokePowerLevel}}
+      </select>
+    </div>
+    <div class="form-field">
+      <label>&nbsp;</label>
+      <label class="ol-check" title="{{#if baneForcedPotent}}Potent Bane feat: this bane is always potent — the target resists at disadvantage 1.{{else}}Potent: the target suffers disadvantage 1 on resist rolls to shake off this bane.{{/if}}">
+        <input type="checkbox" name="system.potent" {{#if baneForcedPotent}}checked disabled{{else}}{{checked system.potent}}{{/if}}/>
+        <span><i class="fas fa-biohazard"></i> Potent{{#if baneForcedPotent}} <span class="form-hint-inline">(Potent Bane)</span>{{/if}}</span>
+      </label>
+    </div>
+    {{/if}}
+  </div>
+  {{#unless baneOptions.length}}
+  <p class="form-hint">No banes are invokable by {{baneAttributeLabel}}{{#unless (eq baneActorScore null)}} at score {{baneActorScore}}{{/unless}}. Raise the attribute, or pick a different one.</p>
+  {{else}}
+  <p class="form-hint">Listed banes are those {{baneAttributeLabel}} can invoke{{#unless (eq baneActorScore null)}} at its current score ({{baneActorScore}}){{/unless}}. Choosing one sets the target defense automatically.</p>
+  {{/unless}}
+  {{#if baneWeaponHint}}<p class="form-hint">{{baneWeaponHint}}</p>{{/if}}
+  {{/if}}
+
+  {{#if showBoon}}
+  <h3 class="form-section-title">Boon</h3>
+  <div class="form-grid">
+    <div class="form-field form-field-wide">
+      <label>Boon ({{boonAttributeLabel}}{{#unless (eq boonActorScore null)}} {{boonActorScore}}{{/unless}})</label>
+      {{!-- No name= (see bane pick): #onBoonPick parses the value and writes. --}}
+      <select class="action-boon-pick">
+        <option value="">— None —</option>
+        {{#each boonOptions as |boon|}}
+        <option value="{{boon.value}}" data-name="{{boon.name}}" data-power-level="{{boon.powerLevel}}" data-attribute="{{boon.attribute}}" {{#if (eq boon.value ../boonSelectedValue)}}selected{{/if}}>
+          {{#if boon.boonAccess}}&#9733; {{boon.name}} — Boon Access ({{boon.itemScore}}){{else}}{{#if boon.fromItem}}&#10024; {{boon.name}} — {{boon.itemName}} ({{boon.itemScore}}){{else}}{{boon.name}} (PL {{boon.powerLevel}}){{/if}}{{/if}}
+        </option>
+        {{/each}}
+      </select>
+    </div>
+    {{#if boonChosen}}
+    <div class="form-field">
+      <label>Power Level</label>
+      <select name="system.invokePowerLevel" data-dtype="Number">
+        {{selectOptions boonPowerLevelOptions selected=system.invokePowerLevel}}
+      </select>
+    </div>
+    {{/if}}
+  </div>
+  {{#if showExtraordinaryHealing}}
+  <label class="ol-xhealing-toggle" title="Extraordinary Healing feat: the invocation takes 1 hour and the healing roll also restores lethal damage (max HP), not just current HP.">
+    <input type="checkbox" name="system.extraordinaryHealing" {{checked system.extraordinaryHealing}}/>
+    <span>Extraordinary Healing</span>
+  </label>
+  {{#if system.extraordinaryHealing}}
+  <p class="form-hint">Invocation time is <strong>1 hour</strong>; the healing roll also heals lethal damage (restoring max HP).</p>
+  {{/if}}
+  {{/if}}
+  {{#unless boonOptions.length}}
+  <p class="form-hint">No boons are invokable by {{boonAttributeLabel}}{{#unless (eq boonActorScore null)}} at score {{boonActorScore}}{{/unless}}. Raise the attribute, or pick a different one.</p>
+  {{else}}
+  <p class="form-hint">Listed boons are those {{boonAttributeLabel}} can invoke{{#unless (eq boonActorScore null)}} at its current score ({{boonActorScore}}){{/unless}}. The roll must beat the boon's Challenge Rating (10 + 2&times;PL) to invoke it.</p>
+  {{/unless}}
+  {{/if}}
+
+  {{#if showAura}}
+  <h3 class="form-section-title">Aura</h3>
+  <div class="form-grid">
+    <div class="form-field form-field-wide">
+      <label>Radiates ({{auraAttributeLabel}}, max PL {{auraMaxPl}})</label>
+      {{!-- No name= : value is "kind|uuid"; #onAuraPick parses it and writes. --}}
+      <select class="action-aura-pick">
+        <option value="">— None —</option>
+        {{#each auraOptions as |opt|}}
+        <option value="{{opt.value}}" data-name="{{opt.name}}" data-power-level="{{opt.powerLevel}}" {{#if (eq opt.value ../auraSelectedValue)}}selected{{/if}}>
+          {{#if (eq opt.kind "bane")}}&#128128; {{else}}&#129309; {{/if}}{{opt.name}} (PL {{opt.powerLevel}})
+        </option>
+        {{/each}}
+      </select>
+    </div>
+    {{#if auraChosen}}
+    <div class="form-field">
+      <label>Radiated Power Level</label>
+      <select name="system.auraRadiatePowerLevel" data-dtype="Number">
+        {{selectOptions auraPowerLevelOptions selected=system.auraRadiatePowerLevel}}
+      </select>
+    </div>
+    {{/if}}
+    {{#if auraRadiateIsResistance}}
+    <div class="form-field" title="The damage type each ally's Resistance defends against. Chosen here so the aura can grant it automatically — no per-ally dialog.">
+      <label>Resistance vs. Damage Type</label>
+      <select name="system.auraRadiateResistanceType">
+        <option value="">— Choose type —</option>
+        {{selectOptions auraResistanceTypeOptions selected=system.auraRadiateResistanceType}}
+      </select>
+    </div>
+    {{/if}}
+  </div>
+  {{#if auraRadiateIsResistance}}
+  {{#unless system.auraRadiateResistanceType}}
+  <p class="form-hint form-warn">Pick a damage type above — until you do, this aura grants Resistance with no defense bonus.</p>
+  {{/unless}}
+  {{/if}}
+  {{#unless auraOptions.length}}
+  <p class="form-hint form-warn">No banes or boons using {{auraAttributeLabel}} are invokable at PL {{auraMaxPl}} or lower. Raise the aura's power level (the cap is half of it).</p>
+  {{else}}
+  <p class="form-hint">The aura radiates one bane or boon that uses {{auraAttributeLabel}} (its attribute), at a maximum power level of half the aura's PL ({{auraMaxPl}}). A radiated <strong>bane</strong> attacks foes who enter/end their turn in the area (the aura's target is immune); a radiated <strong>boon</strong> is granted to the target and allies in the area. Once per round per creature. <em>GM adjudicates which invocations suit an aura.</em></p>
+  {{/unless}}
+  {{/if}}
+
+  {{#if showBarrier}}
+  <h3 class="form-section-title">Barrier</h3>
+  <div class="form-grid">
+    <div class="form-field form-field-wide">
+      <label>Properties — choose {{barrierMaxCount}} ({{barrierChosenCount}}/{{barrierMaxCount}} chosen)</label>
+      <div class="action-barrier-props">
+        {{#each barrierProperties as |prop|}}
+        <label class="ol-check action-barrier-prop-row" title="{{prop.description}}">
+          <input type="checkbox" class="action-barrier-prop" data-key="{{prop.key}}" {{#if prop.checked}}checked{{/if}}/>
+          <span>{{prop.label}}</span>
+        </label>
+        {{/each}}
+      </div>
+    </div>
+    {{#if showBarrierBane}}
+    <div class="form-field form-field-wide">
+      <label>Baneful — bane ({{barrierBaneAttributeLabel}}, max PL {{system.invokePowerLevel}})</label>
+      <select class="action-barrier-bane">
+        <option value="">— None —</option>
+        {{#each barrierBaneOptions as |bane|}}
+        <option value="{{bane.uuid}}" data-name="{{bane.name}}" data-power-level="{{bane.powerLevel}}" {{#if (eq bane.uuid ../barrierBaneSelectedValue)}}selected{{/if}}>&#128128; {{bane.name}} (PL {{bane.powerLevel}})</option>
+        {{/each}}
+      </select>
+    </div>
+    {{#if barrierBaneChosen}}
+    <div class="form-field">
+      <label>Baneful Power Level</label>
+      <select name="system.barrierBanePowerLevel" data-dtype="Number">
+        {{selectOptions barrierBanePowerLevelOptions selected=system.barrierBanePowerLevel}}
+      </select>
+    </div>
+    {{/if}}
+    {{/if}}
+  </div>
+  {{#unless barrierMaxCount}}
+  <p class="form-hint form-warn">Pick a power level (3/5/7/9) to choose Barrier properties.</p>
+  {{else}}
+  <p class="form-hint">A Barrier requires multi-targeting to define its area. Choose {{barrierMaxCount}} propert{{#if (eq barrierMaxCount 1)}}y{{else}}ies{{/if}} for power level {{system.invokePowerLevel}}.{{#if barrierDamageDie}} Damaging deals {{barrierDamageDie}}.{{/if}} Properties are recorded on the granted effect; if Damaging is chosen, a damage roll is offered on the grant card.</p>
+  {{/unless}}
+  {{/if}}
+
+  {{#if showPowerful}}
+  <h3 class="form-section-title">Powerful Item</h3>
+  <div class="form-grid">
+    <div class="form-field form-field-wide">
+      <label>Invoke with item</label>
+      <select name="system.powerfulItemId">
+        <option value="">— None —</option>
+        {{#each powerfulOptions as |p|}}
+        <option value="{{p.id}}" {{#if p.selected}}selected{{/if}}>{{p.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+  {{#if powerfulHint}}<p class="form-hint form-hint-deadly"><i class="fas fa-bolt"></i> {{powerfulHint}}</p>{{/if}}
+  {{/if}}
+
+  <h3 class="form-section-title">Range</h3>
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Range Mode</label>
+      <select name="system.rangeMode">
+        {{selectOptions rangeModes selected=system.rangeMode}}
+      </select>
+    </div>
+    {{#if (eq system.rangeMode "ranged")}}
+    <div class="form-field">
+      <label>Range Band</label>
+      <select name="system.rangeBand">
+        {{selectOptions rangeBands selected=system.rangeBand}}
+      </select>
+    </div>
+    {{/if}}
+    <div class="form-field">
+      <label>Effective Range</label>
+      <span class="form-readout">{{derivedRange}}</span>
+    </div>
+  </div>
+  {{#if (eq system.rangeMode "non-physical")}}
+  <p class="form-hint">Non-physical range derives from the chosen attribute's score (1&ndash;3 = 25 ft, 4&ndash;6 = 50 ft, 7&ndash;9 = 75 ft).</p>
+  {{/if}}
+
+  <h3 class="form-section-title">Advantage / Disadvantage</h3>
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Advantage</label>
+      <input type="number" min="0" step="1" name="system.advantage" value="{{system.advantage}}" data-dtype="Number"/>
+    </div>
+    <div class="form-field">
+      <label>Disadvantage</label>
+      <input type="number" min="0" step="1" name="system.disadvantage" value="{{system.disadvantage}}" data-dtype="Number"/>
+    </div>
+  </div>
+
+  <h3 class="form-section-title">On Roll Macro</h3>
+  <div class="form-grid">
+    <div class="form-field form-field-wide action-macro-drop" title="Drag a macro here from the Macros directory, or paste its UUID. It fires automatically after this action is rolled.">
+      <label>Macro</label>
+      <div class="action-macro-row">
+        <input type="text" name="system.macroUuid" value="{{system.macroUuid}}" placeholder="Drag a macro here, or paste a Macro UUID…"/>
+        {{#if system.macroUuid}}
+        <button type="button" class="action-macro-clear" data-action="clearMacro" title="Remove the macro"><i class="fas fa-xmark"></i></button>
+        {{/if}}
+      </div>
+      {{#if macroName}}
+      <p class="form-hint"><i class="fas fa-scroll"></i> Fires <strong>{{macroName}}</strong> after the roll.</p>
+      {{else}}{{#if system.macroUuid}}
+      <p class="form-hint form-warn"><i class="fas fa-triangle-exclamation"></i> No macro resolves from that UUID.</p>
+      {{else}}
+      <p class="form-hint">Optional. The macro runs once after the action is rolled, with the roll's data available (see hint below).</p>
+      {{/if}}{{/if}}
+    </div>
+  </div>
+
+  {{#if diceModifiers.length}}
+  <h3 class="form-section-title">Dice Modifiers</h3>
+  <ul class="dice-modifiers">
+    {{#each diceModifiers as |mod|}}
+    <li class="dice-modifier-row">
+      <span class="dice-modifier-label">{{mod.label}}</span>
+      <span class="dice-modifier-value {{#if mod.disadvantage}}is-disadvantage{{else}}is-advantage{{/if}}">{{#if mod.advantage}}+{{mod.advantage}} Advantage{{else}}{{#if mod.disadvantage}}&minus;{{mod.disadvantage}} Disadvantage{{else}}{{mod.note}}{{/if}}{{/if}}</span>
+    </li>
+    {{/each}}
+    <li class="dice-modifier-row dice-modifier-total">
+      <span class="dice-modifier-label">Net</span>
+      <span class="dice-modifier-value {{#if (gt diceModifierNet 0)}}is-advantage{{/if}}{{#if (lt diceModifierNet 0)}}is-disadvantage{{/if}}">{{#if (gt diceModifierNet 0)}}Advantage {{diceModifierNetAbs}}{{else}}{{#if (lt diceModifierNet 0)}}Disadvantage {{diceModifierNetAbs}}{{else}}Even (0){{/if}}{{/if}}</span>
+    </li>
+  </ul>
+  {{#if lethalStrikeNote}}<p class="form-hint"><i class="fas fa-skull"></i> {{lethalStrikeNote}}</p>{{/if}}
+  <p class="form-hint">These are the modifiers the roll dialog will pre-fill — your wielded weapon, feats, conditions, and targeting. You can still adjust them when you roll.</p>
+  {{/if}}
+  {{#if multiTargetBoonExpertNote}}
+  <p class="form-hint"><i class="fas fa-wand-magic-sparkles"></i> {{multiTargetBoonExpertNote}}</p>
+  {{/if}}
+</section>

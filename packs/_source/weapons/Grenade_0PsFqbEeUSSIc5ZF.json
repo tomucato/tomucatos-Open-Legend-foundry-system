@@ -1,0 +1,50 @@
+{
+  "_id": "0PsFqbEeUSSIc5ZF",
+  "name": "Grenade",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Close Ranged. Precise, Expendable, Area (10' cube).</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Grenade",
+    "categories": [
+      "close-ranged"
+    ],
+    "rangeIncrement": 25,
+    "properties": [
+      {
+        "key": "precise"
+      },
+      {
+        "key": "expendable"
+      },
+      {
+        "key": "area",
+        "detail": "10' cube"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Knockdown",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fPzhkCAYAcXa3jZK"
+      },
+      {
+        "name": "Forced Move",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.rwt5CUhK3P5D2la7"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

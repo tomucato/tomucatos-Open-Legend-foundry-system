@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbIIyfb7w2fIj",
+  "name": "Upper Class",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Being of high birth, old money, or otherwise given access to resources beyond the common citizen, you are treated as a benefactor by the lower classes. They will trust and help you in the hopes of being rewarded for their efforts. You are also treated as a peer by those of similar or slightly higher social standing and can typically request an audience with them. In addition, representatives of the law generally assume you to be beyond reproach unless they are presented with compelling evidence to the contrary.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

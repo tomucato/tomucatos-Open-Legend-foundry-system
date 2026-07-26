@@ -1,0 +1,45 @@
+{
+  "name": "Truthfulness",
+  "type": "bane",
+  "_id": "CMY19amkgvnlUJ1j",
+  "img": "icons/skills/trades/academics-investigation-study-blue.webp",
+  "system": {
+    "description": "<p>By controlling the target's mind through compulsion magic, chemical injection, neural probes, or similar means, you render them incapable of lying deliberately. This is a favored bane among enchanters, mad scientists, psychics, and thought police.</p>",
+    "powerLevel": 5,
+    "invocationTime": "10 Minutes",
+    "duration": "10 minutes (special)",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "",
+    "special": "When you successfully invoke this bane, at the end of its duration, you can make another Influence roll to attempt to persist the bane. If successful, the bane persists without requiring the invocation time to be repeated.\nWhen a target wins the contested Will vs. Influence roll, you cannot target them with this bane again for 24 hours.",
+    "gameEffects": [],
+    "effect": "The target answers any question asked with honesty, to the best of their knowledge. When compelled to reveal something they would not reveal outside of duress, the target makes a Will roll and you make an Influence roll. If the target's roll is higher than yours, then they resist the bane and the effect ends."
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781695048107,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

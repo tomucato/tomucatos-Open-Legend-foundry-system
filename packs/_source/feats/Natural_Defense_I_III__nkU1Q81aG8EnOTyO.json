@@ -1,0 +1,81 @@
+{
+  "_id": "nkU1Q81aG8EnOTyO",
+  "name": "Natural Defense (I - III)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether through draconic heritage, a cyborg exoskeleton, or just a lifetime of conditioning, your skin is tough as nails, allowing your body to deflect blows that would cripple others.</p>",
+    "effect": "When you are not wearing armor, you gain a bonus to your Guard and Toughness defenses. Your bonus is determined by your tier in this feat:\n<ul>\n<li><strong>Tier 1</strong> - +1 bonus to Guard and Toughness.</li>\n<li><strong>Tier 2</strong> - +2 bonus to Guard and Toughness.</li>\n<li><strong>Tier 3</strong> - +3 bonus to Guard and Toughness.</li>\n</ul>",
+    "special": "",
+    "tags": [
+      "Combat",
+      "Physical",
+      "Defense",
+      "Fortitude"
+    ],
+    "cost": [
+      2,
+      2,
+      2
+    ],
+    "maxTier": 3,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 1
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 2
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Natural Defense (I - III)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

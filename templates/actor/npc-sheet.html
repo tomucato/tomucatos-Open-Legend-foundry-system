@@ -1,0 +1,230 @@
+{{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/form-tabs.html"}}
+
+<header class="sheet-header">
+  <div class="portrait">
+    {{#if forms.isAlternate}}
+    <img class="profile-img" src="{{forms.activeImg}}" data-action="formEditPortrait" data-tooltip="This form's portrait (the main portrait is unchanged)" title="{{actor.name}}" height="100" width="100"/>
+    {{else}}
+    <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    {{/if}}
+    <a class="portrait-popout" data-action="imagePopout" data-tooltip="Show portrait full-size" aria-label="Show portrait full-size">
+      <i class="fas fa-expand"></i>
+    </a>
+  </div>
+  <div class="header-fields">
+    <div class="name-row">
+      <div class="field field-name">
+        <label>Name</label>
+        <input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="NPC Name"/>
+      </div>
+    </div>
+
+    <div class="identity-fields">
+      <div class="field field-level">
+        <label>Level</label>
+        <select name="system.level" data-dtype="Number">
+          {{selectOptions npcLevels selected=system.level}}
+        </select>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="vitals stats-section">
+  <h3 class="vitals-title">Stats</h3>
+  <div class="vitals-row">
+    <div class="vital vital-health">
+      <label>
+        Health
+        {{#if npcBuild}}<i class="fas fa-circle-info npc-statline" data-tooltip="Level {{npcBuild.level}} Simple Build &mdash; Hit Points: {{npcBuild.hp}}"></i>{{/if}}
+      </label>
+      <div class="vital-health-content">
+        <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+        <span class="sep">/</span>
+        <input class="npc-hp-max" type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" data-tooltip="NPC max HP is set directly (Simple Build). Lethal damage reduces the effective max."/>
+        {{#unless (eq derived.lethal 0)}}<span class="derived" title="Effective max after lethal damage.">&rarr; {{derived.healthMax}}</span>{{/unless}}
+      </div>
+    </div>
+    <div class="vital vital-lethal-section {{#if derived.lethalUnconscious}}is-lethal-out{{/if}}" title="Lethal damage reduces the maximum HP by its amount. Type a value to set it. At lethal ≥ max the creature is unconscious until at least 1 is healed.">
+      <label class="lethal-label">
+        <i class="fas fa-skull"></i> Lethal
+        {{#if derived.lethalUnconscious}}<span class="lethal-out-tag" title="Unconscious from lethal damage until at least 1 lethal HP is healed."><i class="fas fa-bed"></i> Unconscious</span>{{/if}}
+      </label>
+      <div class="vital-lethal-content">
+        <input type="text" class="lethal-input" name="system.health.lethal" value="{{system.health.lethal}}" data-dtype="Number"/>
+        {{#if derived.healthMaxBase}}<span class="sep">/</span><span class="lethal-max">{{derived.healthMaxBase}}</span>{{/if}}
+      </div>
+    </div>
+    <div class="vital vital-speed" title="Base speed; armor speed penalties and active-effect modifiers are applied to the effective value shown.">
+      <label>Speed</label>
+      <div class="vital-speed-content">
+        <input type="text" name="system.speed.value" value="{{system.speed.value}}" data-dtype="Number"/>
+        {{#unless (eq derived.speed system.speed.value)}}
+        <span class="sep">&rarr;</span>
+        <span class="derived" data-tooltip="Effective speed (base with penalties and active effects applied)">{{derived.speed}}</span>
+        {{/unless}}
+      </div>
+      {{#if derived.climbSpeed}}
+      <div class="vital-climb" title="Climb speed (Climbing feat): equal to your speed.">
+        <i class="fas fa-person-hiking"></i> Climb {{derived.climbSpeed}}
+      </div>
+      {{/if}}
+      {{#if derived.flySpeed}}
+      <div class="vital-climb" title="Fly speed (Flying feat): equal to your speed.">
+        <i class="fas fa-feather"></i> Fly {{derived.flySpeed}}
+      </div>
+      {{/if}}
+      {{#if derived.swimSpeed}}
+      <div class="vital-climb" title="Swim speed (Swimming feat): equal to your speed.">
+        <i class="fas fa-swimmer"></i> Swim {{derived.swimSpeed}}
+      </div>
+      {{/if}}
+    </div>
+    <div class="vital vital-initiative" title="Roll initiative for combat (1d20 + Agility dice)">
+      <label>Initiative</label>
+      <a class="initiative-roll" data-action="initiativeRoll" role="button">
+        <i class="fas fa-dice-d20"></i>
+        <span class="derived">{{derived.initiative}}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="vitals defenses-section">
+  <h3 class="vitals-title">Defenses</h3>
+  <div class="defenses">
+    <div class="defense">
+      <label>
+        Guard
+        {{#if npcBuild}}<i class="fas fa-circle-info npc-statline" data-tooltip="Level {{npcBuild.level}} Simple Build &mdash; Defenses: {{npcBuild.defense}}"></i>{{/if}}
+      </label>
+      <input type="text" name="system.defenses.guard.value" value="{{system.defenses.guard.value}}" data-dtype="Number"/>
+      {{#if armorSummary.defenseBonus}}<span class="armor-mod" data-tooltip="Equipped armor adds {{armorSummary.defenseBonus}} (total {{derived.guard}})">(+{{armorSummary.defenseBonus}})</span>{{/if}}
+    </div>
+    <div class="defense">
+      <label>
+        Toughness
+        {{#if npcBuild}}<i class="fas fa-circle-info npc-statline" data-tooltip="Level {{npcBuild.level}} Simple Build &mdash; Defenses: {{npcBuild.defense}}"></i>{{/if}}
+      </label>
+      <input type="text" name="system.defenses.toughness.value" value="{{system.defenses.toughness.value}}" data-dtype="Number"/>
+    </div>
+    <div class="defense">
+      <label>
+        Resolve
+        {{#if npcBuild}}<i class="fas fa-circle-info npc-statline" data-tooltip="Level {{npcBuild.level}} Simple Build &mdash; Defenses: {{npcBuild.defense}}"></i>{{/if}}
+      </label>
+      <input type="text" name="system.defenses.resolve.value" value="{{system.defenses.resolve.value}}" data-dtype="Number"/>
+    </div>
+  </div>
+</section>
+
+<section class="vitals actions-section">
+  <h3 class="vitals-title">Actions</h3>
+  <div class="vitals-row">
+    {{#if forms.transform}}
+    <div class="vital vital-transform vital-small {{#if forms.preview}}is-preview{{/if}}" title="Active form: {{forms.activeName}}. Click to transform into {{forms.transform.targetName}} — swaps attributes, feats & actions (damage taken carries over) and applies that form's token image to the token.">
+      <label>Transform</label>
+      <a class="form-transform" data-action="formTransform" data-form-id="{{forms.transform.targetId}}" role="button">
+        <i class="fas fa-arrows-spin"></i>
+        <span>{{forms.activeName}}</span>
+      </a>
+    </div>
+    {{/if}}
+    <div class="vital vital-resist vital-small" title="Resist (shake off) banes — 1d20, 10+ succeeds; a Potent bane rolls 2d20 and takes the lower. Drag to the hotbar for a macro.">
+      <label>Resist</label>
+      <a class="resist-banes" data-action="resistBanes" role="button" draggable="true">
+        <i class="fas fa-hand-fist"></i>
+        <span>Banes</span>
+      </a>
+    </div>
+    <div class="vital vital-rest vital-small" title="Rest to heal lethal damage — 1 HP/day per Fortitude point (min 1), plus a full-time attendant's best Creation, Presence, or Learning score.">
+      <label>Rest</label>
+      <a class="lethal-rest" data-action="lethalRest" role="button">
+        <i class="fas fa-bed"></i>
+        <span>Heal Lethal</span>
+      </a>
+    </div>
+    {{#if derived.hasHospitaler}}
+    <div class="vital vital-hospitaler vital-small" title="Hospitaler: a major action giving each targeted ally an immediate resist roll (free action for them) with advantage 1 — they roll 2d20 and keep the higher. Drag to the hotbar for a macro.">
+      <label>Hospitaler</label>
+      <a class="hospitaler-action" data-action="hospitaler" role="button" draggable="true">
+        <i class="fas fa-hand-holding-medical"></i>
+        <span>Aid Ally</span>
+      </a>
+    </div>
+    {{/if}}
+    {{#if derived.hasBattleTrance}}
+    <div class="vital vital-trance vital-small {{#if derived.battleTranceOn}}is-on{{/if}}" title="Battle Trance: while active, advantage 1 on attacks, +3 Toughness & Resolve, Guard armor bonus floored at 3. Click to {{#if derived.battleTranceOn}}deactivate{{else}}activate{{/if}}. Drag to the hotbar for a toggle macro.">
+      <label>Trance</label>
+      <a class="trance-action feat-toggle {{#if derived.battleTranceOn}}is-on{{/if}}" data-action="battleTranceToggle" role="button" draggable="true">
+        <i class="fas fa-fire-flame-curved"></i>
+        <span>{{#if derived.battleTranceOn}}On{{else}}Off{{/if}}</span>
+      </a>
+    </div>
+    {{/if}}
+    {{#if derived.hasRecklessAttack}}
+    <div class="vital vital-reckless vital-small {{#if derived.recklessReady}}is-on{{/if}}" title="Reckless Attack: while in a Battle Trance, suffer 5 HP of unmitigable self-damage to make an extra attack as a minor action. Click to do it; drag to the hotbar for a macro.">
+      <label>Reckless</label>
+      <a class="reckless-action" data-action="recklessAttack" role="button" draggable="true">
+        <i class="fas fa-burst"></i>
+        <span>Attack</span>
+      </a>
+    </div>
+    {{/if}}
+  </div>
+</section>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab attributes {{tabs.attributes.cssClass}}" data-group="primary" data-tab="attributes">
+    {{#if npcBuild}}
+    <p class="npc-statline-bar">
+      <i class="fas fa-circle-info npc-statline" data-tooltip="Level {{npcBuild.level}} Simple Build attribute guidance"></i>
+      Level {{npcBuild.level}} Simple Build &mdash; Primary attributes &asymp; <strong>{{npcBuild.primary}}</strong>, Secondary &asymp; <strong>{{npcBuild.secondary}}</strong>.
+    </p>
+    {{/if}}
+    <div class="attribute-categories">
+      {{#each attributeGroups as |group|}}
+      <div class="attribute-category category-{{group.key}}">
+        <h3 class="category-label">{{group.label}}</h3>
+        {{#each group.attributes as |attr|}}
+        {{#if attr.substituted}}
+        <div class="attribute flexrow attribute-substituted" title="Attribute Substitution: uses {{attr.substitutionPrimaryLabel}} ({{attr.value}}) in place of {{attr.label}}.">
+          <a class="attribute-roll" data-action="attributeRoll" data-attribute="{{attr.key}}" data-substituted="true" draggable="true" title="Roll {{attr.label}} as substituted (1d20{{#if attr.dice}} + {{attr.dice}}{{/if}}). Drag to the hotbar for a macro.">
+            <i class="fas fa-dice-d20"></i> {{attr.label}}
+          </a>
+          <span class="attribute-dice" title="Bonus dice from the substituted score">{{#if attr.dice}}{{attr.dice}}{{else}}&mdash;{{/if}}</span>
+          <span class="attribute-value attribute-value-locked" title="Substituted from {{attr.substitutionPrimaryLabel}}"><i class="fas fa-link"></i> {{attr.value}}</span>
+        </div>
+        {{else}}
+        <div class="attribute flexrow">
+          <a class="attribute-roll" data-action="attributeRoll" data-attribute="{{attr.key}}" draggable="true" title="Roll {{attr.label}} (1d20{{#if attr.dice}} + {{attr.dice}}{{/if}}). Drag to the hotbar for a macro.">
+            <i class="fas fa-dice-d20"></i> {{attr.label}}
+          </a>
+          <span class="attribute-dice" title="Bonus dice granted by this attribute score">{{#if attr.dice}}{{attr.dice}}{{else}}&mdash;{{/if}}</span>
+          <input type="number" min="0" max="10" step="1" name="system.attributes.{{attr.key}}.value" value="{{attr.value}}" data-dtype="Number"/>
+        </div>
+        {{/if}}
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/item-attributes.hbs"}}
+  </div>
+
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/actions.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/feats.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/inventory.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/effects.html"}}
+</section>

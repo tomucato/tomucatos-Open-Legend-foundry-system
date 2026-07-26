@@ -1,0 +1,42 @@
+{
+  "_id": "Colt45Revolver01",
+  "name": "Colt 45",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>With its smooth and ornately carved ivory handle, this marvel of frontier ingenuity is the only protection a gunfighter needs.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "deadly",
+        "value": 1
+      },
+      {
+        "name": "potent",
+        "value": ""
+      }
+    ],
+    "baseType": "Revolver",
+    "categories": [
+      "short-ranged"
+    ],
+    "rangeIncrement": 50,
+    "properties": [],
+    "banes": [],
+    "equipped": false,
+    "equipHands": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

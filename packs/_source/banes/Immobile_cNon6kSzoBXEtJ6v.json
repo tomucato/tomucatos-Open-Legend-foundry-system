@@ -1,0 +1,74 @@
+{
+  "name": "Immobile",
+  "type": "bane",
+  "_id": "cNon6kSzoBXEtJ6v",
+  "img": "icons/magic/control/debuff-chains-shackles-movement-purple.webp",
+  "system": {
+    "description": "<p>Whether through grappling, a precise nerve strike, entangling vines, mental compulsion, or a bone-numbing blast of cold, you render your foe incapable of movement. This bane is typical among martial artists, special ops agents, enchanters, and wrestlers.</p>",
+    "powerLevel": 1,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (special)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Alteration",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Creation",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Movement",
+        "defense": "Guard"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "Fail x 3 = 1 minute",
+    "special": "When an affected target succeeds at a resist roll to end this effect, they can move 15' as a free action.",
+    "gameEffects": [],
+    "effect": "<p>Your target cannot move from its current space. If you invoked the bane with a Might roll and are within 5' of the target, then both you and the target are immobile in your current space for the duration of the bane (locked in a grapple). While grappling in this manner, you can attempt to inflict this bane again upon the target. If successful, you can move your speed and take the target with you. If this attack fails, you can only move by first releasing the target and ending the bane. If you invoked the bane with any attribute other than Might, you can move freely while the target remains affected. You can choose to release the target as a free action, immediately ending the bane.</p>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781692343116,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

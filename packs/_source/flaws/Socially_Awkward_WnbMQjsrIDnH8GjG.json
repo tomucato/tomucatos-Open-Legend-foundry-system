@@ -1,0 +1,14 @@
+{
+  "_id": "WnbMQjsrIDnH8GjG",
+  "name": "Socially Awkward",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>Something about your behavior tends to rub people the wrong way. Perhaps you don't respect the personal space of others, you tend to ramble in conversation, or share overly personal details. Whatever the nature of your awkwardness, it makes social situations difficult for you at times.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

@@ -1,0 +1,67 @@
+{{!--
+  Shared expanded-detail body for an inventory item (weapon / armor / gear).
+  Consistent layout: a label/value stat grid, tag rows (categories / properties /
+  banes), an Extraordinary Abilities block, then the description. Expects `item`
+  (with `item.extra` from _extraordinarySummary, and weapon display props).
+--}}
+<div class="inv-details">
+
+  {{!-- Stat grid: common + type-specific fields, uniform label/value cells. --}}
+  <dl class="inv-stat-grid">
+    {{#if (eq item.type "weapon")}}
+      <div class="inv-stat"><dt>Hands</dt><dd>{{#if item.versatile}}Versatile{{#if item.equipped}} ({{item.hands}}H){{/if}}{{else}}{{item.hands}}-handed{{/if}}</dd></div>
+      {{#if item.system.baseType}}<div class="inv-stat"><dt>Base Type</dt><dd>{{item.system.baseType}}</dd></div>{{/if}}
+    {{/if}}
+    {{#if (eq item.type "armor")}}
+      <div class="inv-stat"><dt>Type</dt><dd>{{item.system.armorType}}</dd></div>
+      <div class="inv-stat"><dt>Req. Fortitude</dt><dd>{{item.effectiveRequiredFortitude}}{{#if item.fortitudeReduced}} <span class="inv-stat-note">(Armor Mastery, was {{item.system.requiredFortitude}})</span>{{/if}}</dd></div>
+      <div class="inv-stat"><dt>Defense Bonus</dt><dd>+{{item.system.defenseBonus}}</dd></div>
+      <div class="inv-stat"><dt>Speed Penalty</dt><dd>{{#if item.system.speedPenalty}}&minus;{{item.system.speedPenalty}} ft{{else}}none{{/if}}</dd></div>
+      <div class="inv-stat"><dt>Equipped</dt><dd>{{#if item.system.equipped}}Yes{{else}}No{{/if}}</dd></div>
+    {{/if}}
+    <div class="inv-stat"><dt>Wealth Level</dt><dd>{{item.system.wealthLevel}}</dd></div>
+    {{#unless (eq item.type "armor")}}<div class="inv-stat"><dt>Quantity</dt><dd>{{item.system.quantity}}</dd></div>{{/unless}}
+    {{#if item.system.rangeIncrement}}<div class="inv-stat"><dt>Range</dt><dd>{{item.system.rangeIncrement}} ft</dd></div>{{/if}}
+    <div class="inv-stat"><dt>Bulky</dt><dd>{{#if item.system.bulky}}Yes{{else}}No{{/if}}</dd></div>
+    <div class="inv-stat"><dt>Heavy</dt><dd>{{#if item.system.heavy}}Yes{{else}}No{{/if}}</dd></div>
+  </dl>
+
+  {{#if item.fortitudeUnmet}}
+  <div class="inv-detail-line fort-warn"><i class="fas fa-triangle-exclamation"></i> Required Fortitude not met — equip benefit still applies, but you may not legitimately benefit.</div>
+  {{/if}}
+
+  {{!-- Categories / weapon properties / weapon banes (the built-in weapon model). --}}
+  {{#if item.system.categories.length}}
+  <div class="inv-tag-row"><span class="inv-tag-label">Categories</span><span class="inv-tags">{{#each item.system.categories as |c|}}<span class="inv-pill">{{c}}</span>{{/each}}</span></div>
+  {{/if}}
+  {{#if item.system.properties.length}}
+  <div class="inv-tag-row"><span class="inv-tag-label">Properties</span><span class="inv-tags">{{#each item.system.properties as |p|}}<span class="inv-pill">{{p.key}}{{#if p.value}} {{p.value}}{{/if}}{{#if p.detail}} ({{p.detail}}){{/if}}</span>{{/each}}</span></div>
+  {{/if}}
+  {{#if item.system.banes.length}}
+  <div class="inv-tag-row"><span class="inv-tag-label">Banes</span><span class="inv-tags">{{#each item.system.banes as |b|}}<span class="inv-pill">{{b.name}}</span>{{/each}}</span></div>
+  {{/if}}
+
+  {{!-- Extraordinary abilities (granted attributes / boons / banes / properties). --}}
+  {{#if item.extra.any}}
+  <div class="inv-extra">
+    <div class="inv-extra-head"><i class="fas fa-wand-sparkles"></i> Extraordinary Abilities</div>
+    {{#if item.extra.attributes.length}}
+    <div class="inv-tag-row"><span class="inv-tag-label">Attributes</span><span class="inv-tags">{{#each item.extra.attributes as |a|}}<span class="inv-pill inv-pill-attr">{{a.label}} {{a.score}}</span>{{/each}}</span></div>
+    {{/if}}
+    {{#if item.extra.boons.length}}
+    <div class="inv-tag-row"><span class="inv-tag-label">Boons</span><span class="inv-tags">{{#each item.extra.boons as |b|}}<span class="inv-pill inv-pill-boon">{{b.name}} (PL {{b.powerLevel}})</span>{{/each}}</span></div>
+    {{/if}}
+    {{#if item.extra.banes.length}}
+    <div class="inv-tag-row"><span class="inv-tag-label">Banes</span><span class="inv-tags">{{#each item.extra.banes as |b|}}<span class="inv-pill inv-pill-bane">{{b.name}} (PL {{b.powerLevel}})</span>{{/each}}</span></div>
+    {{/if}}
+    {{#if item.extra.properties.length}}
+    <div class="inv-tag-row"><span class="inv-tag-label">Properties</span><span class="inv-tags">{{#each item.extra.properties as |p|}}<span class="inv-pill inv-pill-prop" {{#if p.hint}}data-tooltip="{{p.hint}}"{{/if}}>{{p.label}}{{#if p.value}} {{p.value}}{{/if}}</span>{{/each}}</span></div>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{#if item.enrichedDescription}}
+  <div class="inv-detail-desc">{{{item.enrichedDescription}}}</div>
+  {{/if}}
+
+</div>

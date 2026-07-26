@@ -1,0 +1,81 @@
+{
+  "_id": "cELylBlEn8uWuoST",
+  "name": "Craft Mundane Item (I - II)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You have mastered a particular craft, and given proper time and materials, you can create items related to that craft. You might be an expert blacksmith, professional engineer, master alchemist, or any similar manner of professional craftsman.</p>",
+    "effect": "Choose a specific craft or profession. You can create items that are relevant to your chosen craft, and your GM will determine the speed at which you craft based on the nature of the item and the materials you have access to. Your tier in the Craft Mundane Item feat determines the maximum wealth level of the items you can craft. Unlike acquiring items by using your wealth (described in Chapter 5), crafting does not limit your ability to acquire additional goods.\n<ul>\n<li><strong>Tier 1</strong> - You can craft items equal to your wealth level.</li>\n<li><strong>Tier 2</strong> - You can craft items equal to your wealth level + 1.</li>\n</ul>\n<strong>Craft Examples</strong> (This list is not exhaustive, and you can work with your GM to come up with other suitable crafts):\n<ul>\n<li>Alchemy - acid, chemicals, non-magical tinctures, incense, reagents.</li>\n<li>Arcane - magical ingredients, inks, scrolls, exotic components.</li>\n<li>Blacksmithing - metal, leather, weapons, armor, wheels, horseshoes.</li>\n<li>Chemistry - acid, explosives, narcotics.</li>\n<li>Engineering - machines, wheels, gears, guns, vehicles.</li>\n<li>Geography - maps, cartography, instruments of navigation.</li>\n<li>Herbalism - poultices, natural remedies, stimulants, brewing.</li>\n<li>Medicine - medical tools, tonics, tinctures, pain relievers, anti-toxins.</li>\n</ul>",
+    "special": "In addition to taking multiple tiers of this feat, you may take this feat multiple times and select a new craft or profession each time.",
+    "tags": [
+      "Non-Combat"
+    ],
+    "cost": [
+      2,
+      2
+    ],
+    "maxTier": 2,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "learning",
+              "label": "Learning",
+              "min": 3
+            },
+            {
+              "key": "logic",
+              "label": "Logic",
+              "min": 3
+            }
+          ],
+          "feats": [
+            "Knowledge I"
+          ],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "learning",
+              "label": "Learning",
+              "min": 3
+            },
+            {
+              "key": "logic",
+              "label": "Logic",
+              "min": 3
+            }
+          ],
+          "feats": [
+            "Knowledge I"
+          ],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "text",
+      "label": "Craft or profession",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Craft Mundane Item (I - II)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

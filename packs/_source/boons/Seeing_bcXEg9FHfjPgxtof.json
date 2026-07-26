@@ -1,0 +1,82 @@
+{
+  "_id": "bcXEg9FHfjPgxtof",
+  "name": "Seeing",
+  "type": "boon",
+  "img": "icons/magic/perception/eye-ringed-green.webp",
+  "system": {
+    "description": "<p>You are able to see through the eyes of a willing ally. This power might stem from a psychic link, cybernetic implant, or magical enchantment.</p>",
+    "effect": "For as long as you concentrate, you can see through the eyes of the target, a willing ally. The target can be any friendly creature, including animals, beasts, and humanoids. The distance of the connection depends on the power level of this boon.\n<ul>\n<li><strong>Power Level 4</strong> - The ally must be within 100'. </li>\n<li><strong>Power Level 5</strong> - The ally must be within 1 mile. </li>\n<li><strong>Power Level 6</strong> - The ally must be anywhere on the same plane of existence. </li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Prescience"
+    ],
+    "powerLevel": 4,
+    "powerEffects": [
+      {
+        "powerLevel": 4,
+        "effect": "The ally must be within 100'"
+      },
+      {
+        "powerLevel": 5,
+        "effect": "The ally must be within 1 mile"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "The ally must be anywhere on the same plane of existence"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The ally must be within 100'"
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The ally must be within 1 mile"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The ally must be anywhere on the same plane of existence"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "L4kpr1FlCXJchEud",
+      "name": "Seeing",
+      "type": "base",
+      "img": "icons/magic/perception/eye-ringed-green.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Seeing",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

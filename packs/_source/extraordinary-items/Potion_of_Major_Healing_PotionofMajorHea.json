@@ -1,0 +1,34 @@
+{
+  "_id": "PotionofMajorHea",
+  "name": "Potion of Major Healing",
+  "type": "gear",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "description": "<p>A deeper blue and larger flask than its weaker cousin, this alchemical concoction can close even grievous wounds.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [
+      {
+        "name": "Heal",
+        "powerLevel": 7
+      }
+    ],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "consumable",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "_id": "bJ35fvwl2FpbJc4C",
+  "name": "Ferocious Minions (I - III)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether you are a necromancer who summons hordes of undead, an inventor who crafts autonomous defense droids, or a psychic capable of bending others to your will, minions are exceptionally strong under your command.</p>",
+    "effect": "Creatures under the effects of your <em>charmed</em> or <em>dominated</em> banes, or those created by your invocation of the <em>summon creature</em> boon, gain advantage 1 on all attack rolls to protect you or act in your favor for each tier of this feat you possess.",
+    "special": "",
+    "tags": [
+      "Extraordinary",
+      "Influence"
+    ],
+    "cost": [
+      2,
+      2,
+      2
+    ],
+    "maxTier": 3,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "alteration",
+              "label": "Alteration",
+              "min": 4
+            },
+            {
+              "key": "creation",
+              "label": "Creation",
+              "min": 4
+            },
+            {
+              "key": "entropy",
+              "label": "Entropy",
+              "min": 4
+            },
+            {
+              "key": "energy",
+              "label": "Energy",
+              "min": 4
+            },
+            {
+              "key": "influence",
+              "label": "Influence",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "alteration",
+              "label": "Alteration",
+              "min": 5
+            },
+            {
+              "key": "creation",
+              "label": "Creation",
+              "min": 5
+            },
+            {
+              "key": "entropy",
+              "label": "Entropy",
+              "min": 5
+            },
+            {
+              "key": "energy",
+              "label": "Energy",
+              "min": 5
+            },
+            {
+              "key": "influence",
+              "label": "Influence",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "alteration",
+              "label": "Alteration",
+              "min": 7
+            },
+            {
+              "key": "creation",
+              "label": "Creation",
+              "min": 7
+            },
+            {
+              "key": "entropy",
+              "label": "Entropy",
+              "min": 7
+            },
+            {
+              "key": "energy",
+              "label": "Energy",
+              "min": 7
+            },
+            {
+              "key": "influence",
+              "label": "Influence",
+              "min": 7
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Ferocious Minions (I - III)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

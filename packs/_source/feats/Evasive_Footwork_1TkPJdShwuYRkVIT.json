@@ -1,0 +1,50 @@
+{
+  "_id": "1TkPJdShwuYRkVIT",
+  "name": "Evasive Footwork",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You are able to dodge and weave in combat, deftly sidestepping attacks that would threaten a clumsier combatant. An agile ninja who tumbles and flips around foes and an alien snake creature that slithers throughout the battlefield are both examples of this feat in play.</p>",
+    "effect": "When you move from a space adjacent to an enemy to another space not adjacent to that enemy, the enemy does not get the usual opportunity attack.",
+    "special": "",
+    "tags": [
+      "Agility"
+    ],
+    "cost": [
+      2
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Evasive Footwork"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

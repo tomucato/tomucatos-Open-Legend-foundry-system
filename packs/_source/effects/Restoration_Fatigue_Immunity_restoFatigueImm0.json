@@ -1,0 +1,36 @@
+{
+    "_id": "restoFatigueImm0",
+    "name": "Restoration Fatigue Immunity",
+    "type": "effect",
+    "img": "icons/svg/regen.svg",
+    "system": {
+        "description": "<p>A target may only benefit from one invocation of the restoration boon to remove fatigue within a 24 hour period.</p><p>Applied automatically when a Restoration reduces the Fatigued bane; while present, further Restorations leave Fatigued untouched. There is no automated timer — remove this effect manually once the 24 hours have passed.</p>"
+    },
+    "effects": [
+        {
+            "_id": "restoFatigueBlk0",
+            "name": "Restoration Fatigue Immunity",
+            "type": "base",
+            "img": "icons/svg/regen.svg",
+            "disabled": false,
+            "transfer": false,
+            "showIcon": 2,
+            "description": "<p>This character already benefited from a Restoration boon against Fatigued. They may not benefit from another for 24 hours. Remove this effect manually once the 24 hours have passed.</p>",
+            "system": {
+                "changes": []
+            },
+            "flags": {
+                "openlegend": {
+                    "blocksRestorationFatigue": true,
+                    "fromEffectItem": "Restoration Fatigue Immunity",
+                    "changeLevels": [],
+                    "changeModes": []
+                }
+            }
+        }
+    ],
+    "flags": {},
+    "_stats": {
+        "systemId": "tomucatos-open-legend-rpg-system"
+    }
+}

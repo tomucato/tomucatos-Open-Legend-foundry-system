@@ -1,0 +1,14 @@
+{
+  "_id": "0hiTmKFu7cj4WtAL",
+  "name": "Disease Immunity",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You are immune to natural disease. This protection does not guard against supernatural curses such as lycanthropy.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

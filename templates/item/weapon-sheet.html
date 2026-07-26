@@ -1,0 +1,120 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="header-fields">
+    <div class="gear-stat field-name">
+      <label>Name</label>
+      <input class="charname" name="name" type="text" value="{{item.name}}" placeholder="Weapon Name"/>
+    </div>
+    <div class="gear-stat field-base-type">
+      <label title="The compendium archetype this weapon is based on (e.g. Longsword, Shortbow). Leave blank for fully custom weapons.">Base Type</label>
+      <input type="text" name="system.baseType" value="{{system.baseType}}" placeholder="e.g. Longsword"/>
+    </div>
+    <div class="item-stats flexrow gear-stats">
+      <div class="gear-stat">
+        <label>Wealth Level</label>
+        <select name="system.wealthLevel" data-dtype="Number">
+          {{selectOptions wealthLevels selected=system.wealthLevel}}
+        </select>
+      </div>
+      <div class="gear-stat">
+        <label>Quantity</label>
+        <input type="number" min="0" step="1" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
+      </div>
+      {{#if system.rangeIncrement}}
+      <div class="gear-stat" title="Range increment in feet (derived from the ranged category).">
+        <label>Range</label>
+        <span class="weapon-range">{{system.rangeIncrement}} ft</span>
+      </div>
+      {{/if}}
+    </div>
+    <div class="item-stats flexrow gear-stats gear-flags">
+      <label class="gear-check">
+        <input type="checkbox" name="system.bulky" {{checked system.bulky}}/>
+        <span>Bulky</span>
+      </label>
+      <label class="gear-check">
+        <input type="checkbox" name="system.heavy" {{checked system.heavy}}/>
+        <span>Heavy</span>
+      </label>
+    </div>
+  </div>
+</header>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab stats {{tabs.stats.cssClass}}" data-group="primary" data-tab="stats">
+
+    <h3 class="bane-heading">Categories</h3>
+    <div class="weapon-categories">
+      {{#each categoryOptions as |cat|}}
+      <a class="weapon-cat {{#if cat.checked}}is-on{{/if}}" data-action="weaponToggleCategory" data-category="{{cat.key}}">
+        <i class="fas {{#if cat.checked}}fa-square-check{{else}}fa-square{{/if}}"></i>
+        {{cat.label}}{{#if cat.ranged}} <span class="cat-tag">ranged</span>{{/if}}
+      </a>
+      {{/each}}
+    </div>
+
+    <h3 class="bane-heading">Properties</h3>
+    <ol class="weapon-prop-list">
+      {{#each weaponProperties as |prop|}}
+      <li class="weapon-prop-row" data-property="{{prop.key}}">
+        <span class="weapon-prop-name">{{prop.label}}</span>
+        {{#if prop.valued}}
+        <input class="weapon-prop-value" type="number" min="0" step="1" value="{{prop.value}}"
+               data-prop-edit="{{prop.key}}" data-prop-field="value" title="Value (e.g. Defensive N)"/>
+        {{/if}}
+        {{#if prop.parameterized}}
+        <input class="weapon-prop-detail" type="text" value="{{prop.detail}}"
+               data-prop-edit="{{prop.key}}" data-prop-field="detail" placeholder="e.g. 10' cone"/>
+        {{/if}}
+        <a class="weapon-prop-remove" data-action="weaponRemoveProperty" data-property="{{prop.key}}" title="Remove">
+          <i class="fas fa-times"></i>
+        </a>
+      </li>
+      {{else}}
+      <li class="bane-empty">No properties.</li>
+      {{/each}}
+    </ol>
+    {{#if propertyChoices.length}}
+    <select class="weapon-add-property">
+      <option value="">+ Add a property…</option>
+      {{#each propertyChoices as |p|}}
+      <option value="{{p.key}}">{{p.label}}</option>
+      {{/each}}
+    </select>
+    {{/if}}
+
+    <h3 class="bane-heading">Banes</h3>
+    <p class="bane-hint">Banes this weapon is effective at inflicting (advantage 1, and power level treated as &minus;1 for prerequisites).</p>
+    <ul class="weapon-banes">
+      {{#each weaponBanes as |bane|}}
+      <li class="weapon-bane">
+        {{#if bane.uuid}}<a class="content-link" data-uuid="{{bane.uuid}}"><i class="fas fa-burst"></i> {{bane.name}}</a>
+        {{else}}<i class="fas fa-burst"></i> {{bane.name}}{{/if}}
+      </li>
+      {{else}}
+      <li class="bane-empty">None.</li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="tab extraordinary {{tabs.extraordinary.cssClass}}" data-group="primary" data-tab="extraordinary">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/extraordinary.hbs"}}
+  </div>
+
+  <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the wielder while this weapon is equipped."}}
+  </div>
+
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+  <div class="tab notes {{tabs.notes.cssClass}}" data-group="primary" data-tab="notes">
+    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedNotes}}}
+    </prose-mirror>
+  </div>
+</section>

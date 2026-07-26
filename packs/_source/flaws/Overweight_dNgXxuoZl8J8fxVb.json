@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxuoZl8J8fxVb",
+  "name": "Overweight",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You are carrying a few extra pounds, and they tend to get in the way at all the wrong times, such as when climbing a ladder or crossing a decrepit rope bridge.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

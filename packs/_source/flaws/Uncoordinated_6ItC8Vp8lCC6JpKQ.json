@@ -1,0 +1,14 @@
+{
+  "_id": "6ItC8Vp8lCC6JpKQ",
+  "name": "Uncoordinated",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>Your body just doesn't work well with itself. You have trouble balancing, catching, throwing, and performing similar physical tasks that require dexterity or nimbleness.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

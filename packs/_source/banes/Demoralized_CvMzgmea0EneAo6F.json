@@ -1,0 +1,157 @@
+{
+  "name": "Demoralized",
+  "type": "bane",
+  "_id": "CvMzgmea0EneAo6F",
+  "img": "icons/magic/control/fear-fright-mask-orange.webp",
+  "system": {
+    "description": "<p>Using your quick wit, intimidating presence, or even a strong display of magical power, you cause your enemies to doubt themselves. A berserker might achieve this effect by foaming at the mouth while a swashbuckling space captain might dishearten his foes simply with intimidating words.</p>",
+    "powerLevel": 3,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist (minor) ends (Fail x 3 = 1 minute)",
+    "tags": [
+      "Physical",
+      "Extraordinary"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Persuasion",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Presence",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 3,
+        "effect": "Disadvantage 1."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Disadvantage 2."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "Disadvantage 3."
+      }
+    ],
+    "failDuration": "1 minute",
+    "special": "Resisting this bane is a minor action.\nWhen inflicting this bane using Agility or Might, you may determine range using the Non-Physical Attack Range table (see Chapter 7: Combat).",
+    "gameEffects": [],
+    "effect": "<p>The affected target has disadvantage on all action rolls.</p>"
+  },
+  "effects": [
+    {
+      "name": "Demoralized",
+      "type": "base",
+      "img": "icons/magic/control/fear-fright-mask-orange.webp",
+      "disabled": false,
+      "transfer": false,
+      "flags": {
+        "openlegend": {
+          "changeLevels": [
+            3,
+            6,
+            8
+          ],
+          "powerLevel": 3,
+          "changeModes": [
+            "advdis",
+            "advdis",
+            "advdis"
+          ]
+        }
+      },
+      "_id": "mnfLFHrsoqBGCvok",
+      "system": {
+        "changes": [
+          {
+            "key": "allRolls",
+            "value": -1,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "allRolls",
+            "value": -2,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "allRolls",
+            "value": -3,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          }
+        ]
+      },
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "<p>Using your quick wit, intimidating presence, or even a strong display of magical power, you cause your enemies to doubt themselves. A berserker might achieve this effect by foaming at the mouth while a swashbuckling space captain might dishearten his foes simply with intimidating words.</p><p><br>The affected target has disadvantage on all action rolls.</p>",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "showIcon": 1,
+      "folder": null,
+      "sort": 0,
+      "_stats": {
+        "coreVersion": "14.363",
+        "systemId": "tomucatos-open-legend-rpg-system",
+        "systemVersion": "1.0.66",
+        "createdTime": 1781690978557,
+        "modifiedTime": 1781691082026,
+        "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      }
+    }
+  ],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781691114734,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

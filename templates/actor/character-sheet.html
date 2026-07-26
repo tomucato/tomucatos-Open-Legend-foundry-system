@@ -1,0 +1,343 @@
+{{#if companion.isCompanion}}
+<div class="ol-form-tier-bar ol-companion-tier-bar" title="Companion tier (governs this companion's attribute & feat-point budget, derived from the parent's level). Tier 1: 20 + 4/level attr, 0 feat. Tier 2: 20 + 4/level attr, 3 feat. Tier 3: 30 + 6/level attr, 3 feat (+ granted).{{#unless companion.parentLinked}} No parent linked.{{/unless}}">
+  <label><i class="fas fa-paw"></i> Companion Tier</label>
+  <select class="ol-companion-tier">
+    <option value="1" {{#if (eq companion.tier 1)}}selected{{/if}}>Tier 1 — 20+4/lvl attr, 0 feat</option>
+    <option value="2" {{#if (eq companion.tier 2)}}selected{{/if}}>Tier 2 — 20+4/lvl attr, 3 feat</option>
+    <option value="3" {{#if (eq companion.tier 3)}}selected{{/if}}>Tier 3 — 30+6/lvl attr, 3 feat + granted</option>
+  </select>
+</div>
+{{/if}}
+
+{{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/form-tabs.html"}}
+
+<header class="sheet-header">
+  <div class="portrait">
+    {{#if forms.isAlternate}}
+    <img class="profile-img" src="{{forms.activeImg}}" data-action="formEditPortrait" data-tooltip="This form's portrait (the main portrait is unchanged)" title="{{actor.name}}" height="100" width="100"/>
+    {{else}}
+    <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    {{/if}}
+    <a class="portrait-popout" data-action="imagePopout" data-tooltip="Show portrait full-size" aria-label="Show portrait full-size">
+      <i class="fas fa-expand"></i>
+    </a>
+  </div>
+  <div class="header-fields">
+    <div class="name-row">
+      <div class="field field-name">
+        <label>Name</label>
+        <input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/>
+      </div>
+      <div class="field field-archetype">
+        <label>Archetype</label>
+        <input type="text" name="system.archetype" value="{{system.archetype}}" placeholder="e.g. Warrior"/>
+      </div>
+    </div>
+
+    <div class="identity-fields">
+      <div class="field field-wealth">
+        <label>Wealth Level</label>
+        <select name="system.wealthLevel" data-dtype="Number">
+          {{selectOptions wealthLevels selected=system.wealthLevel}}
+        </select>
+      </div>
+      <div class="field field-level">
+        <label>Level</label>
+        <input type="text" name="system.level" value="{{system.level}}" data-dtype="Number"/>
+      </div>
+      {{#if companion.isCompanion}}
+      {{#if companion.canGrantFeats}}
+      <div class="field field-companion-granted" title="Tier 3: feat points the parent has granted to this companion (spent from the parent's own feat budget). These add to this companion's feat points and reduce the parent's.">
+        <label>Granted Feat Pts</label>
+        <input type="number" min="0" step="1" class="ol-companion-granted" value="{{companion.grantedFeatPoints}}" data-dtype="Number"/>
+      </div>
+      {{/if}}
+      {{/if}}
+      <div class="field field-xp">
+        <label>XP</label>
+        <input type="text" name="system.xp" value="{{system.xp}}" data-dtype="Number"/>
+      </div>
+      <div class="field field-legend">
+        <label>Legend Point</label>
+        <input type="number" min="0" max="10" step="1" name="system.legendPoint" value="{{system.legendPoint}}" data-dtype="Number"/>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="vitals stats-section">
+  <h3 class="vitals-title">Stats</h3>
+  <div class="vitals-row">
+    <div class="vital vital-health {{#if derived.lethalUnconscious}}is-lethal-out{{/if}}" title="Derived max: 10 + 2 × (Fortitude + Presence + Will). Lethal damage reduces the maximum.">
+      <label>Health</label>
+      <div class="vital-health-content">
+        <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+        <span class="sep">/</span>
+        <span class="derived">{{derived.healthMax}}</span>
+      </div>
+    </div>
+    <div class="vital vital-lethal-section {{#if derived.lethalUnconscious}}is-lethal-out{{/if}}" title="Lethal damage reduces your maximum HP by its amount. Type a value to set it. At lethal ≥ max you fall unconscious until at least 1 is healed.">
+      <label class="lethal-label">
+        <i class="fas fa-skull"></i> Lethal
+        {{#if derived.lethalUnconscious}}<span class="lethal-out-tag" title="Unconscious from lethal damage until at least 1 lethal HP is healed."><i class="fas fa-bed"></i> Unconscious</span>{{/if}}
+      </label>
+      <div class="vital-lethal-content">
+        <input type="text" class="lethal-input" name="system.health.lethal" value="{{system.health.lethal}}" data-dtype="Number"/>
+        {{#if derived.healthMaxBase}}<span class="sep">/</span><span class="lethal-max">{{derived.healthMaxBase}}</span>{{/if}}
+      </div>
+    </div>
+    <div class="vital vital-speed" title="Base speed; armor speed penalties and active-effect modifiers are applied to the effective value shown.">
+      <label>Speed <a class="defense-report" data-action="statReport" data-stat="speed" title="How is Speed calculated?"><i class="fas fa-circle-info"></i></a></label>
+      <div class="vital-speed-content">
+        <input type="text" name="system.speed.value" value="{{system.speed.value}}" data-dtype="Number"/>
+        {{#unless (eq derived.speed system.speed.value)}}
+        <span class="sep">&rarr;</span>
+        <span class="derived" title="Effective speed (base with penalties and active effects applied)">{{derived.speed}}</span>
+        {{/unless}}
+      </div>
+      {{#if derived.climbSpeed}}
+      <div class="vital-climb" title="Climb speed (Climbing feat): equal to your speed.">
+        <i class="fas fa-person-hiking"></i> Climb {{derived.climbSpeed}}
+      </div>
+      {{/if}}
+      {{#if derived.flySpeed}}
+      <div class="vital-climb" title="Fly speed (Flying feat): equal to your speed.">
+        <i class="fas fa-feather"></i> Fly {{derived.flySpeed}}
+      </div>
+      {{/if}}
+      {{#if derived.swimSpeed}}
+      <div class="vital-climb" title="Swim speed (Swimming feat): equal to your speed.">
+        <i class="fas fa-swimmer"></i> Swim {{derived.swimSpeed}}
+      </div>
+      {{/if}}
+    </div>
+    <div class="vital vital-initiative" title="Roll initiative for combat (1d20 + Agility dice)">
+      <label>Initiative <a class="defense-report" data-action="statReport" data-stat="initiative" title="How is Initiative calculated?"><i class="fas fa-circle-info"></i></a></label>
+      <a class="initiative-roll" data-action="initiativeRoll" role="button">
+        <i class="fas fa-dice-d20"></i>
+        <span class="derived">{{derived.initiative}}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="vitals defenses-section">
+  <h3 class="vitals-title">Defenses</h3>
+  <div class="defenses">
+    <div class="defense" title="Derived: 10 + Agility + Might (+ equipped armor)">
+      <label>Guard <a class="defense-report" data-action="statReport" data-stat="defense" data-key="guard" title="How is Guard calculated?"><i class="fas fa-circle-info"></i></a></label>
+      <span class="derived">{{derived.guard}}{{#if armorSummary.defenseBonus}} <span class="armor-mod">(+{{armorSummary.defenseBonus}})</span>{{/if}}</span>
+    </div>
+    <div class="defense" title="Derived: 10 + Fortitude + Will">
+      <label>Toughness <a class="defense-report" data-action="statReport" data-stat="defense" data-key="toughness" title="How is Toughness calculated?"><i class="fas fa-circle-info"></i></a></label>
+      <span class="derived">{{derived.toughness}}</span>
+    </div>
+    <div class="defense" title="Derived: 10 + Presence + Will">
+      <label>Resolve <a class="defense-report" data-action="statReport" data-stat="defense" data-key="resolve" title="How is Resolve calculated?"><i class="fas fa-circle-info"></i></a></label>
+      <span class="derived">{{derived.resolve}}</span>
+    </div>
+  </div>
+</section>
+
+<section class="vitals actions-section">
+  <h3 class="vitals-title">Actions</h3>
+  <div class="vitals-row">
+    {{#if forms.transform}}
+    <div class="vital vital-transform vital-small {{#if forms.preview}}is-preview{{/if}}" title="Active form: {{forms.activeName}}. Click to transform into {{forms.transform.targetName}} — swaps attributes, feats & actions (damage taken carries over) and applies that form's token image to your token.">
+      <label>Transform</label>
+      <a class="form-transform" data-action="formTransform" data-form-id="{{forms.transform.targetId}}" role="button">
+        <i class="fas fa-arrows-spin"></i>
+        <span>{{forms.activeName}}</span>
+      </a>
+    </div>
+    {{/if}}
+    <div class="vital vital-resist vital-small" title="Resist (shake off) your banes — 1d20, 10+ succeeds; a Potent bane rolls 2d20 and takes the lower. Drag to the hotbar for a macro.">
+      <label>Resist</label>
+      <a class="resist-banes" data-action="resistBanes" role="button" draggable="true">
+        <i class="fas fa-hand-fist"></i>
+        <span>Banes</span>
+      </a>
+    </div>
+    <div class="vital vital-rest vital-small" title="Rest to heal lethal damage — 1 HP/day per Fortitude point (min 1), plus a full-time attendant's best Creation, Presence, or Learning score.">
+      <label>Rest</label>
+      <a class="lethal-rest" data-action="lethalRest" role="button">
+        <i class="fas fa-bed"></i>
+        <span>Heal Lethal</span>
+      </a>
+    </div>
+    {{#if derived.hasHospitaler}}
+    <div class="vital vital-hospitaler vital-small" title="Hospitaler: a major action giving each targeted ally an immediate resist roll (free action for them) with advantage 1 — they roll 2d20 and keep the higher. Drag to the hotbar for a macro.">
+      <label>Hospitaler</label>
+      <a class="hospitaler-action" data-action="hospitaler" role="button" draggable="true">
+        <i class="fas fa-hand-holding-medical"></i>
+        <span>Aid Ally</span>
+      </a>
+    </div>
+    {{/if}}
+    {{#if derived.hasBattleTrance}}
+    <div class="vital vital-trance vital-small {{#if derived.battleTranceOn}}is-on{{/if}}" title="Battle Trance: while active, advantage 1 on attacks, +3 Toughness & Resolve, Guard armor bonus floored at 3. Click to {{#if derived.battleTranceOn}}deactivate{{else}}activate{{/if}}. Drag to the hotbar for a toggle macro.">
+      <label>Trance</label>
+      <a class="trance-action feat-toggle {{#if derived.battleTranceOn}}is-on{{/if}}" data-action="battleTranceToggle" role="button" draggable="true">
+        <i class="fas fa-fire-flame-curved"></i>
+        <span>{{#if derived.battleTranceOn}}On{{else}}Off{{/if}}</span>
+      </a>
+    </div>
+    {{/if}}
+    {{#if derived.hasRecklessAttack}}
+    <div class="vital vital-reckless vital-small {{#if derived.recklessReady}}is-on{{/if}}" title="Reckless Attack: while in a Battle Trance, suffer 5 HP of unmitigable self-damage to make an extra attack as a minor action. Click to do it; drag to the hotbar for a macro.">
+      <label>Reckless</label>
+      <a class="reckless-action" data-action="recklessAttack" role="button" draggable="true">
+        <i class="fas fa-burst"></i>
+        <span>Attack</span>
+      </a>
+    </div>
+    {{/if}}
+    {{#if companions.show}}
+    {{#each companions.list as |comp|}}
+    <div class="vital vital-companion vital-small" title="Open {{comp.name}}'s sheet.">
+      <label>Companion</label>
+      <a class="companion-view" data-action="viewCompanion" data-companion-uuid="{{comp.uuid}}" role="button">
+        <i class="fas fa-paw"></i>
+        <span>{{comp.name}}</span>
+      </a>
+    </div>
+    {{/each}}
+    {{/if}}
+  </div>
+</section>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab attributes {{tabs.attributes.cssClass}}" data-group="primary" data-tab="attributes">
+    {{#if creation}}
+    <div class="creation-budget {{#if creation.over}}over-budget{{/if}}">
+      {{#if creation.altFormTier}}
+      <span title="Allowance derived from your Main form (Alternate Form Tier {{creation.altFormTier}}).">Attribute Points (Alt. Form T{{creation.altFormTier}}):</span>
+      {{else if creation.companionTier}}
+      <span title="Companion allowance (Tier {{creation.companionTier}}): 20 + 4/level at Tier 1–2, 30 + 6/level at Tier 3, from the parent's level.">Attribute Points (Companion T{{creation.companionTier}}):</span>
+      {{else}}
+      <span>Attribute Points (Lvl {{creation.level}}):</span>
+      {{/if}}
+      <strong>{{creation.attributeSpent}}</strong> / {{creation.attributeMax}}
+      <span class="remaining">({{creation.attributeRemaining}} remaining)</span>
+    </div>
+    {{/if}}
+
+    <div class="attribute-categories">
+      {{#each attributeGroups as |group|}}
+      <div class="attribute-category category-{{group.key}}">
+        <h3 class="category-label">{{group.label}}</h3>
+        {{#each group.attributes as |attr|}}
+        {{#if attr.substituted}}
+        <div class="attribute flexrow attribute-substituted" title="Attribute Substitution: uses {{attr.substitutionPrimaryLabel}} ({{attr.value}}) in place of {{attr.label}}. This is the value the sheet uses; roll your own {{attr.label}} from the row above.">
+          <a class="attribute-roll" data-action="attributeRoll" data-attribute="{{attr.key}}" data-substituted="true" draggable="true" title="Roll {{attr.label}} as substituted (1d20{{#if attr.dice}} + {{attr.dice}}{{/if}}). Drag to the hotbar for a macro.">
+            <i class="fas fa-dice-d20"></i> {{attr.label}}
+          </a>
+          <a class="defense-report attribute-report" data-action="statReport" data-stat="attribute" data-key="{{attr.key}}" title="How is {{attr.label}} calculated?"><i class="fas fa-circle-info"></i></a>
+          <span class="attribute-dice" title="Bonus dice from the substituted score">{{#if attr.dice}}{{attr.dice}}{{else}}&mdash;{{/if}}</span>
+          <span class="attribute-cost attribute-cost-none" title="Granted by Attribute Substitution — no points">&mdash;</span>
+          <span class="attribute-value attribute-value-locked" title="Substituted from {{attr.substitutionPrimaryLabel}}"><i class="fas fa-link"></i> {{attr.value}}</span>
+        </div>
+        {{else}}
+        <div class="attribute flexrow">
+          <a class="attribute-roll" data-action="attributeRoll" data-attribute="{{attr.key}}" draggable="true" title="Roll {{attr.label}} (1d20{{#if attr.dice}} + {{attr.dice}}{{/if}}). Drag to the hotbar for a macro.">
+            <i class="fas fa-dice-d20"></i> {{attr.label}}
+          </a>
+          <a class="defense-report attribute-report" data-action="statReport" data-stat="attribute" data-key="{{attr.key}}" title="How is {{attr.label}} calculated?"><i class="fas fa-circle-info"></i></a>
+          <span class="attribute-dice" title="Bonus dice granted by this attribute score">{{#if attr.dice}}{{attr.dice}}{{else}}&mdash;{{/if}}</span>
+          <span class="attribute-cost" title="Attribute points spent to reach this score">{{attr.cost}}p</span>
+          <input type="number" min="0" max="10" step="1" name="system.attributes.{{attr.key}}.value" value="{{attr.value}}" data-dtype="Number"/>
+        </div>
+        {{/if}}
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/item-attributes.hbs"}}
+  </div>
+
+  <div class="tab biography {{tabs.biography.cssClass}}" data-group="primary" data-tab="biography">
+
+    <div class="features-columns">
+      <div class="feature-block">
+        <h3 class="feature-heading">Perks <span class="feature-count">{{perks.length}}/{{perkPicker.max}}</span></h3>
+        <div class="feature-picker">
+          {{#if perkPicker.atMax}}
+          <span class="feature-maxed">Maximum perks reached.</span>
+          {{else}}
+          <select class="feature-add" data-type="perk">
+            <option value="">+ Add a perk…</option>
+            {{#each perkPicker.options as |opt|}}
+            <option value="{{opt.uuid}}">{{opt.name}}</option>
+            {{/each}}
+          </select>
+          {{/if}}
+        </div>
+        <ol class="feature-list">
+          {{#each perks as |item|}}
+          <li class="feature-item" data-item-id="{{item.id}}">
+            <div class="feature-item-header">
+              <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
+              <h4 class="feature-name">{{item.name}}</h4>
+              <a class="item-control item-delete" data-action="itemDelete" title="Remove"><i class="fas fa-trash"></i></a>
+            </div>
+            <div class="feature-desc">{{{item.system.description}}}</div>
+          </li>
+          {{else}}
+          <li class="feature-empty">No perks selected.</li>
+          {{/each}}
+        </ol>
+      </div>
+
+      <div class="feature-block">
+        <h3 class="feature-heading">Flaws <span class="feature-count">{{flaws.length}}/{{flawPicker.max}}</span></h3>
+        <div class="feature-picker">
+          {{#if flawPicker.atMax}}
+          <span class="feature-maxed">Maximum flaws reached.</span>
+          {{else}}
+          <select class="feature-add" data-type="flaw">
+            <option value="">+ Add a flaw…</option>
+            {{#each flawPicker.options as |opt|}}
+            <option value="{{opt.uuid}}">{{opt.name}}</option>
+            {{/each}}
+          </select>
+          {{/if}}
+        </div>
+        <ol class="feature-list">
+          {{#each flaws as |item|}}
+          <li class="feature-item" data-item-id="{{item.id}}">
+            <div class="feature-item-header">
+              <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
+              <h4 class="feature-name">{{item.name}}</h4>
+              <a class="item-control item-delete" data-action="itemDelete" title="Remove"><i class="fas fa-trash"></i></a>
+            </div>
+            <div class="feature-desc">{{{item.system.description}}}</div>
+          </li>
+          {{else}}
+          <li class="feature-empty">No flaws selected.</li>
+          {{/each}}
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="bio-heading">Description</h3>
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+
+    <h3 class="bio-heading">Notes</h3>
+    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedNotes}}}
+    </prose-mirror>
+  </div>
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/actions.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/feats.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/inventory.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/effects.html"}}
+</section>

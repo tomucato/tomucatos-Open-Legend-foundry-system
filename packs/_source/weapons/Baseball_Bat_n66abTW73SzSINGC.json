@@ -1,0 +1,39 @@
+{
+  "_id": "n66abTW73SzSINGC",
+  "name": "Baseball Bat",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>One-handed Melee. Forceful.</p>",
+    "notes": "",
+    "wealthLevel": 1,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Baseball Bat",
+    "categories": [
+      "one-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Knockdown",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fPzhkCAYAcXa3jZK"
+      },
+      {
+        "name": "Stunned",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.6zMaRlj9qZbnt3Sx"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

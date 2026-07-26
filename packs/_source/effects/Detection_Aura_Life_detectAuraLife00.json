@@ -1,0 +1,36 @@
+{
+    "_id": "detectAuraLife00",
+    "name": "Detection Aura (Life)",
+    "type": "effect",
+    "img": "icons/svg/heal.svg",
+    "system": {
+        "description": "<p>GM marker: this creature or object radiates <strong>Life</strong>. Drop it on a token to mark it.</p><p>The marker shows no icon to players. It appears as a colored glow around the token \u2014 visible to the GM, and to any player whose character bears a Detection (Life) boon.</p>"
+    },
+    "effects": [
+        {
+            "_id": "detectEffLife000",
+            "name": "Detection Aura (Life)",
+            "type": "base",
+            "img": "icons/svg/heal.svg",
+            "disabled": false,
+            "transfer": false,
+            "showIcon": 0,
+            "description": "<p>Radiates Life. Perceived only through the Detection (Life) boon (or by the GM).</p>",
+            "system": {
+                "changes": []
+            },
+            "flags": {
+                "openlegend": {
+                    "detectionAura": "life",
+                    "fromEffectItem": "Detection Aura (Life)",
+                    "changeLevels": [],
+                    "changeModes": []
+                }
+            }
+        }
+    ],
+    "flags": {},
+    "_stats": {
+        "systemId": "tomucatos-open-legend-rpg-system"
+    }
+}

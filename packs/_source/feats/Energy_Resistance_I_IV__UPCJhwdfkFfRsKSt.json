@@ -1,0 +1,77 @@
+{
+  "_id": "UPCJhwdfkFfRsKSt",
+  "name": "Energy Resistance (I - IV)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether due to inherited racial traits, specialization in a particular type of energy, or inherent extraordinary protection, you are resistant to a specific type of energy. A fiery sorceress immune to the hottest blaze or a biologically anomalous alien race that is immune to poison are both examples of this feat in play.</p>",
+    "effect": "Choose from the following energy types: fire, cold, lightning, acid, poison, or another at the GM's discretion. When you are attacked with that energy type, you gain resistance to the attack as follows:\n<ul>\n<li><strong>Tier 1</strong> - Your defense scores are increased by 3 against the chosen energy type.</li>\n<li><strong>Tier 2</strong> - Your defense scores are increased by 6 against the chosen energy type.</li>\n<li><strong>Tier 3</strong> - Your defense scores are increased by 9 against the chosen energy type.</li>\n<li><strong>Tier 4</strong> - You are immune to damage and harmful effects from the chosen energy type.</li>\n</ul>",
+    "special": "In addition to purchasing multiple tiers of this feat, you may take this feat multiple times and select a new energy type each time.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "cost": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "maxTier": 4,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "energy",
+      "label": "Energy type",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Energy Resistance (I - IV)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

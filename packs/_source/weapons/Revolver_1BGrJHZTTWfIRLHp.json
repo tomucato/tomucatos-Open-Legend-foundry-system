@@ -1,0 +1,39 @@
+{
+  "_id": "1BGrJHZTTWfIRLHp",
+  "name": "Revolver",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Short Ranged. Precise.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Revolver",
+    "categories": [
+      "short-ranged"
+    ],
+    "rangeIncrement": 50,
+    "properties": [
+      {
+        "key": "precise"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Slowed",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.ipAMcs3EAqMXErIq"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

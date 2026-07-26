@@ -1,0 +1,79 @@
+{
+  "name": "Disarmed",
+  "type": "bane",
+  "_id": "XlrDtRx6fM6z0tNr",
+  "img": "icons/skills/melee/sword-damaged-broken-glow-red.webp",
+  "system": {
+    "description": "<p>You force an opponent to lose control of an object they are holding, whether through brute force, mental compulsion, a skillful parry, heating the item to unbearable temperatures, shooting it from their hands, or some other means.</p>",
+    "powerLevel": 3,
+    "invocationTime": "1 Major Action",
+    "duration": "Instantaneous",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Alteration",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Movement",
+        "defense": "Guard"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 3,
+        "effect": "The target drops an object they are holding in a space of your choosing within 15' of the target."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "As an alternative to moving the item, you can choose to assume control of it. If you do, you are now the wielder. For the wielder to regain control, they can react with a Disarmed bane of their own to counter the effect or make an attribute roll (typically Might) with a Challenge Rating equal to 10 + 2 x the attribute score you used to disarm the item."
+      }
+    ],
+    "failDuration": "",
+    "special": "",
+    "gameEffects": [],
+    "effect": ""
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781691237853,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

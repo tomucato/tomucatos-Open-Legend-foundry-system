@@ -1,0 +1,15 @@
+{
+    "_id": "resistAllTokens0",
+    "name": "Resist All (Group)",
+    "type": "script",
+    "author": null,
+    "img": "icons/svg/shield.svg",
+    "scope": "global",
+    "command": "// Open Legend Unofficial \u2014 Resist All\n// Choose the tokens (all targeted or all selected), then every creature rolls to shake off EVERY bane on it (1d20 per bane, 10+ removes; Potent -1, Resilient +1; Fatigued excluded).\nconst { DialogV2 } = foundry.applications.api;\nconst ol = game.openlegend;\nif ( !ol?.groupResistBanes ) {\n  ui.notifications?.error(\"Open Legend Unofficial group helpers are unavailable.\");\n  return;\n}\nconst selectedCount = canvas.tokens?.controlled?.length ?? 0;\nconst targetedCount = game.user?.targets?.size ?? 0;\nif ( !selectedCount && !targetedCount ) {\n  ui.notifications?.warn(\"Select or target one or more tokens first, then run this macro.\");\n  return;\n}\nconst mode = await DialogV2.wait({\n  window: { title: \"Resist All\" },\n  classes: [\"openlegend\"],\n  content: `\n    <div class=\"form-group\">\n      <label>Apply to</label>\n      <select name=\"mode\" style=\"flex:1;\" autofocus>\n        <option value=\"targeted\"${targetedCount ? \"\" : \" disabled\"}>All targeted tokens (${targetedCount})</option>\n        <option value=\"selected\"${selectedCount ? \"\" : \" disabled\"}${targetedCount ? \"\" : \" selected\"}>All selected tokens (${selectedCount})</option>\n      </select>\n    </div>`,\n  rejectClose: false,\n  buttons: [\n    { action: \"go\", label: \"Resist All\", icon: \"fas fa-shield-halved\", default: true,\n      callback: (event, button, dialog) => dialog.element.querySelector('select[name=\"mode\"]')?.value ?? \"targeted\" },\n    { action: \"cancel\", label: \"Cancel\", icon: \"fas fa-times\" }\n  ]\n});\nif ( (mode !== \"targeted\") && (mode !== \"selected\") ) return;\nconst tokens = (mode === \"selected\")\n  ? (canvas.tokens?.controlled ?? [])\n  : [...(game.user?.targets ?? [])];\nif ( !tokens.length ) {\n  ui.notifications?.warn(mode === \"selected\"\n    ? \"No tokens are selected.\"\n    : \"No tokens are targeted.\");\n  return;\n}\nawait ol.groupResistBanes(tokens);\n",
+    "folder": null,
+    "ownership": {
+        "default": 0
+    },
+    "flags": {},
+    "_stats": {}
+}

@@ -1,0 +1,36 @@
+{
+    "_id": "detectAuraUnhol0",
+    "name": "Detection Aura (Unholy)",
+    "type": "effect",
+    "img": "icons/svg/eye.svg",
+    "system": {
+        "description": "<p>GM marker: this creature or object radiates <strong>Unholy</strong>. Drop it on a token to mark it.</p><p>The marker shows no icon to players. It appears as a colored glow around the token \u2014 visible to the GM, and to any player whose character bears a Detection (Unholy) boon.</p>"
+    },
+    "effects": [
+        {
+            "_id": "detectEffUnholy0",
+            "name": "Detection Aura (Unholy)",
+            "type": "base",
+            "img": "icons/svg/eye.svg",
+            "disabled": false,
+            "transfer": false,
+            "showIcon": 0,
+            "description": "<p>Radiates Unholy. Perceived only through the Detection (Unholy) boon (or by the GM).</p>",
+            "system": {
+                "changes": []
+            },
+            "flags": {
+                "openlegend": {
+                    "detectionAura": "unholy",
+                    "fromEffectItem": "Detection Aura (Unholy)",
+                    "changeLevels": [],
+                    "changeModes": []
+                }
+            }
+        }
+    ],
+    "flags": {},
+    "_stats": {
+        "systemId": "tomucatos-open-legend-rpg-system"
+    }
+}

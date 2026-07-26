@@ -1,0 +1,91 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="header-fields">
+    <div class="gear-stat field-name">
+      <label>Name</label>
+      <input class="charname" name="name" type="text" value="{{item.name}}" placeholder="Boon Name"/>
+    </div>
+    <div class="item-stats flexrow gear-stats">
+      <div class="gear-stat">
+        <label>Power Level</label>
+        <input type="number" min="0" step="1" name="system.powerLevel" value="{{system.powerLevel}}" data-dtype="Number"/>
+      </div>
+      <div class="gear-stat">
+        <label>Invocation Time</label>
+        <input type="text" name="system.invocationTime" value="{{system.invocationTime}}"/>
+      </div>
+    </div>
+    <div class="item-stats flexrow gear-stats bane-duration-row">
+      <div class="gear-stat">
+        <label>Duration</label>
+        <input type="text" name="system.duration" value="{{system.duration}}"/>
+      </div>
+    </div>
+  </div>
+</header>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab details {{tabs.details.cssClass}}" data-group="primary" data-tab="details">
+
+    {{#if system.tags.length}}
+    <div class="bane-tags">
+      {{#each system.tags as |tag|}}<span class="bane-tag">{{tag}}</span>{{/each}}
+    </div>
+    {{/if}}
+
+    <div class="bane-section-head">
+      <h3 class="bane-heading">Invoking Attributes</h3>
+      {{#if editable}}<a class="bane-row-add" data-action="attributeAdd" title="Add Attribute"><i class="fas fa-plus"></i> Add Attribute</a>{{/if}}
+    </div>
+    <ol class="bane-attacks-edit">
+      {{#each attributesRaw as |attr|}}
+      <li class="bane-attr-erow" data-index="{{attr.index}}">
+        <select name="system.attributes.{{attr.index}}" {{#unless ../editable}}disabled{{/unless}}>
+          {{selectOptions ../attackAttributeOptions selected=attr.value}}
+        </select>
+        {{#if ../editable}}<a class="bane-row-del" data-action="attributeDelete" title="Remove"><i class="fas fa-trash"></i></a>{{/if}}
+      </li>
+      {{else}}
+      <li class="bane-empty">No invoking attributes listed.</li>
+      {{/each}}
+    </ol>
+    <p class="bane-hint">A boon is invoked by beating its Challenge Rating (10 + 2&times;PL) with an action roll using one of these attributes.</p>
+
+    <h3 class="bane-heading">Description</h3>
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+
+  <div class="tab powerEffects {{tabs.powerEffects.cssClass}}" data-group="primary" data-tab="powerEffects">
+    <h3 class="bane-heading">Effect</h3>
+    <prose-mirror name="system.effect" value="{{system.effect}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedEffect}}}
+    </prose-mirror>
+
+    <div class="bane-section-head">
+      <h3 class="bane-heading">Effects by Power Level</h3>
+      {{#if editable}}<a class="bane-row-add" data-action="powerEffectAdd" title="Add Power Level"><i class="fas fa-plus"></i> Add Level</a>{{/if}}
+    </div>
+    <ol class="bane-power-edit">
+      {{#each powerEffectsRaw as |pe|}}
+      <li class="bane-power-erow" data-index="{{pe.index}}">
+        <div class="bane-pl-field">
+          <label>PL</label>
+          <input type="number" min="0" step="1" name="system.powerEffects.{{pe.index}}.powerLevel" value="{{pe.powerLevel}}" data-dtype="Number" {{#unless ../editable}}disabled{{/unless}}/>
+        </div>
+        <textarea class="bane-pl-text" name="system.powerEffects.{{pe.index}}.effect" rows="2" {{#unless ../editable}}disabled{{/unless}}>{{pe.effect}}</textarea>
+        {{#if ../editable}}<a class="bane-row-del" data-action="powerEffectDelete" title="Remove"><i class="fas fa-trash"></i></a>{{/if}}
+      </li>
+      {{else}}
+      <li class="bane-empty">No power-level breakdown.</li>
+      {{/each}}
+    </ol>
+  </div>
+
+  <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the target when this boon is dragged onto a token, scaled to the granted power level (each change row activates at its PL)."}}
+  </div>
+</section>

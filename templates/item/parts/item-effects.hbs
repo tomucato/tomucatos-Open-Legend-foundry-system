@@ -1,0 +1,39 @@
+{{!--
+  Shared "Effects" tab body: the item's embedded Active Effects, with controls to
+  add / edit / toggle / delete. Used by bane/boon (cloned onto a token on drop,
+  scaled to power level) and by physical items (weapon/armor/gear — transferred to
+  the wielder while active). Expects `effectRows` (from _prepareItemEffects),
+  `editable`, and an optional `effectsHint` line.
+--}}
+<div class="bane-ae-header">
+  <p class="bane-hint">{{#if effectsHint}}{{effectsHint}}{{else}}These Active Effects are applied to the target when this item is used.{{/if}}</p>
+  {{#if editable}}
+  <a class="bane-ae-add" data-action="effectCreate" title="Add Effect"><i class="fas fa-plus"></i> Add Effect</a>
+  {{/if}}
+</div>
+<ol class="bane-ae-list">
+  {{#each effectRows as |ae|}}
+  <li class="bane-ae-row {{#if ae.disabled}}is-disabled{{/if}}" data-effect-id="{{ae.id}}">
+    <img class="bane-ae-img" src="{{ae.img}}" alt=""/>
+    <div class="bane-ae-main">
+      <span class="bane-ae-name">{{ae.name}}{{#if ae.disabled}} (disabled){{/if}}</span>
+      {{#if ae.changes.length}}
+      <ul class="bane-ae-changes">
+        {{#each ae.changes as |ch|}}
+        <li>{{#if ch.level}}<span class="bane-pl">PL {{ch.level}}</span> {{/if}}{{ch.label}}: {{ch.value}}</li>
+        {{/each}}
+      </ul>
+      {{else}}
+      <span class="bane-ae-desc">Descriptive marker — no automated changes.</span>
+      {{/if}}
+    </div>
+    <div class="bane-ae-controls">
+      <a data-action="effectEdit" title="Edit Effect"><i class="fas fa-edit"></i></a>
+      <a data-action="effectToggle" title="{{#if ae.disabled}}Enable{{else}}Disable{{/if}}"><i class="fas fa-power-off"></i></a>
+      <a data-action="effectDelete" title="Delete Effect"><i class="fas fa-trash"></i></a>
+    </div>
+  </li>
+  {{else}}
+  <li class="bane-empty">No effects yet.</li>
+  {{/each}}
+</ol>

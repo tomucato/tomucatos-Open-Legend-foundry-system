@@ -1,0 +1,38 @@
+{
+  "_id": "ExplsvAmmo000001",
+  "name": "Explosive Ammo",
+  "type": "gear",
+  "img": "icons/svg/explosion.svg",
+  "system": {
+    "description": "<p>These special incendiary rounds ignite on impact, wreathing your quarry in a gout of flame.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Persistent Damage",
+        "powerLevel": 4
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "augmenting",
+        "value": ""
+      },
+      {
+        "name": "expendable",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "Forced Move",
+  "type": "bane",
+  "_id": "qd3yKo9xnX1xXS6L",
+  "img": "icons/skills/movement/arrow-upward-yellow.webp",
+  "system": {
+    "description": "<p>With a forceful blow, magical gust of wind, or telekinetic push, you move your target against its will. This bane is favored among ogres, telekinetisists, wind mages, super soldiers, and other characters built to reshape the battlefield to their advantage.</p>",
+    "powerLevel": 2,
+    "invocationTime": "1 Major Action",
+    "duration": "Instantaneous",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Movement",
+        "defense": "Guard"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 2,
+        "effect": "The target is moved 5'."
+      },
+      {
+        "powerLevel": 4,
+        "effect": "The target is moved 10'."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "The target is moved 15'."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "The target is moved 20'."
+      }
+    ],
+    "failDuration": "",
+    "special": "",
+    "gameEffects": [],
+    "effect": "<p>The target is moved a distance against their will, as determined by the bane's power level. The ending location is chosen by the attacker.</p>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781692097198,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

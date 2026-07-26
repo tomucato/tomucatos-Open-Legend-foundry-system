@@ -1,0 +1,14 @@
+{
+  "_id": "6ItC8PFwV5tAjAeS",
+  "name": "Absent-minded",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>Your live with your head in the clouds. You might just be ditzy, or maybe you just spend your time contemplating loftier matters. Whatever the source of your absent-mindedness, you are slow to notice important details and have a tendency to get distracted at exactly the worst possible moment.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

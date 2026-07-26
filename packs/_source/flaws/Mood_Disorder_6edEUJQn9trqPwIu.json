@@ -1,0 +1,14 @@
+{
+  "_id": "6edEUJQn9trqPwIu",
+  "name": "Mood Disorder",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You suffer from a psychological condition that directly affects your mood, such as depression or anxiety. You get to to determine the nature and severity of your mood disorder.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

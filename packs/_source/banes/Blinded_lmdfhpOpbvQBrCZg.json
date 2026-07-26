@@ -1,0 +1,111 @@
+{
+  "name": "Blinded",
+  "type": "bane",
+  "_id": "lmdfhpOpbvQBrCZg",
+  "img": "icons/magic/control/hypnosis-mesmerism-eye-tan.webp",
+  "system": {
+    "description": "<p>You blind your foe with anything from a massive explosion, to a handful of sand, to an arctic blast, to a dazzling flash of light. Pirates, snipers, rogues, and necromancers often make use of this bane in combat.</p>",
+    "powerLevel": 5,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends ",
+    "tags": [],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Creation",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Guard"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "Fail x 3 = 1 minute",
+    "special": "",
+    "gameEffects": [],
+    "effect": "<p>The target cannot see as long as the effect persists. The target automatically fails any Perception rolls based solely on normal sight. Attack rolls and Perception rolls based partially on sight that can be supplemented by another sense suffer disadvantage 5. The target's Guard defense is reduced by 3.</p>"
+  },
+  "effects": [
+    {
+      "name": "Blinded",
+      "type": "base",
+      "img": "icons/magic/control/hypnosis-mesmerism-eye-tan.webp",
+      "disabled": false,
+      "transfer": false,
+      "flags": {
+        "openlegend": {
+          "changeLevels": [
+            5
+          ],
+          "powerLevel": 5,
+          "changeModes": [
+            "flat"
+          ]
+        }
+      },
+      "_id": "XxLNFvXFlbC4UYeP",
+      "system": {
+        "changes": [
+          {
+            "key": "guard",
+            "value": -3,
+            "type": "add",
+            "phase": "final",
+            "priority": null
+          }
+        ]
+      },
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "<p>The target cannot see as long as the effect persists. The target automatically fails any Perception rolls based solely on normal sight. Attack rolls and Perception rolls based partially on sight that can be supplemented by another sense suffer disadvantage 5. The target's Guard defense is reduced by 3.</p>",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "showIcon": 1,
+      "folder": null,
+      "sort": 0,
+      "_stats": {
+        "coreVersion": "14.363",
+        "systemId": "tomucatos-open-legend-rpg-system",
+        "systemVersion": "1.0.66",
+        "createdTime": 1781688713053,
+        "modifiedTime": 1781688779590,
+        "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      }
+    }
+  ],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781688267868,
+    "modifiedTime": 1781688932205,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

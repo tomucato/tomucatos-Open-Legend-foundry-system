@@ -1,0 +1,115 @@
+{
+  "name": "Knockdown",
+  "type": "bane",
+  "_id": "xtgK8h0Sdp420ovP",
+  "img": "icons/magic/control/silhouette-fall-slip-prone.webp",
+  "system": {
+    "description": "<p>Whether via a thunderous blow from a great axe, an earth shattering bolt of supernatural energy, or a well aimed shove in a direction where the enemy's balance is weak, you knock the target off their feet. Knockdown is a favorite of hulking brutes, telekinetisists, martial artists, and earth elementalists.</p>",
+    "powerLevel": 1,
+    "invocationTime": "1 Major Action",
+    "duration": "Instantaneous",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Movement",
+        "defense": "Guard"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "",
+    "special": "",
+    "gameEffects": [],
+    "effect": "The target falls prone. Prone targets have disadvantage 1 on all attacks they make. Characters that are prone due to the <em>knockdown</em> bane (or any other reason) get +2 to Guard versus Ranged attacks and -2 Guard versus Melee attacks. Standing up from prone requires a move action and costs a character half (round down) of their speed for the round."
+  },
+  "effects": [
+    {
+      "name": "Knockdown",
+      "type": "base",
+      "img": "icons/magic/control/silhouette-fall-slip-prone.webp",
+      "disabled": false,
+      "transfer": false,
+      "flags": {
+        "openlegend": {
+          "changeLevels": [
+            1
+          ],
+          "stacking": false,
+          "powerLevel": 1,
+          "changeModes": [
+            "advdis"
+          ]
+        }
+      },
+      "_id": "VbxXQc76p6SJwoPG",
+      "system": {
+        "changes": [
+          {
+            "key": "allAttacks",
+            "value": -1,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          }
+        ]
+      },
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "<p>The target falls prone. Prone targets have disadvantage 1 on all attacks they make. Characters that are prone due to the knockdown bane (or any other reason) get +2 to Guard versus Ranged attacks and -2 Guard versus Melee attacks. Standing up from prone requires a move action and costs a character half (round down) of their speed for the round.</p>",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "showIcon": 1,
+      "folder": null,
+      "sort": 0,
+      "_stats": {
+        "coreVersion": "14.363",
+        "systemId": "tomucatos-open-legend-rpg-system",
+        "systemVersion": "1.0.66",
+        "createdTime": 1781692882587,
+        "modifiedTime": 1781692926887,
+        "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      }
+    }
+  ],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781692866441,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "name": "Stunned",
+  "type": "bane",
+  "_id": "huGJAQ0yYsdRVmQA",
+  "img": "icons/magic/control/debuff-chains-orb-movement-blue.webp",
+  "system": {
+    "description": "<p>You disorient the target's senses, causing them to act much less efficiently. Stunning an enemy can be caused by attacks such as a pistol whip to the back of the head, a kick in the groin, and a deafening thunderclap.</p>",
+    "powerLevel": 4,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (Fail x 3 = 1 minute)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Toughness"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "1 minute",
+    "special": "This bane has special rules for boss NPCs (See Chapter 8: Running the Game). A boss is only affected by the stunned bane during its normal initiative turn. It may still take all of its boss actions as usual.",
+    "gameEffects": [],
+    "effect": "During the target's turn, they are limited to either a single major action, a single move action, or a single minor action. Effects that grant additional actions do not circumvent this unless they grant a free action. Note that a target expending its move action to resist this bane will receive the remainder of their usual actions if the resist roll succeeds."
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781694966108,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

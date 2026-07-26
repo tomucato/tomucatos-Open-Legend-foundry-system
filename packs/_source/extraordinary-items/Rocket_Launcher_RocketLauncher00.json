@@ -1,0 +1,83 @@
+{
+  "_id": "RocketLauncher00",
+  "name": "Rocket Launcher",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Whether outfitted on a mech unit or launched via a soldier's shoulder mount, this anti-air and anti-tank missile can stop just about anything.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": true,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Persistent Damage",
+        "powerLevel": 0
+      },
+      {
+        "name": "Stunned",
+        "powerLevel": 0
+      },
+      {
+        "name": "Forced Move",
+        "powerLevel": 0
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "deadly",
+        "value": 2
+      },
+      {
+        "name": "expendable",
+        "value": ""
+      },
+      {
+        "name": "special",
+        "value": "This is an Extreme Ranged weapon with the Precise, Delayed Ready, Heavy, Area (15' cube) properties, and the Persistent Damage, Stunned, and Forced Move banes. The expendable property applies to the ammo. Each shot uses a single extraordinary item."
+      }
+    ],
+    "baseType": "Cannon",
+    "categories": [
+      "extreme-ranged"
+    ],
+    "rangeIncrement": 300,
+    "properties": [
+      {
+        "key": "precise"
+      },
+      {
+        "key": "delayed-ready"
+      },
+      {
+        "key": "heavy"
+      },
+      {
+        "key": "area",
+        "detail": "15' cube"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage"
+      },
+      {
+        "name": "Stunned"
+      },
+      {
+        "name": "Forced Move"
+      }
+    ],
+    "equipped": false,
+    "equipHands": 2
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

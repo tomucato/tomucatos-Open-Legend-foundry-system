@@ -1,0 +1,64 @@
+{
+  "_id": "DPtCXzfuACf9bSzM",
+  "name": "Battlefield Retribution",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You are a master of the counter attack. This might take the form of deftly redirecting a strike back upon the attacker or even energetic feedback from an extraordinary barrier that damages the attacker. Your prowess on the battlefield allows you to not only intercept attacks but also decimate your foes with retributive damage.</p>",
+    "effect": "When you use the defend interrupt action, you also deal damage to the attacker equal to the amount by which your action roll exceeds the attacker's roll.",
+    "special": "",
+    "tags": [
+      "Might",
+      "Agility",
+      "Extraordinary",
+      "Passive",
+      "Combat"
+    ],
+    "cost": [
+      2
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 4
+            },
+            {
+              "key": "any extraordinary",
+              "label": "Any Extraordinary",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Battlefield Retribution"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

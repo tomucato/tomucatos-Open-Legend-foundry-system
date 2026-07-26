@@ -1,0 +1,55 @@
+{
+  "_id": "UoDkZ2SsvbZEJ3Qs",
+  "name": "Alternate Form (I - II)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You have the ability to transform from one persona to another, whether that be through bodily transformation like a werewolf or through exterior mechanisms, such as a cybernetically enhanced soldier who can call forth a symbiotic mech suit.</p>",
+    "effect": "Upon taking this feat, you build a single alternate form using the normal character creation rules, though your attribute and feat points are determined by your tier in this feat:\n<ul>\n<li><strong>Tier 1</strong> - Half of your primary form's attribute points (rounded up), and 3 feat points.</li>\n<li><strong>Tier 2</strong> - Same attribute points as your primary form, and 3 feat points less than your primary form.</li>\n</ul>\nWhenever your primary form gains new attribute points or levels up, your alternate form also gains points according to the above formulas.\nAs a focus action, you may change between any two forms (including your primary form or any alternate form). You maintain this capability in all of your forms.\nEach form is treated as a completely different character for mechanical purposes - possessing different attributes, feats, perks, flaws, and other defining characteristics. Your alternate form does, however, retain the ability to transform back into your primary form.\nIn order to keep track of hit points, you should always record the total damage that your character has suffered. When transforming, your damage remains with you even if your maximum hit points change. For example, Dr. Jekyll has a max HP of 15 and Mr. Hyde has a max HP of 30. During combat, Mr. Hyde suffers 10 damage. When he later transforms back into Dr. Jekyll, the 10 damage remains and is subtracted from his new maximum, leaving the doctor with 5 out of 15 hit points. Additionally, when changing forms, if your hit points would be reduced to less than 1, your hit point total becomes 1 instead.",
+    "special": "When selecting feats for your alternate form, you may not select the <em>Alternate Form</em> feat.\nWith GM approval, you may take this feat multiple times. If you do, you get access to an additional form. Multiple Alternate Forms can be a powerful way of accumulating new feat points and attributes. The GM should prevent players from exploiting the feat to create an overly powerful character.",
+    "tags": [
+      "No Prerequisite"
+    ],
+    "cost": [
+      3,
+      3
+    ],
+    "maxTier": 2,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "text",
+      "label": "Form name",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Alternate Form (I - II)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

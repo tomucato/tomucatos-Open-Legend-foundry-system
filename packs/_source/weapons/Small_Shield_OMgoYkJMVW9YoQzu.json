@@ -1,0 +1,47 @@
+{
+  "_id": "OMgoYkJMVW9YoQzu",
+  "name": "Small Shield",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>One-handed Melee. Forceful, Defensive 1.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Small Shield",
+    "categories": [
+      "one-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      },
+      {
+        "key": "defensive",
+        "value": 1
+      }
+    ],
+    "banes": [
+      {
+        "name": "Forced Move",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.rwt5CUhK3P5D2la7"
+      },
+      {
+        "name": "Stunned",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.6zMaRlj9qZbnt3Sx"
+      },
+      {
+        "name": "Knockdown",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fPzhkCAYAcXa3jZK"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

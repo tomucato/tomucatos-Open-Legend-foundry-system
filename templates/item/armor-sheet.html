@@ -1,0 +1,80 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="header-fields">
+    <div class="gear-stat field-name">
+      <label>Name</label>
+      <input class="charname" name="name" type="text" value="{{item.name}}" placeholder="Armor Name"/>
+    </div>
+    <div class="item-stats flexrow gear-stats">
+      <div class="gear-stat">
+        <label>Type</label>
+        <select name="system.armorType">
+          {{selectOptions armorTypes selected=system.armorType}}
+        </select>
+      </div>
+      <div class="gear-stat">
+        <label>Wealth Level</label>
+        <select name="system.wealthLevel" data-dtype="Number">
+          {{selectOptions wealthLevels selected=system.wealthLevel}}
+        </select>
+      </div>
+      <div class="gear-stat">
+        <label>Quantity</label>
+        <input type="number" min="0" step="1" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
+      </div>
+    </div>
+    <div class="item-stats flexrow gear-stats gear-flags">
+      <label class="gear-check" title="Equipped armor applies its defense bonus and speed penalty to the actor.">
+        <input type="checkbox" name="system.equipped" {{checked system.equipped}}/>
+        <span>Equipped</span>
+      </label>
+    </div>
+  </div>
+</header>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab stats {{tabs.stats.cssClass}}" data-group="primary" data-tab="stats">
+    <div class="item-stats flexrow gear-stats">
+      <div class="gear-stat" title="Minimum Fortitude required to benefit from this armor.">
+        <label>Req. Fortitude</label>
+        <input type="number" min="0" step="1" name="system.requiredFortitude" value="{{system.requiredFortitude}}" data-dtype="Number"/>
+      </div>
+      <div class="gear-stat" title="Added to the wearer's Guard defense.">
+        <label>Defense Bonus</label>
+        <input type="number" min="0" step="1" name="system.defenseBonus" value="{{system.defenseBonus}}" data-dtype="Number"/>
+      </div>
+      <div class="gear-stat" title="Subtracted from the wearer's Speed (feet).">
+        <label>Speed Penalty</label>
+        <input type="number" min="0" step="1" name="system.speedPenalty" value="{{system.speedPenalty}}" data-dtype="Number"/>
+      </div>
+    </div>
+    <div class="item-stats flexrow gear-stats gear-flags">
+      <label class="gear-check">
+        <input type="checkbox" name="system.bulky" {{checked system.bulky}}/>
+        <span>Bulky</span>
+      </label>
+      <label class="gear-check">
+        <input type="checkbox" name="system.heavy" {{checked system.heavy}}/>
+        <span>Heavy</span>
+      </label>
+    </div>
+  </div>
+  <div class="tab extraordinary {{tabs.extraordinary.cssClass}}" data-group="primary" data-tab="extraordinary">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/extraordinary.hbs"}}
+  </div>
+  <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the wearer while this armor is equipped."}}
+  </div>
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+  <div class="tab notes {{tabs.notes.cssClass}}" data-group="primary" data-tab="notes">
+    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedNotes}}}
+    </prose-mirror>
+  </div>
+</section>

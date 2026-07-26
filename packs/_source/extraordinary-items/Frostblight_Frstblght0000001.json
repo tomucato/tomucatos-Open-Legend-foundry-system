@@ -1,0 +1,53 @@
+{
+  "_id": "Frstblght0000001",
+  "name": "Frostblight",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "description": "<p>Freezing to the touch and engraved with wintry patterns of arcane magic, this suit of plate mail emits an aura of frost that halts foes in their tracks.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": true,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [
+      {
+        "key": "energy",
+        "score": 3
+      }
+    ],
+    "extraordinaryBoons": [
+      {
+        "name": "Aura",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryBanes": [
+      {
+        "name": "Immobile",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "persistent",
+        "value": ""
+      },
+      {
+        "name": "special",
+        "value": "Frostblight can only invoke the immobile bane via its persistent aura."
+      }
+    ],
+    "armorType": "heavy",
+    "requiredFortitude": 3,
+    "defenseBonus": 3,
+    "speedPenalty": 5,
+    "equipped": false
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

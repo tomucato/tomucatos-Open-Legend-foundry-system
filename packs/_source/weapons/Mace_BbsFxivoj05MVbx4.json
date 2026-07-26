@@ -1,0 +1,43 @@
+{
+  "_id": "BbsFxivoj05MVbx4",
+  "name": "Mace",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>One-handed Melee. Forceful.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Mace",
+    "categories": [
+      "one-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Knockdown",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fPzhkCAYAcXa3jZK"
+      },
+      {
+        "name": "Stunned",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.6zMaRlj9qZbnt3Sx"
+      },
+      {
+        "name": "Forced Move",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.rwt5CUhK3P5D2la7"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

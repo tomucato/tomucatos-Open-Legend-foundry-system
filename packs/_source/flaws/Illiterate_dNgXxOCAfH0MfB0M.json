@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxOCAfH0MfB0M",
+  "name": "Illiterate",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You can't read or write, even in languages that you speak fluently.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

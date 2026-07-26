@@ -1,0 +1,50 @@
+{
+  "_id": "9NXcLKNinr7REybT",
+  "name": "Extraordinary Focus",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Your extraordinary power stems from your connection with a particular focus, such as a wand, digital psi amplifier, holy symbol, or spellbook. When this focus item is in your hands, you are a force to be reckoned with compared to others with similar powers.</p>",
+    "effect": "With the approval of your GM, choose a focus from which your power with a single extraordinary attribute stems. Some possibilities include a wand, a digital psi amplifier, a crystal ball, a spell book, a holy symbol, a weapon, your voice, or an animal familiar. You cannot use the selected extraordinary attribute without your focus. The focus heightens your power and for the purposes of determining your attribute dice for action rolls, you treat the chosen attribute as if it was one greater. For all purposes outside of attribute dice, your ability score remains unchanged (feats, banes, boons, etc.).",
+    "special": "If you ever lose your extraordinary focus, voluntarily or involuntarily, you regain the feat points that you have spent on this feat and may spend them as usual.\nYou may take this feat multiple times. If you do, select a new attribute not chosen previously. For each instance of this feat, you may choose an existing focus or select a new one.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "cost": [
+      3
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "any extraordinary",
+              "label": "Any Extraordinary",
+              "min": 1
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "text",
+      "label": "Focus (e.g. wand, holy symbol)",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Extraordinary Focus"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

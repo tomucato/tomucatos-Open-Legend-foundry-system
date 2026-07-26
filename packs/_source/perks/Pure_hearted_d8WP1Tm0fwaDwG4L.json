@@ -1,0 +1,14 @@
+{
+  "_id": "d8WP1Tm0fwaDwG4L",
+  "name": "Pure-hearted",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Any goodly-natured creature you encounter is friendly toward you by default rather than neutral. Circumstances can alter this, but even if rumors or actions you've taken would influence a good creature negatively, it remains one step friendlier than it otherwise would have been.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

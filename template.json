@@ -1,0 +1,348 @@
+{
+    "Actor": {
+        "types": [
+            "character",
+            "npc",
+            "boss",
+            "companion",
+            "minion",
+            "mount"
+        ],
+        "templates": {
+            "base": {
+                "attributes": {
+                    "agility": {
+                        "value": 0,
+                        "label": "Agility"
+                    },
+                    "fortitude": {
+                        "value": 0,
+                        "label": "Fortitude"
+                    },
+                    "might": {
+                        "value": 0,
+                        "label": "Might"
+                    },
+                    "deception": {
+                        "value": 0,
+                        "label": "Deception"
+                    },
+                    "persuasion": {
+                        "value": 0,
+                        "label": "Persuasion"
+                    },
+                    "presence": {
+                        "value": 0,
+                        "label": "Presence"
+                    },
+                    "learning": {
+                        "value": 0,
+                        "label": "Learning"
+                    },
+                    "logic": {
+                        "value": 0,
+                        "label": "Logic"
+                    },
+                    "perception": {
+                        "value": 0,
+                        "label": "Perception"
+                    },
+                    "will": {
+                        "value": 0,
+                        "label": "Will"
+                    },
+                    "alteration": {
+                        "value": 0,
+                        "label": "Alteration"
+                    },
+                    "creation": {
+                        "value": 0,
+                        "label": "Creation"
+                    },
+                    "energy": {
+                        "value": 0,
+                        "label": "Energy"
+                    },
+                    "entropy": {
+                        "value": 0,
+                        "label": "Entropy"
+                    },
+                    "influence": {
+                        "value": 0,
+                        "label": "Influence"
+                    },
+                    "movement": {
+                        "value": 0,
+                        "label": "Movement"
+                    },
+                    "prescience": {
+                        "value": 0,
+                        "label": "Prescience"
+                    },
+                    "protection": {
+                        "value": 0,
+                        "label": "Protection"
+                    }
+                },
+                "health": {
+                    "value": 10,
+                    "max": 10,
+                    "lethal": 0
+                },
+                "defenses": {
+                    "guard": {
+                        "value": 10
+                    },
+                    "toughness": {
+                        "value": 10
+                    },
+                    "resolve": {
+                        "value": 10
+                    }
+                },
+                "speed": {
+                    "value": 30
+                },
+                "initiative": {
+                    "value": 0
+                }
+            }
+        },
+        "character": {
+            "templates": [
+                "base"
+            ],
+            "description": "",
+            "notes": "",
+            "level": 1,
+            "xp": 0,
+            "archetype": "",
+            "wealthLevel": 1,
+            "legendPoint": 0
+        },
+        "npc": {
+            "templates": [
+                "base"
+            ],
+            "description": "",
+            "level": 1
+        },
+        "boss": {
+            "templates": [
+                "base"
+            ],
+            "description": "",
+            "level": 1,
+            "bossEdge": 1
+        },
+        "companion": {
+            "templates": [
+                "base"
+            ],
+            "description": "",
+            "notes": "",
+            "level": 1,
+            "xp": 0,
+            "archetype": "",
+            "wealthLevel": 1,
+            "legendPoint": 0,
+            "companion": {
+                "tier": 1,
+                "parentUuid": ""
+            }
+        },
+        "minion": {
+            "templates": [
+                "base"
+            ],
+            "description": "",
+            "powerLevel": 4
+        },
+        "mount": {
+            "templates": [
+                "base"
+            ],
+            "description": "",
+            "wealthLevel": 1,
+            "speedMode": "ground",
+            "damage": {
+                "level": 0,
+                "threshold": 1
+            },
+            "defenseImmune": {
+                "guard": false,
+                "toughness": false,
+                "resolve": false
+            },
+            "properties": {
+                "fasterThanLight": false,
+                "guidedWeapons": false,
+                "targetedWeapons": false,
+                "independent": 0,
+                "multiPilot": 1
+            },
+            "pilots": []
+        }
+    },
+    "Item": {
+        "types": [
+            "boon",
+            "bane",
+            "perk",
+            "flaw",
+            "feat",
+            "weapon",
+            "armor",
+            "gear",
+            "action",
+            "effect"
+        ],
+        "templates": {
+            "effect": {
+                "description": "",
+                "powerLevel": 1,
+                "invocationTime": "1 major action",
+                "duration": "1 round"
+            },
+            "physical": {
+                "description": "",
+                "notes": "",
+                "wealthLevel": 1,
+                "bulky": false,
+                "heavy": false,
+                "quantity": 1,
+                "extraordinary": false,
+                "extraordinaryAttributes": [],
+                "extraordinaryBoons": [],
+                "extraordinaryBanes": [],
+                "extraordinaryProperties": [],
+                "legendary": false,
+                "legendaryProperties": []
+            }
+        },
+        "boon": {
+            "templates": [
+                "effect"
+            ],
+            "tags": [],
+            "attributes": [],
+            "powerEffects": [],
+            "invocationTime": "1 Major Action",
+            "duration": "",
+            "gameEffects": []
+        },
+        "bane": {
+            "templates": [
+                "effect"
+            ],
+            "tags": [],
+            "attacks": [],
+            "powerEffects": [],
+            "invocationTime": "1 Major Action",
+            "duration": "",
+            "failDuration": "",
+            "special": "",
+            "gameEffects": []
+        },
+        "perk": {
+            "description": ""
+        },
+        "flaw": {
+            "description": ""
+        },
+        "effect": {
+            "description": ""
+        },
+        "feat": {
+            "description": "",
+            "effect": "",
+            "special": "",
+            "tags": [],
+            "cost": [],
+            "maxTier": 1,
+            "tiers": [],
+            "purchasedTier": 0,
+            "choice": {
+                "type": "",
+                "label": "",
+                "count": 1,
+                "value": ""
+            },
+            "multi": false,
+            "baseName": ""
+        },
+        "weapon": {
+            "templates": [
+                "physical"
+            ],
+            "baseType": "",
+            "categories": [],
+            "rangeIncrement": 0,
+            "properties": [],
+            "banes": [],
+            "equipped": false,
+            "equipHands": 1
+        },
+        "armor": {
+            "templates": [
+                "physical"
+            ],
+            "armorType": "light",
+            "requiredFortitude": 0,
+            "defenseBonus": 1,
+            "speedPenalty": 0,
+            "equipped": false
+        },
+        "gear": {
+            "templates": [
+                "physical"
+            ]
+        },
+        "action": {
+            "description": "",
+            "actionCategory": "damaging",
+            "attribute": "agility",
+            "actionType": "major",
+            "targetDefense": "guard",
+            "damageType": "",
+            "weaponId": "",
+            "grip": "one-handed",
+            "baneUuid": "",
+            "baneName": "",
+            "potent": false,
+            "multiBane": false,
+            "multiBanePair": "",
+            "extraordinaryHealing": false,
+            "boonUuid": "",
+            "boonName": "",
+            "auraRadiateUuid": "",
+            "auraRadiateName": "",
+            "auraRadiateKind": "",
+            "auraRadiatePowerLevel": 0,
+            "auraRadiateResistanceType": "",
+            "barrierProperties": "",
+            "barrierBaneUuid": "",
+            "barrierBaneName": "",
+            "barrierBanePowerLevel": 0,
+            "invokeFromItemId": "",
+            "invokeItemScore": 0,
+            "pilotUuid": "",
+            "powerfulItemId": "",
+            "interruptType": "defend",
+            "invokePowerLevel": 0,
+            "rangeMode": "melee",
+            "rangeBand": "close",
+            "macroUuid": "",
+            "advantage": 0,
+            "disadvantage": 0,
+            "targets": "single",
+            "targetCount": 2,
+            "summonCount": 2,
+            "area": {
+                "shape": "cone",
+                "length": 10,
+                "lines": 1
+            }
+        }
+    }
+}

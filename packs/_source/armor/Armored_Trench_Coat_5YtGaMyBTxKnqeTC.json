@@ -1,0 +1,24 @@
+{
+  "_id": "5YtGaMyBTxKnqeTC",
+  "name": "Armored Trench Coat",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "description": "<p>Medium armor. Defense Bonus +2, Required Fortitude 2.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "armorType": "medium",
+    "requiredFortitude": 2,
+    "defenseBonus": 2,
+    "speedPenalty": 0,
+    "equipped": false
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

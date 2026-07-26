@@ -1,0 +1,60 @@
+{
+  "_id": "aKOrLIjqyY41150u",
+  "name": "Longshot",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Your expertise with a particular ranged weapon or extraordinary power enables you to strike targets at extreme distances that others would find impossible. This feat is common among snipers, fighter pilots, and war wizards.</p>",
+    "effect": "When you take this feat, select one weapon or attack type. Examples of attack types you include fire, cold, lightning, acid, poison, entropy, creation, and force - though this list is not exhaustive.\nWith the chosen weapon or attack type, your range with that weapon or attribute is doubled.",
+    "special": "You may take this feat multiple times. If you do, select a new weapon or attack type each time.",
+    "tags": [
+      "Combat"
+    ],
+    "cost": [
+      1
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 5
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 5
+            },
+            {
+              "key": "any extraordinary",
+              "label": "Any Extraordinary",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "weapon",
+      "label": "Weapon or attack type",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Longshot"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

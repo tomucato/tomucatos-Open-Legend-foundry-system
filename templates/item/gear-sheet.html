@@ -1,0 +1,50 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="header-fields">
+    <div class="gear-stat field-name">
+      <label>Name</label>
+      <input class="charname" name="name" type="text" value="{{item.name}}" placeholder="Item Name"/>
+    </div>
+    <div class="item-stats flexrow gear-stats">
+      <div class="gear-stat">
+        <label>Wealth Level</label>
+        <select name="system.wealthLevel" data-dtype="Number">
+          {{selectOptions wealthLevels selected=system.wealthLevel}}
+        </select>
+      </div>
+      <div class="gear-stat">
+        <label>Quantity</label>
+        <input type="number" min="0" step="1" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
+      </div>
+      <label class="gear-check">
+        <input type="checkbox" name="system.bulky" {{checked system.bulky}}/>
+        <span>Bulky</span>
+      </label>
+      <label class="gear-check">
+        <input type="checkbox" name="system.heavy" {{checked system.heavy}}/>
+        <span>Heavy</span>
+      </label>
+    </div>
+  </div>
+</header>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+  <div class="tab extraordinary {{tabs.extraordinary.cssClass}}" data-group="primary" data-tab="extraordinary">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/extraordinary.hbs"}}
+  </div>
+  <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the carrier while this item is owned."}}
+  </div>
+  <div class="tab notes {{tabs.notes.cssClass}}" data-group="primary" data-tab="notes">
+    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedNotes}}}
+    </prose-mirror>
+  </div>
+</section>

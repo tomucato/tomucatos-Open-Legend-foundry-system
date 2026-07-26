@@ -1,0 +1,99 @@
+{
+  "_id": "KiV3LhtqWVneneqR",
+  "name": "Multi-Attack Specialist (I - VI)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether you are delivering a flurry of blows, wielding two weapons, or calling a chain of lightning bolts from the sky, you have mastered the art of delivering multiple attacks.</p>",
+    "effect": "At the start of your turn, you may declare that you are multi-attacking. You must state how many extra attacks you would like to make. You receive a corresponding number of additional major actions, which can only be used for attacks. <em>All</em> of your attacks this round suffer disadvantage equal to 3 times the number of <strong>additional</strong> attacks you declare (i.e., if you make 2 attacks, you suffer disadvantage 3; 3 attacks suffers disadvantage 6). For each tier of this feat that you possess, reduce the disadvantage penalty by 1.\nYou may use your attacks to make any combination of bane or damaging attacks, but you may not invoke boons. Resolve each attack individually, applying any other multi-targeting options as you wish. You can move between each of these attacks and they can be used to target the same creature more than once.\nThe number of additional attacks you can make with this feat is limited to 1 + half your level, rounded up. Thus, the limit is 2 additional attacks at 1st level, 3 additional attacks at 3rd level, and 6 additional attacks at 9th level.\n<strong>Example</strong> - Vax the Deathbringer has Multi-Attack Specialist (Tier III). He declares that he will be making three attacks this round (two additional attacks). Therefore, all of his attacks suffer disadvantage 3 (3 x 2 = 6, minus 3 for feat tier 3). His first attack is a necromantic burst targeting a 10'-cube. Because of the area of effect, Vax suffers an additional disadvantage 2, making his total disadvantage for that attack 5. For his second attack, Vax casts a spell of blindness on a single foe, making an action roll at disadvantage 3. For his final attack, Vax moves in to melee and uses his touch of death on three foes. Targeting 3 foes incurs an additional disadvantage 3, making his final attack roll suffer a total of disadvantage 6.",
+    "special": "",
+    "tags": [
+      "Any Attribute"
+    ],
+    "cost": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "maxTier": 6,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 5,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 6,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Multi-Attack Specialist (I - VI)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

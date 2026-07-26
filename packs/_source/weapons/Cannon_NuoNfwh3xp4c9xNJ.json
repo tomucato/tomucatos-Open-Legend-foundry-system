@@ -1,0 +1,59 @@
+{
+  "_id": "NuoNfwh3xp4c9xNJ",
+  "name": "Cannon",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Extreme Ranged. Precise, Slow, Area (15' square), Delayed Ready, Heavy, Stationary.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": true,
+    "quantity": 1,
+    "baseType": "Cannon",
+    "categories": [
+      "extreme-ranged"
+    ],
+    "rangeIncrement": 300,
+    "properties": [
+      {
+        "key": "precise"
+      },
+      {
+        "key": "slow"
+      },
+      {
+        "key": "area",
+        "detail": "15' square"
+      },
+      {
+        "key": "delayed-ready"
+      },
+      {
+        "key": "heavy"
+      },
+      {
+        "key": "stationary"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Forced Move",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.rwt5CUhK3P5D2la7"
+      },
+      {
+        "name": "Stunned",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.6zMaRlj9qZbnt3Sx"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

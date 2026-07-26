@@ -1,0 +1,45 @@
+{
+  "_id": "PZt4Y98EQ6qghmxS",
+  "name": "Unarmed Strike",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>One-handed Melee. Forceful, Precise, Swift.</p>",
+    "notes": "",
+    "wealthLevel": 0,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Unarmed Strike",
+    "categories": [
+      "one-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      },
+      {
+        "key": "precise"
+      },
+      {
+        "key": "swift"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Stunned",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.6zMaRlj9qZbnt3Sx"
+      },
+      {
+        "name": "Knockdown",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fPzhkCAYAcXa3jZK"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

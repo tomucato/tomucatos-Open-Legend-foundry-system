@@ -1,0 +1,43 @@
+{
+  "_id": "BookOfShadows001",
+  "name": "Book of Shadows",
+  "type": "gear",
+  "img": "icons/svg/book.svg",
+  "system": {
+    "description": "<p>Bound in a black substance harvested from the demiplane of shadow, this ancient tome contains secret words that allow one to manipulate the darkness, and even summon shadowy creatures from otherworldly planes of existence.</p>",
+    "notes": "",
+    "wealthLevel": 5,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [
+      {
+        "name": "Darkness",
+        "powerLevel": 5
+      },
+      {
+        "name": "Summon Creature",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryBanes": [
+      {
+        "name": "Blinded",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "special",
+        "value": "Calling upon the power of the Book of Shadows is draining to normal mortals. Every time a creature successfully uses this item to invoke a bane or boon of power level 5 or above, they must make a Will roll of CR 15 or suffer one level of the fatigued bane."
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

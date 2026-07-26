@@ -1,0 +1,147 @@
+{
+  "name": "Fatigued",
+  "type": "bane",
+  "_id": "cBolruzeRoFKKnHl",
+  "img": "icons/magic/death/skeleton-skull-soul-blue.webp",
+  "system": {
+    "description": "<p>You cause the target's body to wither and weaken, gradually losing its ability to function until the victim finally succumbs to death. Fatigue may be the result of a necromancer's curse, an assassin's poison, a radiation ray, or similar life sapping effects.</p>",
+    "powerLevel": 5,
+    "invocationTime": "1 Major Action",
+    "duration": "Special",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "",
+    "special": "Unlike other banes, canceling this bane takes time and rest. Each 24 hour period of rest with little or no exertion removes one level of fatigue. If the <em>restoration</em> boon is successfully invoked to dispel this bane, only one level of fatigue is removed (in addition to that removed by natural rest). If the <em>restoration</em> boon's invoker has an attribute score of 7 or greater, all levels of fatigue are removed instead of just one. A target may only benefit from one invocation of the <em>restoration</em> boon to remove fatigue within a 24 hour period.",
+    "gameEffects": [],
+    "effect": "This bane has multiple tiers which are applied in succession. Each time this bane is inflicted, if it is already in effect on the target, the severity escalates by one level.<br/>\n<ul>\n<li><strong>Level 1</strong> - The target has disadvantage 1 on all non-attack action rolls.</li>\n<li><strong>Level 2</strong> - The target is affected by the slowed bane, reducing its speed by half. This instance of the slowed bane cannot be resisted as normal. It persists until the fatigue is removed.</li>\n<li><strong>Level 3</strong> - The target has disadvantage 1 on all attack rolls.</li>\n<li><strong>Level 4</strong> - The target loses their attribute bonuses to their defense scores (Agility and Might for Guard, Fortitude and Will for Toughness, Will and Presence for Resolve). They retain any armor, extraordinary, or feat bonuses.</li>\n<li><strong>Level 5</strong> - The target loses consciousness and is helpless. Being forced into a state of rest, one level of fatigue will be removed automatically after 24 hours, unless circumstances prevent the target from resting peacefully.</li>\n<li><strong>Level 6</strong> - The target dies.</li>\n</ul>"
+  },
+  "effects": [
+    {
+      "name": "Fatigued",
+      "type": "base",
+      "img": "icons/svg/terror.svg",
+      "disabled": false,
+      "transfer": false,
+      "flags": {
+        "openlegend": {
+          "changeLevels": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            4
+          ],
+          "stacking": true,
+          "powerLevel": 5,
+          "changeModes": [
+            "advdis",
+            "flat",
+            "advdis",
+            "flat",
+            "flat",
+            "flat"
+          ],
+          "stackLevel": 1
+        }
+      },
+      "_id": "Z3Ffj1EslcBG6nSA",
+      "system": {
+        "changes": [
+          {
+            "key": "allNonAttackRolls",
+            "value": -1,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "speed",
+            "value": "0.5",
+            "type": "multiply",
+            "phase": "final",
+            "priority": null
+          },
+          {
+            "key": "allAttacks",
+            "value": -1,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "",
+            "value": null,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "",
+            "value": null,
+            "type": "add",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "defenseAttrLoss",
+            "value": "1",
+            "type": "override",
+            "phase": "initial",
+            "priority": null
+          }
+        ]
+      },
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "<p>You cause the target's body to wither and weaken, gradually losing its ability to function until the victim finally succumbs to death. Fatigue may be the result of a necromancer's curse, an assassin's poison, a radiation ray, or similar life sapping effects.</p><p>This bane has multiple tiers which are applied in succession. Each time this bane is inflicted, if it is already in effect on the target, the severity escalates by one level.</p><p>Level 1 - The target has disadvantage 1 on all non-attack action rolls.</p><p>Level 2 - The target is affected by the slowed bane, reducing its speed by half. This instance of the slowed bane cannot be resisted as normal. It persists until the fatigue is removed.</p><p>Level 3 - The target has disadvantage 1 on all attack rolls.</p><p>Level 4 - The target loses their attribute bonuses to their defense scores (Agility and Might for Guard, Fortitude and Will for Toughness, Will and Presence for Resolve). They retain any armor, extraordinary, or feat bonuses.</p><p>Level 5 - The target loses consciousness and is helpless. Being forced into a state of rest, one level of fatigue will be removed automatically after 24 hours, unless circumstances prevent the target from resting peacefully.</p><p>Level 6 - The target dies.</p><p></p>",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "showIcon": 1,
+      "folder": null,
+      "sort": 0,
+      "_stats": {
+        "coreVersion": "14.363",
+        "systemId": "tomucatos-open-legend-rpg-system",
+        "systemVersion": "1.1.0",
+        "createdTime": 1781699294156,
+        "modifiedTime": 1782292662768,
+        "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      }
+    }
+  ],
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781699294155,
+    "modifiedTime": 1781699294155,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0
+}

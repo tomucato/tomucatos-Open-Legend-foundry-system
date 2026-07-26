@@ -1,0 +1,88 @@
+{
+  "_id": "e6WHvuoneVZCKrRM",
+  "name": "Multi-Target Attack Specialist (I - V)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You are a master of wreaking havoc on many foes at once, whether it be with a whirlwind of your twin blades, a hail of gun fire, a massive wave of psionic energy, or a devastating ball of flame.</p>",
+    "effect": "When you choose this feat, you must decide to focus in area, ranged, or melee attacks. For each tier, you reduce the disadvantage penalty associated with multi-targeting for your chosen attack type by 1.",
+    "special": "In addition to purchasing multiple tiers of this feat, you may take this feat multiple times and select a new multi-target mode (area, ranged, or melee) each time. Track your feat tier separately for each targeting mode that you select for this feat.",
+    "tags": [
+      "Any Attribute"
+    ],
+    "cost": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "maxTier": 5,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 5,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "mode",
+      "label": "Multi-target mode",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Multi-Target Attack Specialist (I - V)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "_id": "Z70Zjg71W4snBCuM",
+  "name": "Legendary Bloodline",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Your ancestry can be traced to dragons, Void Templars, an ancient order of Archmagi, a intergalactic dynasty, or a similar powerful group. As such, a sense of awe follows you when in the presence of those who respect your heritage. Choose an area of expertise, such as arcana, politics, or warfare. You are assumed to have knowledge and a destiny for greatness in the chosen area of expertise, and others treat you with deference. This influence could guarantee your placement within an Arcane College, grant you access to the Void Templars securely encrypted database, secure a mentorship under a famous Senator, or cause a Lieutenant who does not know you well to take combat orders from you based on your training in an elite task force.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

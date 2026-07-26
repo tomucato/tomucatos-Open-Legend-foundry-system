@@ -1,0 +1,104 @@
+{
+  "_id": "lAzeWKMRrD5L9z86",
+  "name": "Great Leap (I - III)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Through extraordinary power or exceptional agility, you can jump much farther than the average creature. A telekinetic superhero and an insectoid race of bipedal cricket-like beings are both examples of this feat in play.</p>",
+    "effect": "You can use your Movement or Agility score instead of your Might score when determining how far you can jump. In addition, you gain advantage 1 per tier on action rolls to jump.",
+    "special": "",
+    "tags": [
+      "Extraordinary",
+      "Physical",
+      "Combat",
+      "Non-Combat",
+      "Movement",
+      "Agility"
+    ],
+    "cost": [
+      1,
+      1,
+      1
+    ],
+    "maxTier": 3,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "movement",
+              "label": "Movement",
+              "min": 2
+            },
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 2
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "movement",
+              "label": "Movement",
+              "min": 4
+            },
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "movement",
+              "label": "Movement",
+              "min": 6
+            },
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 6
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Great Leap (I - III)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

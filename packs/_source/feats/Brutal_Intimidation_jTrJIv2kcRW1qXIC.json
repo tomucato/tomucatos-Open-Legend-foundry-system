@@ -1,0 +1,50 @@
+{
+  "_id": "jTrJIv2kcRW1qXIC",
+  "name": "Brutal Intimidation",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Your powers of persuasion stem from application of brute force rather than your social grace. When you smash a table, brandish your blade, or flex your muscles, people stop what they are doing and listen to you.</p>",
+    "effect": "If you're able to make a show of physical force, you can use your Might attribute in place of Persuasion for the action roll.",
+    "special": "",
+    "tags": [
+      "Non-Combat"
+    ],
+    "cost": [
+      1
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 2
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Brutal Intimidation"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

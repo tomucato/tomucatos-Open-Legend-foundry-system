@@ -1,0 +1,34 @@
+{
+  "_id": "WrkrBot000000001",
+  "name": "Worker Bot",
+  "type": "gear",
+  "img": "icons/svg/circle.svg",
+  "system": {
+    "description": "<p>This pint-sized mechanical creature is made up of quite the array of moving parts, covered in gears, knobs, and fans. While not always perfect in comprehension, it's a useful assistant for day-to-day engineering tasks.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [
+      {
+        "key": "might",
+        "score": 3
+      }
+    ],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "autonomous",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

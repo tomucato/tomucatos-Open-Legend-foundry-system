@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxZJ4VHxOJlvH",
+  "name": "Bloodlust",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>Battle isn't just a way of life, it is <em>the</em> way of life. There isn't a conflict you've encountered that wasn't best solved with steel, and your allies will have a hard time convincing you otherwise. You are prone to starting fights when they aren't necessary and prolonging them even after the enemy has surrendered.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

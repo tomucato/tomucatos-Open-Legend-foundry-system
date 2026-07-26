@@ -1,0 +1,31 @@
+{{!--
+  Extraordinary-item attributes — a separate, rollable section below the actor's
+  own attributes. ALWAYS lists every attribute an active extraordinary item
+  grants. Rolling one rolls as that attribute TYPE (so per-attribute effects
+  apply):
+    - mode "item"   : rolls the item's (higher/only) score. Tagged "Item N".
+    - mode "own+adv": the actor's own score leads by 1–2, so it rolls the OWN
+                      score and the item grants Advantage 1 (shown in the roll
+                      dialog). Tagged "Adv 1".
+  Expects `itemAttributes` in context.
+--}}
+{{#if itemAttributes.length}}
+<div class="item-attributes">
+  <h3 class="category-label"><i class="fas fa-wand-sparkles"></i> Extraordinary Attributes</h3>
+  {{#each itemAttributes as |ia|}}
+  <div class="attribute item-attribute flexrow"
+       title="From {{ia.source}} ({{ia.label}} {{ia.itemScore}}){{#if (eq ia.mode 'own+adv')}} — your {{ia.label}} {{ia.ownScore}} is higher, so you roll your own with Advantage 1{{/if}}">
+    <a class="attribute-roll" data-action="itemAttributeRoll" data-attribute="{{ia.key}}"
+       title="Roll {{ia.label}} (1d20{{#if ia.dice}} + {{ia.dice}}{{/if}}){{#if ia.advantage}} + Advantage {{ia.advantage}}{{/if}}">
+      <i class="fas fa-dice-d20"></i> {{ia.label}}
+      {{!-- Always show the item's own attribute value; add the Adv pill when the
+           actor's higher score means the item grants advantage instead. --}}
+      <span class="ia-tag ia-tag-item">Item {{ia.itemScore}}</span>
+      {{#if ia.advantage}}<span class="ia-tag">Adv {{ia.advantage}}</span>{{/if}}
+    </a>
+    <span class="attribute-source" title="Granted by {{ia.source}}">{{ia.source}}</span>
+    <span class="attribute-dice" title="Bonus dice for this roll">{{#if ia.dice}}{{ia.dice}}{{else}}&mdash;{{/if}}</span>
+  </div>
+  {{/each}}
+</div>
+{{/if}}

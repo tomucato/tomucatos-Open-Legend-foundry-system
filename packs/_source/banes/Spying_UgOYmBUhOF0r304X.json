@@ -1,0 +1,62 @@
+{
+  "name": "Spying",
+  "type": "bane",
+  "_id": "UgOYmBUhOF0r304X",
+  "img": "icons/magic/perception/eye-tendrils-web-purple.webp",
+  "system": {
+    "description": "<p>Either through innate extrasensory perception or a special conduit such as a computer terminal, bubbling cauldron, or a crystal ball, you can view the target from a distance.</p>",
+    "powerLevel": 5,
+    "invocationTime": "10 Minutes",
+    "duration": "10 minutes (special)",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Prescience",
+        "defense": ""
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "1 mile or less"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "100 miles or less"
+      },
+      {
+        "powerLevel": 7,
+        "effect": "More than 100 miles, but on the same dimension or plane of reality"
+      },
+      {
+        "powerLevel": 9,
+        "effect": "Any dimension or plane of reality. (Peering into certain dimensions may expose you to other dangers at the GM's discretion)."
+      }
+    ],
+    "failDuration": "",
+    "special": "When you successfully invoke this bane, at the end of its duration, you can make a Prescience roll to attempt to persist the bane. If successful, the bane persists without requiring the invocation time to be repeated. However, you must retest your new roll against the Resolve scores of those in the targeted area to determine whether or not they can sense your presence.\nYou can attempt to spy the same target any number of times, but if your action roll fails, that target becomes immune to your spying for 24 hours.",
+    "gameEffects": [],
+    "effect": "<p>You can spy on a person or area that you are familiar with. The power level of this bane determines the maximum distance between you and the target. If successfully invoked, you can see and hear everything that goes on within a 60' radius of your target. Anyone within the targeted area who has a Resolve defense score higher than your Prescience action roll to invoke this bane becomes aware of an unseen presence in the area (regardless of whether or not you succeed at the roll). Certain creatures may be able to identify your spying if they are familiar with such powers.</p>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781694932445,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "_id": "wQ8duTcr2jgkBgtY",
+  "name": "Sawed-off Shotgun",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Short Ranged. Precise, Slow, Area (10' cone).</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Sawed-off Shotgun",
+    "categories": [
+      "short-ranged"
+    ],
+    "rangeIncrement": 50,
+    "properties": [
+      {
+        "key": "precise"
+      },
+      {
+        "key": "slow"
+      },
+      {
+        "key": "area",
+        "detail": "10' cone"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Stunned",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.6zMaRlj9qZbnt3Sx"
+      },
+      {
+        "name": "Forced Move",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.rwt5CUhK3P5D2la7"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

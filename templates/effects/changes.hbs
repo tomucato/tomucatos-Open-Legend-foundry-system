@@ -1,0 +1,34 @@
+{{!-- The Changes tab. Mirrors core changes.hbs plus: the effect's current
+      Power Level (which level's rows apply), and a Level column header for the
+      per-row level inputs (see change.hbs). --}}
+<section class="tab changes{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+    <div class="form-group ol-effect-stacking">
+        <label>Stacking condition</label>
+        <div class="form-fields">
+            <input type="checkbox" name="flags.openlegend.stacking" {{checked stacking}}/>
+        </div>
+        <p class="hint">A stacking condition (e.g. Fatigued) accrues LEVELS: re-applying the bane adds +1 level (capped at the highest row), and EVERY row at or below the current level applies (cumulative), not just the strongest. The field below then counts stacks, not power level.</p>
+    </div>
+    <div class="form-group ol-effect-pl">
+        <label>{{#if stacking}}Stack Level{{else}}Power Level{{/if}}</label>
+        <div class="form-fields">
+            <input type="number" name="flags.openlegend.{{#if stacking}}stackLevel{{else}}powerLevel{{/if}}" value="{{currentLevel}}" min="0" step="1"/>
+        </div>
+        <p class="hint">{{#if stacking}}Rows apply cumulatively while this stack level reaches their Level.{{else}}Rows with a Level apply only while this power level reaches it — for each key, the strongest unlocked row wins. Level 0 rows always apply.{{/if}}</p>
+    </div>
+    <header>
+        <div class="key">Subject</div>
+        <div class="action">Action</div>
+        <div class="modifier">Modifier</div>
+        <div class="value">Value</div>
+        <div class="level">Level</div>
+        <div class="controls">
+            <button type="button" class="inline-control icon fa-regular fa-square-plus" data-action="addChange"></button>
+        </div>
+    </header>
+    <ol class="scrollable" data-changes>
+        {{#each changes as |change|}}
+        {{{change}}}
+        {{/each}}
+    </ol>
+</section>

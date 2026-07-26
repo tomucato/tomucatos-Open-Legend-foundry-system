@@ -1,0 +1,56 @@
+{
+  "_id": "OrVaLrPDHbR1j7tZ",
+  "name": "Martial Focus",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Like a kensai warrior devoted to mastery of their katana or an assassin who exclusively wields their favored pistols, your training is hyper-focused on a single style of combat to the exclusion of all others.</p>",
+    "effect": "Choose a single weapon (or choose unarmed combat), and specify the attribute that your martial focus relies upon: Agility or Might. When making attacks using your chosen weapon, your attribute is considered 1 greater for the purposes of determining attribute dice. Your attribute is not changed for purposes of feats, banes, boons, or similar items. Because of your intense focus on a single combat style, any attacks that you make without your martial focus suffer disadvantage 1.",
+    "special": "",
+    "tags": [
+      "Combat",
+      "Physical"
+    ],
+    "cost": [
+      3
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 1
+            },
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 1
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "weapon",
+      "label": "Weapon (or unarmed combat)",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Martial Focus"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

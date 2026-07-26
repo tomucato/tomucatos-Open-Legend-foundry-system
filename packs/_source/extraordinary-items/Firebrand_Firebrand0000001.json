@@ -1,0 +1,47 @@
+{
+  "_id": "Firebrand0000001",
+  "name": "Firebrand",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>A longsword with a golden hilt. Along the blade are runes of power that burn red at all times. Upon command, the sword erupts in flame.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Persistent Damage",
+        "powerLevel": 4
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "baneful",
+        "value": ""
+      },
+      {
+        "name": "damageType",
+        "value": "fire"
+      }
+    ],
+    "baseType": "Longsword",
+    "categories": [
+      "versatile-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [],
+    "banes": [],
+    "equipped": false,
+    "equipHands": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

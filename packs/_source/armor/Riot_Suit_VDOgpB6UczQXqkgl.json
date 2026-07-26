@@ -1,0 +1,24 @@
+{
+  "_id": "VDOgpB6UczQXqkgl",
+  "name": "Riot Suit",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "description": "<p>Heavy armor. Defense Bonus +3, Speed Penalty &minus;5, Required Fortitude 3.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "armorType": "heavy",
+    "requiredFortitude": 3,
+    "defenseBonus": 3,
+    "speedPenalty": 5,
+    "equipped": false
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

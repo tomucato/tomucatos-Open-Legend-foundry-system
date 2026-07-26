@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbkmTn68V8ARc",
+  "name": "Stone Sense",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>While underground you may fail to find what you're looking for, but you can never be truly lost. You can always find your way back to the entrance through which you entered. Furthermore, you have advantage 1 on any action rolls in which a familiarity with underground environments would prove helpful, such as attempts to identify the risk of a cave in or to find a secret passage within a cavern.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "_id": "3xq7xftvyZHYDDij",
+  "name": "Lightning Reflexes (I - V)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You are always ready for danger, allowing you to easily get the drop on your foes. A highly trained gunslinger with a vigilant trigger finger and a covert operative always prepared for ambush are good examples of this feat in action.</p>",
+    "effect": "For each tier you possess in this feat, you gain advantage 1 on all initiative rolls.",
+    "special": "",
+    "tags": [
+      "Physical",
+      "Extraordinary",
+      "Agility",
+      "Prescience"
+    ],
+    "cost": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "maxTier": 5,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 2
+            },
+            {
+              "key": "prescience",
+              "label": "Prescience",
+              "min": 2
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 2
+            },
+            {
+              "key": "prescience",
+              "label": "Prescience",
+              "min": 2
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "prescience",
+              "label": "Prescience",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "prescience",
+              "label": "Prescience",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 5,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 4
+            },
+            {
+              "key": "prescience",
+              "label": "Prescience",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Lightning Reflexes (I - V)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

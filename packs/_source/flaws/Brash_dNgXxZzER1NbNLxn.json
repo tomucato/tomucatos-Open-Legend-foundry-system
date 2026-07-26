@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxZzER1NbNLxn",
+  "name": "Brash",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You are bold and daring to the point of recklessness. You have no time for plans, calculations, or strategic thinking. A lot of brass and a bit of luck are all you need. Kick in the door and let the details sort themselves out.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

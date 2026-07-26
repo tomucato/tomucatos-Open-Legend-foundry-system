@@ -1,0 +1,34 @@
+{
+  "_id": "PotMinorHeal0001",
+  "name": "Potion of Minor Healing",
+  "type": "gear",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "description": "<p>This small flask of viscous blue liquid can heal minor wounds in moments when consumed or applied topically.</p>",
+    "notes": "",
+    "wealthLevel": 1,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [
+      {
+        "name": "Heal",
+        "powerLevel": 3
+      }
+    ],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "consumable",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

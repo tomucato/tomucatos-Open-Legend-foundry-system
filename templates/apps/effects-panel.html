@@ -1,0 +1,64 @@
+<ol class="ol-ep-list">
+  {{!--
+    Effects Panel: a vertical column of condition/effect icons for the active
+    actor, shown top-right of the canvas. Each icon carries a level badge and a
+    hover card (.ol-ep-card) describing the effect; left/right-click step the
+    level, the ✕ removes it, shift/middle-click edits it.
+
+    NOTE: the <ol> must be the single, always-present root element — a
+    HandlebarsApplicationMixin part must render exactly one HTML element, so the
+    conditional lives INSIDE the list, not around it.
+  --}}
+  {{#each effects as |fx|}}
+  <li class="ol-ep-item{{#if fx.disabled}} is-disabled{{/if}}"
+      data-effect-id="{{fx.id}}">
+
+    <div class="ol-ep-icon" title="{{fx.name}}">
+      <img src="{{fx.img}}" alt="{{fx.name}}" />
+      {{#if fx.badge}}<span class="ol-ep-badge">{{fx.badge}}</span>{{/if}}
+    </div>
+
+    {{!-- Hover card --}}
+    <div class="ol-ep-card">
+      <header class="ol-ep-card-head">
+        <h4>{{fx.name}}</h4>
+        {{#if fx.disabled}}<span class="ol-ep-card-suspended"><i class="fas fa-pause"></i> Suspended</span>{{/if}}
+        {{#if fx.hasLevels}}<span class="ol-ep-card-level">{{fx.levelLabel}} {{fx.badge}}</span>{{/if}}
+        {{#if fx.resistFails}}<span class="ol-ep-card-fails" title="Failed resist rolls against this application of the bane."><i class="fas fa-dice-d20"></i> Failed {{fx.resistFails}}×</span>{{/if}}
+      </header>
+
+      {{#if fx.changes.length}}
+      <ul class="ol-ep-changes">
+        {{#each fx.changes as |c|}}
+        <li><span class="ol-ep-change-label">{{c.label}}</span><span class="ol-ep-change-value">{{c.value}}</span></li>
+        {{/each}}
+      </ul>
+      {{/if}}
+
+      {{#if fx.description}}
+      <div class="ol-ep-desc">{{{fx.description}}}</div>
+      {{/if}}
+
+      {{#if fx.onActor}}
+      <footer class="ol-ep-card-foot">
+        {{#if fx.hasLevels}}
+        <button type="button" class="ol-ep-ctl" data-action="stepDown" {{#unless fx.canLower}}disabled{{/unless}} data-tooltip="Lower"><i class="fas fa-minus"></i></button>
+        <button type="button" class="ol-ep-ctl" data-action="stepUp" {{#unless fx.canRaise}}disabled{{/unless}} data-tooltip="Raise"><i class="fas fa-plus"></i></button>
+        {{/if}}
+        {{#if fx.isBane}}
+        <button type="button" class="ol-ep-ctl ol-ep-potent {{#if fx.potent}}is-on{{/if}}" data-action="togglePotent" data-tooltip="{{#if fx.potent}}Potent — target resists at disadvantage 1 (click to clear){{else}}Mark Potent{{/if}}"><i class="fas fa-biohazard"></i></button>
+        {{/if}}
+        <button type="button" class="ol-ep-ctl ol-ep-suspend {{#if fx.disabled}}is-on{{/if}}" data-action="toggleSuspend" data-tooltip="{{#if fx.disabled}}Suspended — click to resume{{else}}Suspend (disable without removing){{/if}}"><i class="fas {{#if fx.disabled}}fa-play{{else}}fa-pause{{/if}}"></i></button>
+        <button type="button" class="ol-ep-ctl" data-action="edit" data-tooltip="Edit"><i class="fas fa-pen-to-square"></i></button>
+        <button type="button" class="ol-ep-ctl ol-ep-remove" data-action="remove" data-tooltip="Remove"><i class="fas fa-trash"></i></button>
+      </footer>
+      {{else}}
+      <footer class="ol-ep-card-foot">
+        <span class="ol-ep-fromitem"><i class="fas fa-link"></i> From an item</span>
+        <button type="button" class="ol-ep-ctl ol-ep-suspend {{#if fx.disabled}}is-on{{/if}}" data-action="toggleSuspend" data-tooltip="{{#if fx.disabled}}Suspended — click to resume{{else}}Suspend (disable without removing){{/if}}"><i class="fas {{#if fx.disabled}}fa-play{{else}}fa-pause{{/if}}"></i></button>
+      </footer>
+      {{/if}}
+    </div>
+  </li>
+  {{/each}}
+</ol>

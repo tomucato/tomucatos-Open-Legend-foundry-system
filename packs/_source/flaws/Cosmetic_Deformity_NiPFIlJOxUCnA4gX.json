@@ -1,0 +1,14 @@
+{
+  "_id": "NiPFIlJOxUCnA4gX",
+  "name": "Cosmetic Deformity",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>Something about you makes you less attractive, undesirable to behold, or even just downright abominable. You get to decide the nature and severity of your deformity. Examples include a scarred cheek, vacant white eyes, a burn-covered body, and a missing nose. Whatever form this flaw takes, it is merely cosmetic and thus will generally only affect you in social situations.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

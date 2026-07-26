@@ -1,0 +1,24 @@
+{
+  "_id": "6Q1deFjZUeOaHgjA",
+  "name": "Padded Armor",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "description": "<p>Light armor. Defense Bonus +1.</p>",
+    "notes": "",
+    "wealthLevel": 1,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "armorType": "light",
+    "requiredFortitude": 0,
+    "defenseBonus": 1,
+    "speedPenalty": 0,
+    "equipped": false
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

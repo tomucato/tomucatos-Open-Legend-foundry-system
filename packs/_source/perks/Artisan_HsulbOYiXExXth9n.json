@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbOYiXExXth9n",
+  "name": "Artisan",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Choose a specific craft, such as gunsmithing, hardware assembly, glass blowing, or brewing. You are a master of a chosen craft, and your reputation goes far and wide. In a time frame decided by the GM, you can craft any mundane item of wealth level 2 or less, if you have access to the right tools. Furthermore, whenever you are performing a task in which your crafting skills would play a role, you gain advantage 1 to any action rolls that you must make. Your reputation means that other students of your craft may actively seek you out as a teacher. Experts in any field that makes use of the items you create will actively recommend that others seek you out.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

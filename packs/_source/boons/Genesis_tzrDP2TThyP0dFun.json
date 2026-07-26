@@ -1,0 +1,104 @@
+{
+  "_id": "tzrDP2TThyP0dFun",
+  "name": "Genesis",
+  "type": "boon",
+  "img": "icons/magic/nature/plant-sproud-hands-dirt-green.webp",
+  "system": {
+    "description": "<p>You create something from nothing. Depending on the power of your invocation, you are able to manifest a wide array of materials, from temporary vegetable matter to permanent crafted goods of remarkable complexity. This boon is commonly invoked by druids to create food or grow plants, and by engineers to jury rig equipment or invent ingenious solutions to complex problems.</p>",
+    "effect": "<ul>\n<li><strong>Power Level 1</strong> - You can create <em>temporary</em> non-sentient matter (plants, dirt, water, vines, etc.), anything created in this way deteriorates or decomposes to become useless after 1 hour. Using this boon you can create 1 cubic foot of nonliving matter per attribute point of the invoking attribute. The invocation time for this application is 10 minutes.</li>\n<li><strong>Power Level 3</strong> - You can create <em>permanent</em> non-sentient matter (plants, dirt, water, vines, etc.). Using this boon you can either create enough food for 1 person or 1 cubic foot of nonliving matter per attribute point of the invoking attribute. The invocation time for this application is 1 hour.</li>\n<li><strong>Power Level 5</strong> - The quantity of <em>permanent</em> non-sentient matter (plants, dirt, water, vines, etc.). you can create expands, you can now produce 5 cubic feet per attribute point of the invoking attribute.</li>\n<li><strong>Power Level 7</strong> - You can create <em>permanent</em> mundane and organically complex or dense non-sentient matter, such as gems, iron, or marble. The resulting object's value can't be greater than a Wealth Level 2 item. You produce 1 cubic foot of such matter per attribute point of the invoking attribute. The invocation time for this application is 8 hours.</li>\n<li><strong>Power Level 9</strong> - You can create not just raw materials, but <em>permanent</em> crafted items - though a craftsman is still required to work anything into an exceptional quality. The invocation time for this application is 8 hours.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Creation"
+    ],
+    "powerLevel": 1,
+    "powerEffects": [
+      {
+        "powerLevel": 1,
+        "effect": ""
+      },
+      {
+        "powerLevel": 3,
+        "effect": ""
+      },
+      {
+        "powerLevel": 5,
+        "effect": ""
+      },
+      {
+        "powerLevel": 7,
+        "effect": ""
+      },
+      {
+        "powerLevel": 9,
+        "effect": ""
+      }
+    ],
+    "invocationTime": "Special",
+    "duration": "Instantaneous",
+    "gameEffects": [
+      {
+        "powerLevel": 1,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": ""
+      },
+      {
+        "powerLevel": 3,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": ""
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": ""
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": ""
+      },
+      {
+        "powerLevel": 9,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": ""
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "qKqR4sPFtha9vcV4",
+      "name": "Genesis",
+      "type": "base",
+      "img": "icons/magic/nature/plant-sproud-hands-dirt-green.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Genesis",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

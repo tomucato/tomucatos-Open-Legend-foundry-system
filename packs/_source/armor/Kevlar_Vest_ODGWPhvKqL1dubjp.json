@@ -1,0 +1,24 @@
+{
+  "_id": "ODGWPhvKqL1dubjp",
+  "name": "Kevlar Vest",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "description": "<p>Medium armor. Defense Bonus +2, Required Fortitude 3.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "armorType": "medium",
+    "requiredFortitude": 3,
+    "defenseBonus": 2,
+    "speedPenalty": 0,
+    "equipped": false
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "_id": "SoulSiphon000000",
+  "name": "Soul Siphon",
+  "type": "gear",
+  "img": "icons/svg/lightning.svg",
+  "system": {
+    "description": "<p>This thin black wand emits crackling green necrotic energy capable of draining the very souls from your foes.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Fatigued",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryProperties": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

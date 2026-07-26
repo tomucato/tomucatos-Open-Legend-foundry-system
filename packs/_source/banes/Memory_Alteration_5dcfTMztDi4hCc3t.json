@@ -1,0 +1,58 @@
+{
+  "name": "Memory Alteration",
+  "type": "bane",
+  "_id": "5dcfTMztDi4hCc3t",
+  "img": "icons/magic/control/hypnosis-mesmerism-watch.webp",
+  "system": {
+    "description": "<p>Warping or controlling the mind is one of the most dreaded powers of enchanters, causing powerful heroes to forget their homes, families, and quests. Memory alteration is often inflicted by mad scientists, necromancers, enchanters, and chronomancers.</p>",
+    "powerLevel": 5,
+    "invocationTime": "1 Major Action",
+    "duration": "Instantaneous",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "You temporarily modify a minor aspect of the target's memory. The target automatically regains the lost memory and realizes their confusion 1 hour later."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Power Level 5 - You temporarily modify a minor aspect of the target's memory. The target automatically regains the lost memory and realizes their confusion 1 hour later."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "Instead of the immediate past, you can erase or alter memories from any time."
+      }
+    ],
+    "failDuration": "",
+    "special": "When you target an enemy with this bane and your action roll fails to beat the target's Resolve defense, the target is immune to further invocations of this bane from you for the next 24 hours.",
+    "gameEffects": [],
+    "effect": "<p>You alter the target's memories to an extent based on the power level of the bane.</p><p> The memory alteration bane can only be inflicted via a bane attack. Damaging attacks that trigger banes cannot trigger this bane. This bane confers no special ability to know about a target's memory. The invoker must be aware of the memory either from rumor, personal knowledge, prescience, or other means.</p>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781693317409,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

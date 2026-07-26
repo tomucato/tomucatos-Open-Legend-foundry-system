@@ -1,0 +1,14 @@
+{
+  "_id": "Hsulb1NsOd4XSf1b",
+  "name": "Profession",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Choose a specific trade, such as sailor, soldier, or miner. You know everything there is to know about the business and are a master of the requisite skills. A sailor, for example, can tie a knot for all occasions, navigate by the stars, and man any station aboard a ship. A soldier is well-versed in a variety of arms, understands military tactics, and knows how to navigate the chain of command with ease. Furthermore, whenever you are performing a task in which your professional skills would play a role, you gain advantage 1 to any non-combat action rolls that you must make.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

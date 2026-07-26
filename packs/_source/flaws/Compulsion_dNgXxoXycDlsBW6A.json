@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxoXycDlsBW6A",
+  "name": "Compulsion",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You have an irresistible urge to perform a behavior of your choice. Examples include, grinding your teeth, tapping your foot, biting your fingernails, counting coinage, and washing your hands. Your compulsion can sometimes put you in awkward or embarrassing situations, such as needing to wash your hands immediately after shaking hands with an ambassador.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

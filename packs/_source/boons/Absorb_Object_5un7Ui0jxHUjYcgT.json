@@ -1,0 +1,61 @@
+{
+  "_id": "5un7Ui0jxHUjYcgT",
+  "name": "Absorb Object",
+  "type": "boon",
+  "img": "icons/magic/light/orb-hands-humanoid-yellow.webp",
+  "system": {
+    "description": "<p>By restructuring your bodily composition, creating an extradimensional space, utilizing a cybernetic storage implant, or similar means, you absorb an object into your body, leaving it completely hidden from others and ready for access at a moment's notice.</p>",
+    "effect": "The object remains in place, completely hidden from the perception of others, until the target summons or recalls it (automatically) as a minor action. If anything happens to cancel this boon (such as the nullify bane), the object is immediately shunted out of the target's body as if the object had been withdrawn.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Movement"
+    ],
+    "powerLevel": 4,
+    "powerEffects": [
+      {
+        "powerLevel": 4,
+        "effect": "The object remains in place, completely hidden from the perception of others, until the target summons or recalls it (automatically) as a minor action. If anything happens to cancel this boon (such as the nullify bane), the object is immediately shunted out of the target's body as if the object had been withdrawn."
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Permanent",
+    "gameEffects": [
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The object remains in place, completely hidden from the perception of others, until the target summons or recalls it (automatically) as a minor action. If anything happens to cancel this boon (such as the nullify bane), the object is immediately shunted out of the target's body as if the object had been withdrawn."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "tBZx36WlA5v3Xa4b",
+      "name": "Absorb Object",
+      "type": "base",
+      "img": "icons/magic/light/orb-hands-humanoid-yellow.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Absorb Object",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

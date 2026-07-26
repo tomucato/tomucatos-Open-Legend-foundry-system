@@ -1,0 +1,14 @@
+{
+  "_id": "lU8JRfqElLUQDEhr",
+  "name": "Divine Agent",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You serve a higher being and have earned their protection. Once per game session, when you are subject to a <em>Finishing Blow</em> while your hit points are below 1, you automatically heal to a hit point total of 1.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "_id": "d0paMPR8sDglaptw",
+  "name": "Indomitable Endurance (I - V)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Your endurance and willpower are legendary, allowing you to push on when others would keel over from exhaustion. A barbarian able to recover their wind after a mighty frenzy, or a computer hacker capable of routinely going for days without sleep while focused on a singular objective are good examples of this feat in action.</p>",
+    "effect": "You are able to shrug off the effects of the <em>fatigued</em> bane. For each tier you possess in this feat, treat your fatigue level as one lower than it actually is for the purposes of determining the bane's effects.",
+    "special": "",
+    "tags": [
+      "Physical"
+    ],
+    "cost": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "maxTier": 5,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 5
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 5
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 5
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 5
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 5,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 5
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Indomitable Endurance (I - V)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

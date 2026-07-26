@@ -1,0 +1,52 @@
+{
+  "_id": "QZhTKI2cxX5yGDkw",
+  "name": "Deathless Trance",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether you are a berserker of the icy north, a hulking superhero of unstoppable might, or a cybernetically enhanced soldier, your battle fury is legendary. You possess the rare ability to fight on long after your body should have given up.</p>",
+    "effect": "While in a battle trance you cannot be knocked unconscious. All damage dealt to you should be recorded, possibly resulting in a negative hit point total. Despite any amount of damage, you remain conscious for as long as you can sustain the battle trance. When the battle trance ends, if your hit points are below zero, you collapse unconscious. If you are not healed to zero or more hit points within 1 round of your battle trance ending, you die.",
+    "special": "",
+    "tags": [
+      "Extraordinary"
+    ],
+    "cost": [
+      3
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 7
+            }
+          ],
+          "feats": [
+            "Battle Trance"
+          ],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Deathless Trance"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

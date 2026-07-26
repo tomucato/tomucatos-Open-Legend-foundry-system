@@ -1,0 +1,86 @@
+{
+  "_id": "Zk6lf7jrtbHWnr0F",
+  "name": "Inspiring Champion (I - III)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You fight with such bravery, heroism, or bravado that your allies are inspired to fight beyond their usual mettle. Common examples of characters who typify this feat include a shining knight, a fearless platoon leader, and a heroic bard.</p>",
+    "effect": "Once per round, when your roll for a damaging attack exceeds an enemy's defense by 10 or more, you can grant healing to your allies as outlined below. In order to gain this healing, allies must be within a range of 5' times your Presence score.\n<ul>\n<li><strong>Tier 1</strong> - A single ally that can see the attack heals 1d4 HP.</li>\n<li><strong>Tier 2</strong> - A number of allies equal to your Presence score who can see the attack heal 1d4 HP.</li>\n<li><strong>Tier 3</strong> - All allies who can see the attack heal 2d4 HP.</li>\n</ul>",
+    "special": "",
+    "tags": [
+      "Social",
+      "Combat",
+      "Presence"
+    ],
+    "cost": [
+      2,
+      2,
+      2
+    ],
+    "maxTier": 3,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "presence",
+              "label": "Presence",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "presence",
+              "label": "Presence",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "presence",
+              "label": "Presence",
+              "min": 6
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Inspiring Champion (I - III)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

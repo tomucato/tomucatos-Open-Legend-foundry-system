@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxDuzSg3WgmMe",
+  "name": "Pacifist",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You disdain combat and bloodshed of any kind, and will generally do whatever possible to avoid it. You can decide the extent of your pacifism. You might just revert to violence as a last resort, or you may be so averse to combat that you won't lift a weapon even in defense of yourself or others.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

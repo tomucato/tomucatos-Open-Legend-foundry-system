@@ -1,0 +1,35 @@
+{
+  "_id": "ZoVKZmjeg8MGYEmr",
+  "name": "Blow Gun",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Close Ranged. Precise.</p>",
+    "notes": "",
+    "wealthLevel": 1,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Blow Gun",
+    "categories": [
+      "close-ranged"
+    ],
+    "rangeIncrement": 25,
+    "properties": [
+      {
+        "key": "precise"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Immobile",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.qgw9kvjj3KndKzet"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

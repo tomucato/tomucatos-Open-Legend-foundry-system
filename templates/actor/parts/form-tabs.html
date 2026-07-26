@@ -1,0 +1,48 @@
+{{!-- Alternate Forms bar (characters & NPCs with the Alternate Form feat):
+      the Main + per-form tabs, the displayed form's tier selector, and its
+      token-image controls. Context comes from _prepareForms. Clicking a tab
+      VIEWS that form (edits save into its stored build; combat keeps using the
+      ACTIVE form) — the actual switch is the Transform action. --}}
+{{#if forms.show}}
+<nav class="ol-form-tabs" aria-label="Character forms">
+  {{#each forms.tabs as |form|}}
+  <div class="ol-form-tab {{#if form.viewed}}is-active{{/if}} {{#if form.isMain}}is-main{{/if}}" data-form-id="{{form.id}}">
+    <a class="ol-form-tab-name" data-action="formView" data-form-id="{{form.id}}"
+       title="{{#if form.active}}Your ACTIVE form — click to return to the live view.{{else}}View &amp; edit {{form.name}}'s build. Combat (defenses, HP) keeps using your active form — use Transform to actually become it.{{/if}}">
+      {{#if form.isMain}}<i class="fas fa-user"></i>{{else}}<i class="fas fa-wand-magic-sparkles"></i>{{/if}}
+      {{form.name}}
+      {{#if form.active}}<i class="fas fa-circle-check ol-form-active-dot" title="This is the ACTIVE form (the one attacks and rolls use)"></i>{{/if}}
+    </a>
+    <a class="ol-form-tab-rename" data-action="formRename" data-form-id="{{form.id}}" title="Rename this form"><i class="fas fa-pen"></i></a>
+    {{#unless form.isMain}}
+    <a class="ol-form-tab-delete" data-action="formDelete" data-form-id="{{form.id}}" title="Delete this form (also removes its Alternate Form feat)"><i class="fas fa-times"></i></a>
+    {{/unless}}
+  </div>
+  {{/each}}
+</nav>
+{{#if forms.preview}}
+<div class="ol-form-preview-banner">
+  <i class="fas fa-pen-to-square"></i>
+  <span>Editing <strong>{{forms.preview.name}}</strong> — changes save to this form's build. Combat (defenses &amp; HP) uses your active form, <strong>{{forms.activeName}}</strong>.</span>
+  <a data-action="formTransform" data-form-id="{{forms.preview.id}}" role="button" title="Become this form: swaps attributes, feats &amp; actions (damage carries over) and applies its token image.">
+    <i class="fas fa-arrows-spin"></i> Transform into {{forms.preview.name}}
+  </a>
+</div>
+{{/if}}
+{{#if forms.isAlternate}}
+<div class="ol-form-tier-bar" title="Alternate Form tier governs this form's attribute & feat-point allowances, derived from your Main form. Tier 1: half the Main's attribute points (rounded up) + 3 feat points. Tier 2: same attribute points as Main + 3 fewer feat points.">
+  <label><i class="fas fa-layer-group"></i> Form Tier</label>
+  <select class="ol-form-tier" data-form-id="{{forms.shownId}}">
+    <option value="1" {{#if (eq forms.activeTier 1)}}selected{{/if}}>Tier 1 — ½ attr pts, 3 feat pts</option>
+    <option value="2" {{#if (eq forms.activeTier 2)}}selected{{/if}}>Tier 2 — full attr pts, Main feat pts − 3</option>
+  </select>
+</div>
+{{/if}}
+<div class="ol-form-token-bar">
+  <img class="ol-form-token-img" src="{{forms.activeTokenImg}}" data-action="formEditTokenImage" title="This form's token image — click to choose" width="32" height="32"/>
+  <label>Token image</label>
+  <a class="ol-form-token-apply" data-action="formApplyToken" role="button" title="Apply this form's token image to the token(s) on the canvas (and the prototype token).">
+    <i class="fas fa-arrows-rotate"></i> Apply to token
+  </a>
+</div>
+{{/if}}

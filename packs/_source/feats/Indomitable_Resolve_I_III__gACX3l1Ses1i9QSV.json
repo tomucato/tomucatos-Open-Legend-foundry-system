@@ -1,0 +1,101 @@
+{
+  "_id": "gACX3l1Ses1i9QSV",
+  "name": "Indomitable Resolve (I - III)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Your resolve is exceptional, making your more resilient to mental effects that would overwhelm those of lesser mettle. A keen-minded space captain and a wizened mage are both exemplars of this feat in action.</p>",
+    "effect": "For each tier you possess in this feat, your Resolve defense is increased by 1.",
+    "special": "",
+    "tags": [
+      "Combat",
+      "Presence",
+      "Will"
+    ],
+    "cost": [
+      1,
+      1,
+      1
+    ],
+    "maxTier": 3,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "presence",
+              "label": "Presence",
+              "min": 3
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 3
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "presence",
+              "label": "Presence",
+              "min": 4
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "presence",
+              "label": "Presence",
+              "min": 5
+            },
+            {
+              "key": "will",
+              "label": "Will",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Indomitable Resolve (I - III)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

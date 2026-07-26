@@ -1,0 +1,43 @@
+{
+  "_id": "1m64h06Xz04tQx60",
+  "name": "Staff",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Two-handed Melee. Forceful.</p>",
+    "notes": "",
+    "wealthLevel": 1,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Staff",
+    "categories": [
+      "two-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "forceful"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Knockdown",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fPzhkCAYAcXa3jZK"
+      },
+      {
+        "name": "Immobile",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.qgw9kvjj3KndKzet"
+      },
+      {
+        "name": "Forced Move",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.rwt5CUhK3P5D2la7"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

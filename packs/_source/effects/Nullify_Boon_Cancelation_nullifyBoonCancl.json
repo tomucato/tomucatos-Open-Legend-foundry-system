@@ -1,0 +1,40 @@
+{
+    "_id": "nullifyBoonCancl",
+    "name": "Nullify Boon Cancelation",
+    "type": "effect",
+    "img": "icons/svg/cancel.svg",
+    "system": {
+        "description": "<p>You can cancel a boon that must be actively invoked. In addition, the target cannot benefit from or have the target boon invoked upon them for 1 minute.</p><p>Applied automatically when a boon is canceled through Nullify; the applied effect remembers the canceled boon (<code>flags.openlegend.blocksBoon</code>) and blocks it from being granted again while it runs.</p>"
+    },
+    "effects": [
+        {
+            "_id": "nullifyBlocker00",
+            "name": "Nullify Boon Cancelation",
+            "type": "base",
+            "img": "icons/svg/cancel.svg",
+            "disabled": false,
+            "transfer": false,
+            "showIcon": 2,
+            "duration": {
+                "seconds": 60,
+                "rounds": 10
+            },
+            "description": "<p>This boon has been canceled by Nullify: the bearer cannot benefit from it or have it invoked upon them again for 1 minute.</p>",
+            "system": {
+                "changes": []
+            },
+            "flags": {
+                "openlegend": {
+                    "blocksBoon": "",
+                    "fromEffectItem": "Nullify Boon Cancelation",
+                    "changeLevels": [],
+                    "changeModes": []
+                }
+            }
+        }
+    ],
+    "flags": {},
+    "_stats": {
+        "systemId": "tomucatos-open-legend-rpg-system"
+    }
+}

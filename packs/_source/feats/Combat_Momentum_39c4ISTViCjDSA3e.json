@@ -1,0 +1,44 @@
+{
+  "_id": "39c4ISTViCjDSA3e",
+  "name": "Combat Momentum",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether through brute strength or lightning reflexes, you are able to use the momentum of combat to maneuver around the battlefield with ease.</p>",
+    "effect": "Every time you bring an enemy to zero hit points with a Might or Agility attack, you can immediately move up to your normal speed as a free action.",
+    "special": "If you have access to the <em>teleport</em> boon, you may use it instead of a normal move.",
+    "tags": [
+      "Combat"
+    ],
+    "cost": [
+      1
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Combat Momentum"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

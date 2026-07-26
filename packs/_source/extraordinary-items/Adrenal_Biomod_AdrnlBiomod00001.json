@@ -1,0 +1,34 @@
+{
+  "_id": "AdrnlBiomod00001",
+  "name": "Adrenal Biomod",
+  "type": "gear",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "description": "<p>Those willing to undergo the invasive procedure will thank themselves the next time they take a bullet in the heat of battle and their biomod compensates for the pain with an automatic adrenaline pump.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [
+      {
+        "name": "Heal",
+        "powerLevel": 3
+      }
+    ],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "persistent",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

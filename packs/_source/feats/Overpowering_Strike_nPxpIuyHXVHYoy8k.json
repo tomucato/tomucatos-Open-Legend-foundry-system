@@ -1,0 +1,52 @@
+{
+  "_id": "nPxpIuyHXVHYoy8k",
+  "name": "Overpowering Strike",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>In combat, you are like a wrecking ball that clears the battlefield of your foes. The sheer force of your attacks is so great that you send opponents flying. A half-ogre wielding a massive tree branch and a super soldier trained to use the enemy's weight against themself are both examples of this feat in play.</p>",
+    "effect": "Each time you deal damage using a weapon that has the <em>forceful</em> property, you can choose to push the target five feet away from you.",
+    "special": "",
+    "tags": [
+      "Physical",
+      "Feat Chain",
+      "Might"
+    ],
+    "cost": [
+      2
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "might",
+              "label": "Might",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Overpowering Strike"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

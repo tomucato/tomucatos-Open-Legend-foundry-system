@@ -1,0 +1,89 @@
+{
+  "_id": "gqzxYLeKuyBlxgI7",
+  "name": "Area Manipulation (I - V)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Whether unloading your assault rifle on full-automatic or hurling a ball of flame, you are exceptionally precise at choosing targets for area attacks, allowing you to avoid allies who would otherwise be caught in the line of fire.</p>",
+    "effect": "For each tier of this feat you possess, you can omit a single 5-foot square from being targeted as part of an area attack.",
+    "special": "",
+    "tags": [
+      "No Prerequisite",
+      "Extraordinary"
+    ],
+    "cost": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "maxTier": 5,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 5,
+        "cost": 1,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Area Manipulation (I - V)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

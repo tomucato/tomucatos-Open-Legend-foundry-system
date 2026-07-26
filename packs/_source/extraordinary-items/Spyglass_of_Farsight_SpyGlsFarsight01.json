@@ -1,0 +1,29 @@
+{
+  "_id": "SpyGlsFarsight01",
+  "name": "Spyglass of Farsight",
+  "type": "gear",
+  "img": "icons/svg/eye.svg",
+  "system": {
+    "description": "<p>A product of steampunk innovation, this masterfully crafted spyglass grants its user the sight of an eagle.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [
+      {
+        "key": "perception",
+        "score": 6
+      }
+    ],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

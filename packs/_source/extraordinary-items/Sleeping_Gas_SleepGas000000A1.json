@@ -1,0 +1,38 @@
+{
+  "_id": "SleepGas000000A1",
+  "name": "Sleeping Gas",
+  "type": "gear",
+  "img": "icons/svg/poison.svg",
+  "system": {
+    "description": "<p>Some grenades blow your enemies to bits. This one is for those who prefer the more subtle approach.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Incapacitated",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "expendable",
+        "value": ""
+      },
+      {
+        "name": "area",
+        "value": "cube:15"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

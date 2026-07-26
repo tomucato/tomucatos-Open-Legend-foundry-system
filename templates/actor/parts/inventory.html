@@ -1,0 +1,230 @@
+{{!-- Inventory tab body: three sections, one physical item type each.
+      Included by both the character and NPC sheets. --}}
+<div class="tab inventory {{tabs.inventory.cssClass}}" data-group="primary" data-tab="inventory">
+
+  {{!-- Carrying capacity (weapons + armor count; adventuring gear excluded). --}}
+  <div class="carry-capacity">
+    <div class="carry-stat {{#if carry.overCount}}over{{/if}}" title="Up to 20 items (weapons + armor). Adventuring gear does not count.">
+      <span class="carry-label">Items</span>
+      <span class="carry-value">{{carry.count}} / {{carry.max}}</span>
+    </div>
+    <div class="carry-stat {{#if carry.overHeavy}}over{{else if carry.heavyEncumbered}}warn{{/if}}"
+         title="Heavy items allowed equals your Might score. At the maximum, your speed is halved.">
+      <span class="carry-label">Heavy</span>
+      <span class="carry-value">{{carry.heavy}} / {{carry.heavyMax}}</span>
+      {{#if carry.heavyEncumbered}}<i class="fas fa-gauge-high carry-flag" title="Speed halved (at heavy maximum)"></i>{{/if}}
+    </div>
+    <div class="carry-stat {{#if carry.overBulky}}over{{else if carry.bulkyEncumbered}}warn{{/if}}"
+         title="You can carry one bulky item freely; a second reduces your speed to 5 ft.">
+      <span class="carry-label">Bulky</span>
+      <span class="carry-value">{{carry.bulky}} / {{carry.bulkyMax}}</span>
+      {{#if carry.bulkyEncumbered}}<i class="fas fa-gauge-high carry-flag" title="Speed reduced by 5 ft (second bulky item)"></i>{{/if}}
+    </div>
+  </div>
+  {{#if carry.overCount}}<p class="carry-warn">You are carrying more than 20 items.</p>{{/if}}
+  {{#if carry.overHeavy}}<p class="carry-warn">You are carrying more heavy items than your Might score allows.</p>{{/if}}
+  {{#if carry.overBulky}}<p class="carry-warn">You cannot carry more than two bulky items.</p>{{/if}}
+
+  {{#*inline "inventorySection"}}
+  <div class="inv-section">
+    <div class="inv-section-head">
+      <h2>{{label}}</h2>
+      <a class="item-create" data-action="itemCreate" data-type="{{type}}">
+        <i class="fas fa-plus"></i> Add
+      </a>
+    </div>
+    <div class="inv-list">
+      <div class="inv-row inv-head">
+        <span class="inv-col-toggle"></span>
+        <span class="inv-col-name">Name</span>
+        <span class="inv-col-wl" title="Wealth Level">WL</span>
+        <span class="inv-col-flag" title="Bulky">B</span>
+        <span class="inv-col-flag" title="Heavy">H</span>
+        <span class="inv-col-qty">Qty</span>
+        <span class="inv-col-controls"></span>
+      </div>
+      {{#each items as |item|}}
+      <details class="inv-item" data-sync="inv-{{item.id}}">
+        <summary class="inv-row item draggable" data-item-id="{{item.id}}" draggable="true">
+          <span class="inv-col-toggle"><i class="fas fa-chevron-right inv-caret"></i></span>
+          <span class="inv-col-name">
+            <img src="{{item.img}}" title="{{item.name}}" width="22" height="22"/>
+            <span class="item-name">{{item.name}}</span>
+          </span>
+          <span class="inv-col-wl">{{item.system.wealthLevel}}</span>
+          <span class="inv-col-flag">{{#if item.system.bulky}}<i class="fas fa-check" title="Bulky"></i>{{else}}&mdash;{{/if}}</span>
+          <span class="inv-col-flag">{{#if item.system.heavy}}<i class="fas fa-check" title="Heavy"></i>{{else}}&mdash;{{/if}}</span>
+          <span class="inv-col-qty">{{item.system.quantity}}</span>
+          <span class="inv-col-controls item-controls">
+            {{#if item.hasExtraInvocations}}
+            <a class="item-control item-generate" data-action="actionGenerate" title="Generate Action from extraordinary bane/boon"><i class="fas fa-wand-magic-sparkles"></i></a>
+            {{/if}}
+            {{#if item.isAugmenting}}
+            <span class="item-control item-augmenting" data-tooltip="Augmenting — choose this item to augment a damaging attack in the roll dialog; it delivers one of its banes on a hit and is expended."><i class="fas fa-vial"></i></span>
+            {{/if}}
+            {{#if item.isExpendable}}
+            <a class="item-control item-expend" data-action="itemExpend" title="Expendable — use once: invoke a listed bane/boon (or one unlocked by a granted attribute); the item is expended after the roll"><i class="fas fa-vial"></i></a>
+            {{/if}}
+            {{#if item.isConsumable}}
+            <a class="item-control item-consume" data-action="itemConsume" title="Consume — invoke a listed boon, then use up the item"><i class="fas fa-mug-hot"></i></a>
+            {{/if}}
+            <a class="item-control item-edit" data-action="itemEdit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" data-action="itemDelete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </span>
+        </summary>
+        {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/inv-item-details.hbs" item=item}}
+      </details>
+      {{else}}
+      <div class="inv-empty">None.</div>
+      {{/each}}
+    </div>
+  </div>
+  {{/inline}}
+
+  {{!-- Armor section: extra columns (Type / Def / Speed penalty) + equip toggle. --}}
+  {{#*inline "armorSection"}}
+  <div class="inv-section">
+    <div class="inv-section-head">
+      <h2>Armor</h2>
+      <a class="item-create" data-action="itemCreate" data-type="armor">
+        <i class="fas fa-plus"></i> Add
+      </a>
+    </div>
+    <div class="inv-list inv-armor">
+      <div class="inv-row inv-armor-row inv-head">
+        <span class="inv-col-toggle"></span>
+        <span class="inv-col-equip" title="Equipped">Eq</span>
+        <span class="inv-col-name">Name</span>
+        <span class="inv-col-type" title="Type">Type</span>
+        <span class="inv-col-num" title="Required Fortitude">Fort</span>
+        <span class="inv-col-num" title="Defense Bonus">Def</span>
+        <span class="inv-col-num" title="Speed Penalty">Spd</span>
+        <span class="inv-col-controls"></span>
+      </div>
+      {{#each armor as |item|}}
+      <details class="inv-item" data-sync="inv-{{item.id}}">
+        <summary class="inv-row inv-armor-row item draggable {{#if item.system.equipped}}is-equipped{{/if}}" data-item-id="{{item.id}}" draggable="true">
+          <span class="inv-col-toggle"><i class="fas fa-chevron-right inv-caret"></i></span>
+          <span class="inv-col-equip">
+            <a class="equip-toggle" data-action="armorToggleEquip"
+               title="{{#if item.system.equipped}}Equipped — click to remove{{else}}Not equipped — click to equip{{/if}}">
+              <i class="fas {{#if item.system.equipped}}fa-shield-halved{{else}}fa-shield{{/if}}"></i>
+            </a>
+          </span>
+          <span class="inv-col-name">
+            <img src="{{item.img}}" title="{{item.name}}" width="22" height="22"/>
+            <span class="item-name">{{item.name}}</span>
+            {{#if item.fortitudeUnmet}}
+            <i class="fas fa-triangle-exclamation fort-warn" title="Required Fortitude not met"></i>
+            {{/if}}
+          </span>
+          <span class="inv-col-type">{{item.system.armorType}}</span>
+          <span class="inv-col-num" {{#if item.fortitudeReduced}}title="Reduced from {{item.system.requiredFortitude}} by Armor Mastery"{{/if}}>{{item.effectiveRequiredFortitude}}</span>
+          <span class="inv-col-num">+{{item.system.defenseBonus}}</span>
+          <span class="inv-col-num">{{#if item.system.speedPenalty}}&minus;{{item.system.speedPenalty}}{{else}}&mdash;{{/if}}</span>
+          <span class="inv-col-controls item-controls">
+            {{#if item.hasExtraInvocations}}
+            <a class="item-control item-generate" data-action="actionGenerate" title="Generate Action from extraordinary bane/boon"><i class="fas fa-wand-magic-sparkles"></i></a>
+            {{/if}}
+            {{#if item.isAugmenting}}
+            <span class="item-control item-augmenting" data-tooltip="Augmenting — choose this item to augment a damaging attack in the roll dialog; it delivers one of its banes on a hit and is expended."><i class="fas fa-vial"></i></span>
+            {{/if}}
+            {{#if item.isExpendable}}
+            <a class="item-control item-expend" data-action="itemExpend" title="Expendable — use once: invoke a listed bane/boon (or one unlocked by a granted attribute); the item is expended after the roll"><i class="fas fa-vial"></i></a>
+            {{/if}}
+            {{#if item.isConsumable}}
+            <a class="item-control item-consume" data-action="itemConsume" title="Consume — invoke a listed boon, then use up the item"><i class="fas fa-mug-hot"></i></a>
+            {{/if}}
+            <a class="item-control item-edit" data-action="itemEdit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" data-action="itemDelete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </span>
+        </summary>
+        {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/inv-item-details.hbs" item=item}}
+      </details>
+      {{else}}
+      <div class="inv-empty">None.</div>
+      {{/each}}
+    </div>
+  </div>
+  {{/inline}}
+
+  {{!-- Weapon section: extra columns (Hands / equip toggle) + a hand-slot tally. --}}
+  {{#*inline "weaponSection"}}
+  <div class="inv-section">
+    <div class="inv-section-head">
+      <h2>Weapons</h2>
+      <div class="weapon-hands-tally {{#if weaponSummary.overHands}}over{{/if}}"
+           title="Hands in use by equipped weapons. You have {{weaponSummary.maxHands}}.">
+        <i class="fas fa-hands"></i>
+        <span>{{weaponSummary.handsUsed}} / {{weaponSummary.maxHands}} hands</span>
+      </div>
+      <a class="item-create" data-action="itemCreate" data-type="weapon">
+        <i class="fas fa-plus"></i> Add
+      </a>
+    </div>
+    {{#if weaponSummary.overHands}}
+    <p class="carry-warn">You have more weapons equipped than you have hands ({{weaponSummary.handsUsed}} / {{weaponSummary.maxHands}}).</p>
+    {{/if}}
+    <div class="inv-list inv-weapon">
+      <div class="inv-row inv-weapon-row inv-head">
+        <span class="inv-col-toggle"></span>
+        <span class="inv-col-equip" title="Equipped">Eq</span>
+        <span class="inv-col-name">Name</span>
+        <span class="inv-col-hands" title="Hands required">Hands</span>
+        <span class="inv-col-wl" title="Wealth Level">WL</span>
+        <span class="inv-col-flag" title="Bulky">B</span>
+        <span class="inv-col-flag" title="Heavy">H</span>
+        <span class="inv-col-qty">Qty</span>
+        <span class="inv-col-controls"></span>
+      </div>
+      {{#each weapons as |item|}}
+      <details class="inv-item" data-sync="inv-{{item.id}}">
+        <summary class="inv-row inv-weapon-row item draggable {{#if item.equipped}}is-equipped{{/if}}" data-item-id="{{item.id}}" draggable="true">
+          <span class="inv-col-toggle"><i class="fas fa-chevron-right inv-caret"></i></span>
+          <span class="inv-col-equip">
+            <a class="equip-toggle" data-action="weaponToggleEquip"
+               title="{{#if item.equipped}}Equipped ({{item.hands}}H) — click to unequip{{else}}Not equipped — click to equip{{/if}}">
+              <i class="fas {{#if item.equipped}}fa-hand-fist{{else}}fa-hand{{/if}}"></i>
+            </a>
+          </span>
+          <span class="inv-col-name">
+            <img src="{{item.img}}" title="{{item.name}}" width="22" height="22"/>
+            <span class="item-name">{{item.name}}</span>
+          </span>
+          <span class="inv-col-hands">
+            <span class="hands-badge {{#if item.versatile}}is-versatile{{/if}}" title="{{#if item.versatile}}Versatile — wieldable in one or two hands{{else}}Requires {{item.hands}} hand(s){{/if}}">{{item.handsLabel}}</span>
+          </span>
+          <span class="inv-col-wl">{{item.system.wealthLevel}}</span>
+          <span class="inv-col-flag">{{#if item.system.bulky}}<i class="fas fa-check" title="Bulky"></i>{{else}}&mdash;{{/if}}</span>
+          <span class="inv-col-flag">{{#if item.system.heavy}}<i class="fas fa-check" title="Heavy"></i>{{else}}&mdash;{{/if}}</span>
+          <span class="inv-col-qty">{{item.system.quantity}}</span>
+          <span class="inv-col-controls item-controls">
+            {{#unless item.hideGenerate}}
+            <a class="item-control item-generate" data-action="actionGenerate" title="Generate Action"><i class="fas fa-wand-magic-sparkles"></i></a>
+            {{/unless}}
+            {{#if item.isAugmenting}}
+            <span class="item-control item-augmenting" data-tooltip="Augmenting — choose this item to augment a damaging attack in the roll dialog; it delivers one of its banes on a hit and is expended."><i class="fas fa-vial"></i></span>
+            {{/if}}
+            {{#if item.isExpendable}}
+            <a class="item-control item-expend" data-action="itemExpend" title="Expendable — use once: invoke a listed bane/boon (or one unlocked by a granted attribute); the item is expended after the roll"><i class="fas fa-vial"></i></a>
+            {{/if}}
+            {{#if item.isConsumable}}
+            <a class="item-control item-consume" data-action="itemConsume" title="Consume — invoke a listed boon, then use up the item"><i class="fas fa-mug-hot"></i></a>
+            {{/if}}
+            <a class="item-control item-edit" data-action="itemEdit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" data-action="itemDelete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </span>
+        </summary>
+        {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/inv-item-details.hbs" item=item}}
+      </details>
+      {{else}}
+      <div class="inv-empty">None.</div>
+      {{/each}}
+    </div>
+  </div>
+  {{/inline}}
+
+  {{> weaponSection}}
+  {{> armorSection}}
+  {{> inventorySection label="Adventuring Gear" type="gear" items=gear}}
+</div>

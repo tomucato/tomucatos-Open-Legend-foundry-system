@@ -1,0 +1,34 @@
+{
+  "_id": "Ghstfre000000001",
+  "name": "Ghostfire",
+  "type": "gear",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>This white alchemical liquid ignites in fire as soon as it is exposed to air. Typically, it is sealed tightly in a glass flask or orb meant to be shattered against a foe.</p>",
+    "notes": "",
+    "wealthLevel": 2,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [
+      {
+        "key": "energy",
+        "score": 5
+      }
+    ],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "expendable",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

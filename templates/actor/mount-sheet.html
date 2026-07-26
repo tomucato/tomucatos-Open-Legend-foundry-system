@@ -1,0 +1,216 @@
+<header class="sheet-header">
+  <div class="portrait">
+    <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    <a class="portrait-popout" data-action="imagePopout" data-tooltip="Show portrait full-size" aria-label="Show portrait full-size">
+      <i class="fas fa-expand"></i>
+    </a>
+  </div>
+  <div class="header-fields">
+    <div class="name-row">
+      <div class="field field-name">
+        <label>Name</label>
+        <input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Mount / Vehicle Name"/>
+      </div>
+    </div>
+
+    <div class="identity-fields">
+      <div class="field field-wealth" title="Wealth level required to acquire this mount/vehicle. Repairing or healing one damage level takes 1 day per wealth level.">
+        <label>Wealth Level</label>
+        <select name="system.wealthLevel" data-dtype="Number">
+          {{selectOptions wealthLevels selected=system.wealthLevel}}
+        </select>
+      </div>
+      <div class="field field-speed-mode" title="Movement medium the speed applies to (e.g. 50' flying, 70' swimming).">
+        <label>Movement</label>
+        <select name="system.speedMode">
+          {{selectOptions mountSpeedModes selected=system.speedMode}}
+        </select>
+      </div>
+    </div>
+  </div>
+</header>
+
+{{#if mountDamage.disabled}}
+<div class="mount-disabled-banner" title="Damage level has reached the damage threshold. Repairing or healing one damage level takes {{mountDamage.repairDays}} day(s) (1 day per wealth level).">
+  <i class="fas fa-ban"></i> <strong>Disabled</strong> — damage level {{mountDamage.level}}/{{mountDamage.threshold}}. Unable to act until healed or repaired ({{mountDamage.repairDays}} day{{#unless (eq mountDamage.repairDays 1)}}s{{/unless}} per damage level).
+</div>
+{{/if}}
+
+<section class="vitals stats-section">
+  <h3 class="vitals-title">Stats</h3>
+  <div class="vitals-row">
+    <div class="vital vital-health">
+      <label>Health</label>
+      <div class="vital-health-content">
+        <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+        <span class="sep">/</span>
+        <input class="npc-hp-max" type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" data-tooltip="Max HP is set directly (see the SRD Mounts &amp; Vehicles table). At 0 HP the mount gains a damage level and HP returns to maximum, carrying leftover damage over."/>
+      </div>
+    </div>
+    <div class="vital vital-mount-damage {{#if mountDamage.disabled}}is-disabled{{/if}}" title="Damage Level / Damage Threshold. Each damage level imposes that much disadvantage on all of the mount's action rolls; at the threshold the mount is disabled.">
+      <label class="mount-damage-label">
+        <i class="fas fa-car-burst"></i> Damage
+        {{#if mountDamage.level}}<span class="mount-dis-tag" title="Disadvantage {{mountDamage.level}} on all of this mount's action rolls."><i class="fas fa-angles-down"></i> Dis {{mountDamage.level}}</span>{{/if}}
+      </label>
+      <div class="vital-mount-damage-content">
+        <input type="text" name="system.damage.level" value="{{system.damage.level}}" data-dtype="Number"/>
+        <span class="sep">/</span>
+        <input type="text" name="system.damage.threshold" value="{{system.damage.threshold}}" data-dtype="Number" data-tooltip="Damage Threshold (DT): the number of damage levels the mount can take before it is disabled."/>
+      </div>
+    </div>
+    <div class="vital vital-speed" title="Feet moved with a single move action (allocated by the rider, or an Independent mount's own).">
+      <label>Speed</label>
+      <div class="vital-speed-content">
+        <input type="text" name="system.speed.value" value="{{system.speed.value}}" data-dtype="Number"/>
+        {{#unless (eq derived.speed system.speed.value)}}
+        <span class="sep">&rarr;</span>
+        <span class="derived" data-tooltip="Effective speed (active effects applied)">{{derived.speed}}</span>
+        {{/unless}}
+      </div>
+    </div>
+    <div class="vital vital-initiative" title="Roll initiative (1d20 + Agility dice). A mount normally acts on the actions its rider allocates to it.">
+      <label>Initiative</label>
+      <a class="initiative-roll" data-action="initiativeRoll" role="button">
+        <i class="fas fa-dice-d20"></i>
+        <span class="derived">{{derived.initiative}}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="vitals defenses-section">
+  <h3 class="vitals-title">Defenses</h3>
+  <div class="defenses">
+    <div class="defense {{#if system.defenseImmune.guard}}is-immune{{/if}}">
+      <label>Guard</label>
+      <div class="defense-value-row">
+        {{#unless system.defenseImmune.guard}}
+        <input type="text" name="system.defenses.guard.value" value="{{system.defenses.guard.value}}" data-dtype="Number"/>
+        {{/unless}}
+        <label class="defense-immune-toggle" title="Immune: attacks targeting this defense have no effect.">
+          <input type="checkbox" name="system.defenseImmune.guard" {{checked system.defenseImmune.guard}}/> Immune
+        </label>
+      </div>
+    </div>
+    <div class="defense {{#if system.defenseImmune.toughness}}is-immune{{/if}}">
+      <label>Toughness</label>
+      <div class="defense-value-row">
+        {{#unless system.defenseImmune.toughness}}
+        <input type="text" name="system.defenses.toughness.value" value="{{system.defenses.toughness.value}}" data-dtype="Number"/>
+        {{/unless}}
+        <label class="defense-immune-toggle" title="Immune: attacks targeting this defense have no effect.">
+          <input type="checkbox" name="system.defenseImmune.toughness" {{checked system.defenseImmune.toughness}}/> Immune
+        </label>
+      </div>
+    </div>
+    <div class="defense {{#if system.defenseImmune.resolve}}is-immune{{/if}}">
+      <label>Resolve</label>
+      <div class="defense-value-row">
+        {{#unless system.defenseImmune.resolve}}
+        <input type="text" name="system.defenses.resolve.value" value="{{system.defenses.resolve.value}}" data-dtype="Number"/>
+        {{/unless}}
+        <label class="defense-immune-toggle" title="Immune: attacks targeting this defense have no effect.">
+          <input type="checkbox" name="system.defenseImmune.resolve" {{checked system.defenseImmune.resolve}}/> Immune
+        </label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="vitals mount-properties-section">
+  <h3 class="vitals-title">Properties</h3>
+  <div class="mount-properties">
+    <label class="mount-property" title="Faster than Light: the vehicle can exceed lightspeed — a pilot must expend a focus action on three consecutive rounds.">
+      <input type="checkbox" name="system.properties.fasterThanLight" {{checked system.properties.fasterThanLight}}/>
+      <span><i class="fas fa-rocket"></i> Faster than Light</span>
+    </label>
+    <label class="mount-property" title="Guided Weapons: attacks vs Guard made with an attribute greater than zero roll an extra d20 and keep the higher (advantage 1). Applied automatically to this mount's attack rolls.">
+      <input type="checkbox" name="system.properties.guidedWeapons" {{checked system.properties.guidedWeapons}}/>
+      <span><i class="fas fa-crosshairs"></i> Guided Weapons</span>
+    </label>
+    <label class="mount-property" title="Targeted Weapons: if the acting pilot's Agility exceeds the vehicle's attacking attribute, attacks gain advantage equal to the difference. Choose the pilot on each action (the action sheet's Pilot select); their live Agility is read at roll time.">
+      <input type="checkbox" name="system.properties.targetedWeapons" {{checked system.properties.targetedWeapons}}/>
+      <span><i class="fas fa-bullseye"></i> Targeted Weapons</span>
+    </label>
+    <div class="mount-property mount-property-number" title="Independent: the mount can act on its own — it receives this many major actions every round (not usable as move actions). 0 = only acts when the rider allocates actions to it.">
+      <label>Independent</label>
+      <input type="number" min="0" step="1" name="system.properties.independent" value="{{system.properties.independent}}" data-dtype="Number"/>
+    </div>
+    <div class="mount-property mount-property-number" title="Multi-Pilot: how many people can pilot the vehicle (one slot per pilot below). Each pilot can use the vehicle to make actions, but it can take no more than 2 move actions per round.">
+      <label>Multi-Pilot</label>
+      <input type="number" min="1" max="12" step="1" name="system.properties.multiPilot" value="{{system.properties.multiPilot}}" data-dtype="Number"/>
+    </div>
+  </div>
+</section>
+
+<section class="vitals mount-pilots-section">
+  <h3 class="vitals-title">Pilots <span class="minion-fixed-note">(drag &amp; drop actors — one slot per Multi-Pilot)</span></h3>
+  <div class="mount-pilots">
+    {{#each mountPilots as |slot|}}
+    {{#if slot.uuid}}
+    <div class="mount-pilot-slot is-filled" data-slot="{{slot.index}}" data-action="pilotOpen" title="{{slot.name}} — click to open the pilot's sheet. Drop another actor here to replace them.">
+      <img src="{{slot.img}}" alt="{{slot.name}}"/>
+      <span class="mount-pilot-name">{{slot.name}}</span>
+      <a class="mount-pilot-clear" data-action="pilotClear" data-slot="{{slot.index}}" data-tooltip="Remove this pilot" aria-label="Remove this pilot"><i class="fas fa-xmark"></i></a>
+    </div>
+    {{else}}
+    <div class="mount-pilot-slot is-empty" data-slot="{{slot.index}}" title="Empty pilot seat — drag an actor from the sidebar and drop it here.">
+      <i class="fas fa-user-plus"></i>
+      <span class="mount-pilot-name">Seat {{slot.seat}}</span>
+    </div>
+    {{/if}}
+    {{/each}}
+  </div>
+</section>
+
+<section class="vitals actions-section">
+  <h3 class="vitals-title">Actions</h3>
+  <div class="vitals-row">
+    <div class="vital vital-resist vital-small" title="Resist (shake off) banes — 1d20, 10+ succeeds; a Potent bane rolls 2d20 and takes the lower.">
+      <label>Resist</label>
+      <a class="resist-banes" data-action="resistBanes" role="button" draggable="true">
+        <i class="fas fa-hand-fist"></i>
+        <span>Banes</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
+
+<section class="sheet-body">
+  <div class="tab attributes {{tabs.attributes.cssClass}}" data-group="primary" data-tab="attributes">
+    <p class="npc-statline-bar">
+      <i class="fas fa-circle-info npc-statline"></i>
+      A mount has its own attributes and feats — it never benefits from its rider's. Grant only the notable attributes (others as needed, at the GM's discretion).
+    </p>
+    <div class="attribute-categories">
+      {{#each attributeGroups as |group|}}
+      <div class="attribute-category category-{{group.key}}">
+        <h3 class="category-label">{{group.label}}</h3>
+        {{#each group.attributes as |attr|}}
+        <div class="attribute flexrow">
+          <a class="attribute-roll" data-action="attributeRoll" data-attribute="{{attr.key}}" draggable="true" title="Roll {{attr.label}} (1d20{{#if attr.dice}} + {{attr.dice}}{{/if}}). Drag to the hotbar for a macro.">
+            <i class="fas fa-dice-d20"></i> {{attr.label}}
+          </a>
+          <span class="attribute-dice" title="Bonus dice granted by this attribute score">{{#if attr.dice}}{{attr.dice}}{{else}}&mdash;{{/if}}</span>
+          <input type="number" min="0" max="10" step="1" name="system.attributes.{{attr.key}}.value" value="{{attr.value}}" data-dtype="Number"/>
+        </div>
+        {{/each}}
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  </div>
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/actions.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/feats.html"}}
+
+  {{> "systems/tomucatos-open-legend-rpg-system/templates/actor/parts/effects.html"}}
+</section>

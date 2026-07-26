@@ -1,0 +1,69 @@
+{
+  "_id": "Ws9Fx3ndQPRRWwYt",
+  "name": "Tough as Nails (I - II)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You have a remarkable ability to shrug off pain and punishment that would take down lesser heroes. This power might stem from your rocky carapace, extreme combat training, or simply an extra dose of grit that you acquired from a hard life.</p>",
+    "effect": "You permanently gain 5 extra hit points per tier of this feat you possess.",
+    "special": "",
+    "tags": [
+      "Defense",
+      "Physical",
+      "Fortitude"
+    ],
+    "cost": [
+      2,
+      2
+    ],
+    "maxTier": 2,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 3
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "fortitude",
+              "label": "Fortitude",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Tough as Nails (I - II)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXx9m0jqYWYo2o",
+  "name": "Honest",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You won't tell a lie or engage in deceitful speech, even to save your own life or the life of another.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

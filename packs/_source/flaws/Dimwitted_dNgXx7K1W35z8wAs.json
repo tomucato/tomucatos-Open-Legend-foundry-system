@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXx7K1W35z8wAs",
+  "name": "Dimwitted",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You aren't the sharpest tack in the box. It's not just that you weren't gifted with skill in academia, it's that you pick up on things pretty slowly overall. With the exception of your areas of expertise, you have a hard time learning new skills, following instructions, and maybe even remembering names.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "_id": "zHMWHTtqYdcExql8",
+  "name": "Blindsight",
+  "type": "boon",
+  "img": "icons/magic/perception/eye-ringed-glow-angry-small-teal.webp",
+  "system": {
+    "description": "<p>Even in the absence of light you are able to distinguish your surroundings. Some examples of blindsight include tremorsense, echolocation, heat vision, divine insight, or extraordinarily heightened senses.</p>",
+    "effect": "The target is immune to the blinded bane and they are able to see normally even in conditions of little or no light. Blindsight can also potentially counter invisiblity, though the GM will have to decide if the source creating the blindsight is appropriate to counter the source creating the invisible boon.",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attributes": [
+      "Alteration",
+      "Entropy",
+      "Perception",
+      "Prescience"
+    ],
+    "powerLevel": 5,
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "The target is immune to the blinded bane and they are able to see normally even in conditions of little or no light. Blindsight can also potentially counter invisiblity, though the GM will have to decide if the source creating the blindsight is appropriate to counter the source creating the invisible boon."
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target is immune to the blinded bane and they are able to see normally even in conditions of little or no light. Blindsight can also potentially counter invisiblity, though the GM will have to decide if the source creating the blindsight is appropriate to counter the source creating the invisible boon."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "FC7Pr7X2eTCWajLs",
+      "name": "Blindsight",
+      "type": "base",
+      "img": "icons/magic/perception/eye-ringed-glow-angry-small-teal.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Blindsight",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

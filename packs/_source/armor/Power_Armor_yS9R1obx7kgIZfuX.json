@@ -1,0 +1,24 @@
+{
+  "_id": "yS9R1obx7kgIZfuX",
+  "name": "Power Armor",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "description": "<p>Heavy armor. Defense Bonus +3, Required Fortitude 1.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "armorType": "heavy",
+    "requiredFortitude": 1,
+    "defenseBonus": 3,
+    "speedPenalty": 0,
+    "equipped": false
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "_id": "9ojN92cpKLjajnee",
+  "name": "Summon Creature",
+  "type": "boon",
+  "img": "icons/magic/earth/construct-stone.webp",
+  "system": {
+    "description": "<p>You summon forth a creature to assist your cause, whether they are animals called from the wild, undead minions built from the remains of your foes, or worker bots constructed of spare parts from a salvage yard. This boon is favored by druids, conjurers, engineers, necromancers, and mad scientists.</p>",
+    "effect": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses.\n<table><tbody><tr class=\"header\"><th>Power Level</th><th>Hit Points</th><th>Defenses</th><th>Attributes</th></tr><tr class=\"odd\"><td>4</td><td>4</td><td>11</td><td>2, 1, 1</td></tr><tr class=\"even\"><td>5</td><td>5</td><td>12</td><td>3, 2, 2</td></tr><tr class=\"odd\"><td>6</td><td>6</td><td>13</td><td>4, 3, 3</td></tr><tr class=\"even\"><td>7</td><td>7</td><td>14</td><td>5, 4, 4</td></tr><tr class=\"odd\"><td>8</td><td>8</td><td>15</td><td>6, 5, 5</td></tr><tr class=\"even\"><td>9</td><td>9</td><td>16</td><td>7, 6, 6</td></tr></tbody></table>\nYour minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Creation",
+      "Entropy",
+      "Energy"
+    ],
+    "powerLevel": 4,
+    "powerEffects": [
+      {
+        "powerLevel": 4,
+        "effect": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 5,
+        "effect": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 7,
+        "effect": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 9,
+        "effect": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      }
+    ],
+    "invocationTime": "1 Focus Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      },
+      {
+        "powerLevel": 9,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You create or summon a temporary NPC companion that is under your control, though of limited intelligence. Your minion's statistics are determined by the power level of this boon. You may assign the attributes as you see fit among the following: Agility, Fortitude, Might, Perception, Energy, and Entropy. Your minion's attributes do not affect their hit points or defenses. Power LevelHit PointsDefensesAttributes44112, 1, 155123, 2, 266134, 3, 377145, 4, 488156, 5, 599167, 6, 6 Your minion cannot act on the turn that it is summoned. On each of your following turns, your minion acts on your initiative count according to your direction, receiving the usual assortment of actions. You are limited to a maximum number of summoned creatures equal to your invoking attribute score. Feats and other abilities cannot increase this limit."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "l3w1Pc82rXWWhozE",
+      "name": "Summon Creature",
+      "type": "base",
+      "img": "icons/magic/earth/construct-stone.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Summon Creature",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

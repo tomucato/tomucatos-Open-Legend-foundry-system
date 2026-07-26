@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxwLWL1LTt57f",
+  "name": "Sick",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You suffer from some sort of chronic illness or condition, such as tuberculosis, cancer, arthritis, or irritable bowel syndrome. Even if you possess the means to treat your disease or control the symptoms, you might still have episodes or flare ups that hinder your adventuring life.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

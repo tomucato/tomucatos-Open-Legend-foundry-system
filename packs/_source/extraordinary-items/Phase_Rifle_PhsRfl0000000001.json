@@ -1,0 +1,42 @@
+{
+  "_id": "PhsRfl0000000001",
+  "name": "Phase Rifle",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>This sleek 30th Century rifle is built for deadshot accuracy at ranges where natural eyes can't even see. Delivering a single burst payload of pure energy means that it is completely silent and without recoil.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "damageType",
+        "value": "entropic"
+      },
+      {
+        "name": "deadly",
+        "value": 2
+      }
+    ],
+    "baseType": "Sniper Rifle",
+    "categories": [
+      "extreme-ranged"
+    ],
+    "rangeIncrement": 300,
+    "properties": [],
+    "banes": [],
+    "equipped": false,
+    "equipHands": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

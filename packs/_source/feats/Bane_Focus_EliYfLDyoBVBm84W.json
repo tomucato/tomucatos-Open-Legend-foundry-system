@@ -1,0 +1,49 @@
+{
+  "_id": "EliYfLDyoBVBm84W",
+  "name": "Bane Focus",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You are specialized in the use of a particular bane that is iconic to your character. Perhaps you are a martial artist known for your stunning strikes, a sniper who knows how to slow a target's escape, or a fire mage who sets enemies ablaze with persistent burning damage.</p>",
+    "effect": "Choose a bane that you can invoke. When your roll on a damaging attack exceeds the target's defense by 5 or more (as opposed to the usual 10), you can inflict this bane for free. Each attack is still only capable of inflicting a single bane. Furthermore, when making a bane attack to inflict your chosen bane, you gain advantage 2 on the bane attack roll.",
+    "special": "You may take this feat multiple times. Each time you do, choose a different bane.",
+    "tags": [
+      "Might",
+      "Passive",
+      "Combat",
+      "Bane"
+    ],
+    "cost": [
+      3
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [
+            "Ability to invoke the chosen bane"
+          ],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "bane",
+      "label": "Bane",
+      "count": 1,
+      "value": ""
+    },
+    "multi": true,
+    "baseName": "Bane Focus"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

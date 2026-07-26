@@ -1,0 +1,93 @@
+{
+  "_id": "nd78wQJcVHg2js3k",
+  "name": "Precognition",
+  "type": "boon",
+  "img": "icons/magic/perception/orb-crystal-ball-scrying.webp",
+  "system": {
+    "description": "<p>You peer into the future to gain insight into a course of action, an event, a person, or a place. Examples of this boon include a fortune teller throwing the bones, a superhuman detective analyzing evidence, a priest consulting a higher power for direction, and an advanced artificial intelligence calculating every possible outcome of a complex assortment of variables.</p>",
+    "effect": "<ul>\n<li><strong>Power Level 1</strong> - The target asks a question about a course of action they plan to take within the next five minutes. The GM communicates the insight through vague symbols, impressions, or a single word such as “favorable” or “unfavorable”. </li>\n<li><strong>Power Level 3</strong> - The target asks a question about a course of action they plan to take within the next hour. The GM communicates the insight through vague symbols, impressions, or a single word such as “favorable” or “unfavorable”. </li>\n<li><strong>Power Level 5</strong> - The target asks a single question about a particular event, decision, person, place, etc. The GM provides a meaningful (not vague, but still brief) explanation in one or two sentences that is a direct response to the knowledge the target seeks. Only one question can be asked about a given subject each week.</li>\n<li><strong>Power Level 7</strong> - The target can choose a particular event, decision, person, place, etc. After invoking this boon, the target begins to have extraordinary encounters (visions, trances, dreams, out-of-body experiences, etc.) through which the GM will provide the target with detailed information about the subject of your prescience. You can only maintain one such subject at a given time, however concentration is not required to maintain this state, it is perpetuated until you either choose to end it, or you choose to shift your focus.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Prescience"
+    ],
+    "powerLevel": 1,
+    "powerEffects": [
+      {
+        "powerLevel": 1,
+        "effect": "The target asks a question about a course of action they plan to take within the next five minutes. The GM communicates the insight through vague symbols, impressions, or a single word such as “favorable” or “unfavorable”"
+      },
+      {
+        "powerLevel": 3,
+        "effect": "The target asks a question about a course of action they plan to take within the next hour. The GM communicates the insight through vague symbols, impressions, or a single word such as “favorable” or “unfavorable”"
+      },
+      {
+        "powerLevel": 5,
+        "effect": "The target asks a single question about a particular event, decision, person, place, etc. The GM provides a meaningful (not vague, but still brief) explanation in one or two sentences that is a direct response to the knowledge the target seeks. Only one question can be asked about a given subject each week"
+      },
+      {
+        "powerLevel": 7,
+        "effect": "The target can choose a particular event, decision, person, place, etc. After invoking this boon, the target begins to have extraordinary encounters (visions, trances, dreams, out-of-body experiences, etc.) through which the GM will provide the target with detailed information about the subject of your prescience. You can only maintain one such subject at a given time, however concentration is not required to maintain this state, it is perpetuated until you either choose to end it, or you choose to shift your focus"
+      }
+    ],
+    "invocationTime": "1 Minute",
+    "duration": "1 round",
+    "gameEffects": [
+      {
+        "powerLevel": 1,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target asks a question about a course of action they plan to take within the next five minutes. The GM communicates the insight through vague symbols, impressions, or a single word such as “favorable” or “unfavorable”"
+      },
+      {
+        "powerLevel": 3,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target asks a question about a course of action they plan to take within the next hour. The GM communicates the insight through vague symbols, impressions, or a single word such as “favorable” or “unfavorable”"
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target asks a single question about a particular event, decision, person, place, etc. The GM provides a meaningful (not vague, but still brief) explanation in one or two sentences that is a direct response to the knowledge the target seeks. Only one question can be asked about a given subject each week"
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "The target can choose a particular event, decision, person, place, etc. After invoking this boon, the target begins to have extraordinary encounters (visions, trances, dreams, out-of-body experiences, etc.) through which the GM will provide the target with detailed information about the subject of your prescience. You can only maintain one such subject at a given time, however concentration is not required to maintain this state, it is perpetuated until you either choose to end it, or you choose to shift your focus"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "t42bZCRdG7d7O563",
+      "name": "Precognition",
+      "type": "base",
+      "img": "icons/magic/perception/orb-crystal-ball-scrying.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Precognition",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

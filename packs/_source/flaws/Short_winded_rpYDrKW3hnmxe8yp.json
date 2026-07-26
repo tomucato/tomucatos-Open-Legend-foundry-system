@@ -1,0 +1,14 @@
+{
+  "_id": "rpYDrKW3hnmxe8yp",
+  "name": "Short-winded",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You have poor lung capacity and easily tire. Sprints, long runs, and forced marches are either impossible for you or they tend to leave you completely incapacitated afterwards.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

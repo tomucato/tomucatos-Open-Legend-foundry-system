@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxoXWjx3P0GAQ",
+  "name": "Cowardly",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You have honed self-preservation into a way of life, and you will do almost anything to avoid danger, pain, and death. Sometimes, the situation at hand and the pumping of adrenaline will lead you to perform acts that appear courageous, but sooner or later your cowardly nature will emerge. You are easy to intimidate and you will almost assuredly crack under interrogation. In combat, you can still choose to fight, but you will attempt to distance yourself as much as possible from harms way, even if it means leaving an ally in a tough spot.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

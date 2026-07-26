@@ -1,0 +1,99 @@
+{
+  "name": "Provoked",
+  "type": "bane",
+  "_id": "KuprYgrkzwraebWi",
+  "img": "icons/skills/targeting/crosshair-bars-yellow.webp",
+  "system": {
+    "description": "<p>Through a display of awe-inspiring force, intimidation, or leadership, you command attention as the greatest threat, causing others to fear attacking your allies. Examples include a brute smashing the skull of a lesser foe, a gunslinger hurling insults, or a space captain diving into the middle of a swirling melee with plasma blades flashing.</p>",
+    "powerLevel": 4,
+    "invocationTime": "1 Minor Action",
+    "duration": "Resist (minor) ends (Fail x 3 = 1 minute)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Creation",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Deception",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Persuasion",
+        "defense": "Resolve"
+      },
+      {
+        "attackingAttribute": "Presence",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 4,
+        "effect": "The target suffers disadvantage 1 on attacks that do not include you."
+      },
+      {
+        "powerLevel": 5,
+        "effect": "The target suffers disadvantage 2 on attacks that do not include you."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "The target suffers disadvantage 3 on attacks that do not include you."
+      },
+      {
+        "powerLevel": 7,
+        "effect": "The target suffers disadvantage 4 on attacks that do not include you."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "The target suffers disadvantage 5 on attacks that do not include you."
+      },
+      {
+        "powerLevel": 9,
+        "effect": "The target suffers disadvantage 6 on attacks that do not include you."
+      }
+    ],
+    "failDuration": "1 minute",
+    "special": "Resisting this bane is a minor action.\nWhen inflicting this bane using Agility or Might, you may determine range using the Non-Physical Attack Range table (see Chapter 7: Combat).",
+    "gameEffects": [],
+    "effect": "<p>Any attacks made by the target that do not include you as a target suffer disadvantage. If the same target is affected by this bane from multiple sources, as long as their attack includes one of those who targeted them, they are not affected by the penalty. Unlike other banes, your damaging attack against one target can trigger this bane in a different target, provided your roll is greater than or equal to their Resolve defense (that is, by striking one foe, you can provoke another).</p>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781694826286,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

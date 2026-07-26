@@ -1,0 +1,38 @@
+{
+  "_id": "Trnsmgrfctn0Ray1",
+  "name": "Transmogrification Ray",
+  "type": "gear",
+  "img": "icons/svg/lightning.svg",
+  "system": {
+    "description": "<p>A favorite of mad scientists everywhere, this gun fires a purple ray of energy capable of polymorphing the target into any number of wretched creatures.</p>",
+    "notes": "",
+    "wealthLevel": 5,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Polymorph",
+        "powerLevel": 6
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "potent",
+        "value": ""
+      },
+      {
+        "name": "powerful",
+        "value": 1
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

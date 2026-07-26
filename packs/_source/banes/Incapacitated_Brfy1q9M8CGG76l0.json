@@ -1,0 +1,67 @@
+{
+  "name": "Incapacitated",
+  "type": "bane",
+  "_id": "Brfy1q9M8CGG76l0",
+  "img": "icons/magic/control/sleep-bubble-purple.webp",
+  "system": {
+    "description": "<p>Incapacitation is a catch-all bane for a variety of effects, including total paralysis, sleep, petrification, poison, being knocked out, fainting, or similar conditions that render a character completely helpless. Examples of possible causes of this bane include a martial artist's paralyzing strike, an enchanter's magical song of sleep, paralysis by poison, fainting from extreme heat, suffocation, and the gaze of a medusa.</p>",
+    "powerLevel": 5,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (Fail x 3 = 1 minute)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": " The effect can be broken by a moderate disruption, such as a firm shove, a kick, glass of water, loud bang, etc."
+      },
+      {
+        "powerLevel": 7,
+        "effect": "The effect can only be broken if the target takes 1 point of damage or more."
+      },
+      {
+        "powerLevel": 9,
+        "effect": "The effect cannot be disrupted by external forces. Only the afflicted character's successful resist roll can end the effect."
+      }
+    ],
+    "failDuration": "1 minute",
+    "special": "While most banes last until the target actively attempts to resist it, this bane prevents the target from being aware of their affliction and thus prevents them from actively attempting to break free. However, the target's body fights to regain consciousness. As such, at the end of each of its turns, the target receives a resist roll as a free action to break free from the effect. When your target succeeds at a resist roll against this bane, they become immune to all subsequent attempts by you to inflict the bane for the next hour.",
+    "gameEffects": [],
+    "effect": "<p>The target is immobile (can't move from their current space) and unconscious. They have disadvantage 5 on all perception rolls and are incapable of moving. As a result of being completely incapable of movement, an incapacitated character can be the victim of a finishing blow.</p>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781692419803,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

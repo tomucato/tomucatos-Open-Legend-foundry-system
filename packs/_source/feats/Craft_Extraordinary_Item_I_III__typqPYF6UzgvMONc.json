@@ -1,0 +1,115 @@
+{
+  "_id": "typqPYF6UzgvMONc",
+  "name": "Craft Extraordinary Item (I - III)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>You are studied in the ways of imbuing magical items, building futuristic technology, brewing potions, or crafting extraordinary devices. Their power is permanent but varies depending on your skill.</p>",
+    "effect": "Provided you have the appropriate working space and materials (as determined by the GM), you can create extraordinary items (as detailed in Chapter 9: Special Equipment). You can only imbue an item with attributes, banes, and boons that you can access. For example, in order to create a sword with Energy 5, you must possess an Energy score of 5 or higher. The only exception to this is if you possess the Creation, Learning, or Logic attributes. These allow you to imbue items with any attribute, bane, or boon as long as their value is less than or equal to your attribute score. The GM may rule that certain uses of Creation, Learning, or Logic are unreasonable when it comes to crafting extraordinary items.\nYour tier in this feat determines the maximum wealth level of the items you can create, based on the attribute you are using to craft:\n<ul><li><strong>Tier 1</strong> - Maximum wealth level equals attribute minus 2</li><li><strong>Tier 2</strong> - Maximum wealth level equals attribute minus 1</li><li><strong>Tier 3</strong> - Maximum wealth level equals attribute</li></ul>\nFor example, a character with Creation 5 and tier 1 in this feat could create items up to wealth level 3.\nYou can determine the wealth level of the item you want to create by consulting the sample items in <strong>Chapter 9: Special Equipment</strong> or by developing a custom item using the rules for <strong>Building Your Own Extraordinary Items</strong> in that chapter.\nCreating an item with the <em>consumable</em> or <em>expendable</em> property requires one full 8-hour day of uninterrupted work. Other items require a duration of uninterrupted work based on their wealth level, as follows:\n<ul><li><strong>Wealth Level 1 - 3</strong>: Two days per wealth level.</li><li><strong>Wealth Level 4 - 5</strong>: Four days per wealth level.</li><li><strong>Wealth Level 6 - 7</strong>: One week per wealth level.</li><li><strong>Wealth Level 8 - 9</strong>: One month per wealth level.</li></ul>\nAt the end of this time, your item is created. Crafting an item still counts as an expenditure of wealth, so you must have a sufficient wealth score to purchase the item, following all the rules for spending wealth provided in <strong>Chapter 5: Wealth & Equipment</strong>. The GM may waive some or all of the costs associated with an item if you possess special materials for the crafting of your item. For example, if you have recently collected the hide of a slain red dragon and decide to make a suit of Armor of Fire Resistance, the GM may decide that the dragon’s hide is enough to make up most of the costs of the armor, so the armor’s wealth level is reduced by 3 for purposes of determining crafting costs.",
+    "special": "",
+    "tags": [
+      "Extraordinary",
+      "Non-Combat"
+    ],
+    "cost": [
+      3,
+      3,
+      3
+    ],
+    "maxTier": 3,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "any extraordinary",
+              "label": "Any Extraordinary",
+              "min": 5
+            },
+            {
+              "key": "learning",
+              "label": "Learning",
+              "min": 5
+            },
+            {
+              "key": "logic",
+              "label": "Logic",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "any extraordinary",
+              "label": "Any Extraordinary",
+              "min": 5
+            },
+            {
+              "key": "learning",
+              "label": "Learning",
+              "min": 5
+            },
+            {
+              "key": "logic",
+              "label": "Logic",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "any extraordinary",
+              "label": "Any Extraordinary",
+              "min": 5
+            },
+            {
+              "key": "learning",
+              "label": "Learning",
+              "min": 5
+            },
+            {
+              "key": "logic",
+              "label": "Logic",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Craft Extraordinary Item (I - III)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "_id": "Dotanuki000000A1",
+  "name": "Dotanuki",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>This exceptionally crafted katana is far heavier than the average blade of its type, bringing far more force to bear on its razor edge blade. A Dotanuki is known to cut foes in two.</p>",
+    "notes": "",
+    "wealthLevel": 5,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "deadly",
+        "value": 2
+      },
+      {
+        "name": "special",
+        "value": "A devastating blow from the Dotanuki can cause a target to bleed out rapidly. Any time the Dotanuki's attack exceeds the target's defense by 20 or more, the persistent damage 9 bane is automatically applied to the target."
+      }
+    ],
+    "baseType": "Katana",
+    "categories": [
+      "versatile-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [],
+    "banes": [],
+    "equipped": false,
+    "equipHands": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

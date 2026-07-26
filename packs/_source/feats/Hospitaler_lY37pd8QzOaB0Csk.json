@@ -1,0 +1,65 @@
+{
+  "_id": "lY37pd8QzOaB0Csk",
+  "name": "Hospitaler",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Through inspiring words, magical healing, or advanced medical technique, you are exceptionally skilled at helping others shake off baneful afflictions. Paladins, bards, and combat medics are all typical examples of characters who are masters of this feat.</p>",
+    "effect": "You can use a major action to give an ally an immediate resist roll (a free action for the ally) with advantage 1. Additionally, you gain advantage 1 any time you attempt to invoke the <em>restoration</em> boon.",
+    "special": "",
+    "tags": [
+      "Non-Combat",
+      "Extraordinary",
+      "Social",
+      "Creation",
+      "Presence",
+      "Protection"
+    ],
+    "cost": [
+      2
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 2,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "creation",
+              "label": "Creation",
+              "min": 4
+            },
+            {
+              "key": "presence",
+              "label": "Presence",
+              "min": 4
+            },
+            {
+              "key": "protection",
+              "label": "Protection",
+              "min": 4
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Hospitaler"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

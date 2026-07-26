@@ -1,0 +1,58 @@
+{
+  "name": "Silenced",
+  "type": "bane",
+  "_id": "Q8320ZzLHfkh05EM",
+  "img": "icons/magic/movement/trail-streak-impact-blue.webp",
+  "system": {
+    "description": "<p>Silence overcomes the target, whether from the warping of sound around the target, or from a physical effect like strangulation or suffocation. The silence bane is a favorite among assassins, sorcerers, engineers, and mad scientists.</p>",
+    "powerLevel": 2,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (Fail x 3 = 1 minute)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Alteration",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Toughness"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "1 minute",
+    "special": "",
+    "gameEffects": [],
+    "effect": "If Might, Agility, or Entropy is used to inflict this bane, then the character is suffering strangulation and unable to speak. If the bane is inflicted using Alteration, then all sound within 5' of the target is suppressed through extraordinary means, making their footsteps and the usual clank of belongings they are carrying inaudible."
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781694918814,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

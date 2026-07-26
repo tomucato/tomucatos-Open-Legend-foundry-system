@@ -1,0 +1,101 @@
+{{!-- Feats tab: feat-point budget, a compendium picker, and the owned feats as
+      collapsible rows with tier steppers + full effect text. Included by the
+      character and NPC sheets. --}}
+<div class="tab feats {{tabs.feats.cssClass}}" data-group="primary" data-tab="feats">
+
+  {{#if featBudget}}
+  <div class="creation-budget feat-budget {{#if featBudget.over}}over-budget{{/if}}">
+    {{#if featBudget.altFormTier}}
+    <span title="Allowance derived from your Main form (Alternate Form Tier {{featBudget.altFormTier}}).">Feat Points (Alt. Form T{{featBudget.altFormTier}}):</span>
+    {{else if featBudget.companionTier}}
+    <span title="Companion feat points (Tier {{featBudget.companionTier}}): 0 at T1, 3 at T2/T3{{#if featBudget.granted}}, plus {{featBudget.granted}} granted by the parent{{/if}}.">Feat Points (Companion T{{featBudget.companionTier}}):</span>
+    {{else}}
+    <span>Feat Points (Lvl {{system.level}}):</span>
+    {{/if}}
+    <strong>{{featBudget.spent}}</strong> / {{featBudget.available}}
+    <span class="remaining">({{featBudget.remaining}} remaining{{#if featBudget.granted}}{{#unless featBudget.companionTier}}; {{featBudget.granted}} granted to companion{{/unless}}{{/if}})</span>
+  </div>
+  {{/if}}
+
+  <div class="inv-section">
+    <div class="inv-section-head">
+      <h2>Feats</h2>
+      <div class="feature-picker feat-picker">
+        <select class="feat-add">
+          <option value="">+ Add a feat…</option>
+          {{#each featPicker.options as |opt|}}
+          <option value="{{opt.uuid}}">{{opt.name}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div class="inv-list">
+      <div class="inv-row feat-row inv-head">
+        <span class="inv-col-toggle"></span>
+        <span class="inv-col-name">Name</span>
+        <span class="feat-col-tier">Tier</span>
+        <span class="feat-col-cost">Cost</span>
+        <span class="inv-col-controls"></span>
+      </div>
+
+      {{#each feats as |feat|}}
+      <details class="inv-item" data-sync="feat-{{feat.id}}" data-item-id="{{feat.id}}">
+        <summary class="inv-row feat-row item">
+          <span class="inv-col-toggle"><i class="fas fa-chevron-right inv-caret"></i></span>
+          <span class="inv-col-name">
+            <img src="{{feat.img}}" title="{{feat.name}}" width="22" height="22"/>
+            <span class="item-name">{{feat.name}}</span>
+            {{#unless feat.prereqMet}}<i class="fas fa-triangle-exclamation feat-warn" title="Prerequisite not met"></i>{{/unless}}
+            {{#if feat.isToggle}}
+            <a class="item-control feat-toggle {{#if feat.toggleOn}}is-on{{/if}}" data-action="battleTranceToggle" draggable="true" data-tooltip="{{#if feat.toggleOn}}Battle Trance is ACTIVE — click to deactivate.{{else}}Battle Trance is inactive — click to activate.{{/if}} Drag this to the hotbar to make a toggle macro." title="{{#if feat.toggleOn}}Battle Trance is ACTIVE — click to deactivate. Drag to the hotbar for a macro.{{else}}Battle Trance is inactive — click to activate. Drag to the hotbar for a macro.{{/if}}"><i class="fas fa-fire-flame-curved"></i> <span class="feat-toggle-label">{{#if feat.toggleOn}}Deactivate{{else}}Activate{{/if}}</span></a>
+            {{/if}}
+          </span>
+          <span class="feat-col-tier">
+            {{#if feat.multiTier}}
+            <span class="feat-tier-steps">
+              <a class="item-control feat-step" data-action="featLower" title="Lower tier (tier 1 → remove)"><i class="fas fa-minus"></i></a>
+              <span class="feat-tier-now">{{feat.tier}} / {{feat.maxTier}}</span>
+              <a class="item-control feat-step {{#unless feat.canRaise}}is-disabled{{/unless}}" data-action="featRaise" title="Raise tier{{#if feat.canRaise}} (+{{feat.nextCost}} pts){{/if}}"><i class="fas fa-plus"></i></a>
+            </span>
+            {{else}}
+            <span class="feat-tier-now">—</span>
+            {{/if}}
+          </span>
+          <span class="feat-col-cost">{{feat.cost}}</span>
+          <span class="inv-col-controls item-controls">
+            <a class="item-control item-edit" data-action="itemEdit" title="Edit Feat"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" data-action="itemDelete" title="Remove Feat"><i class="fas fa-trash"></i></a>
+          </span>
+        </summary>
+        <div class="inv-details">
+          <div class="inv-detail-stats">
+            {{#each feat.tags as |tag|}}<span class="bane-tag">{{tag}}</span>{{/each}}
+          </div>
+          {{#if feat.choice}}
+          <div class="inv-detail-stats">
+            <span><strong>{{feat.choiceLabel}}:</strong> {{feat.choice}}</span>
+          </div>
+          {{/if}}
+          <div class="inv-detail-stats">
+            <span><strong>Prerequisite:</strong> {{feat.prerequisite}}</span>
+            {{#unless feat.prereqMet}}
+            <span class="feat-warn-text">Unmet: {{#each feat.prereqUnmet}}{{this}}{{#unless @last}}; {{/unless}}{{/each}}</span>
+            {{/unless}}
+          </div>
+          {{#if feat.canRaise}}
+          <div class="inv-detail-stats">
+            <span><strong>Next tier ({{feat.nextCost}} pts):</strong> {{feat.nextPrerequisite}}</span>
+          </div>
+          {{/if}}
+          {{#if feat.effect}}
+          <div class="inv-detail-desc feat-effect">{{{feat.effect}}}</div>
+          {{/if}}
+        </div>
+      </details>
+      {{else}}
+      <div class="inv-empty">No feats. Use the picker above, or drag a feat here from the Feats compendium.</div>
+      {{/each}}
+    </div>
+  </div>
+</div>

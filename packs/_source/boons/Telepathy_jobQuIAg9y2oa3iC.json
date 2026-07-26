@@ -1,0 +1,94 @@
+{
+  "_id": "jobQuIAg9y2oa3iC",
+  "name": "Telepathy",
+  "type": "boon",
+  "img": "icons/magic/control/energy-stream-link-white.webp",
+  "system": {
+    "description": "<p>You reach out mentally to a willing target and speak wordlessly with thought-to-thought communication. Examples of this boon in action include a psychic who can connect with the minds of others and a far future artificial intelligence capable of passing information to other beings through the vibration of quantum strings.</p>",
+    "effect": "You and the target can communicate with each other simply through thought. Note that this telepathy does not bestow intelligence upon creatures, so you could not use it to communicate with a squirrel unless you already possessed other means of doing so. Additionally, telepathy does not bypass language barriers, so you would need to already speak the language of your target.\n<ul>\n<li><strong>Power Level 3</strong> - You can communicate telepathically with a single creature of animal-level intelligence or lower. Keep in mind that it can only communicate concepts with you that it can understand.</li>\n<li><strong>Power Level 5</strong> - You can communicate telepathically with a single creature of humanoid intelligence.</li>\n<li><strong>Power Level 6</strong> - You can create a mental relay between yourself and up to five other creatures allowing each of them to communicate with the rest of the group simultaneously.</li>\n<li><strong>Power Level 7</strong> - You can communicate telepathically with any number of creatures that you can see.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Influence",
+      "Prescience"
+    ],
+    "powerLevel": 3,
+    "powerEffects": [
+      {
+        "powerLevel": 3,
+        "effect": "You can communicate telepathically with a single creature of animal-level intelligence or lower. Keep in mind that it can only communicate concepts with you that it can understand"
+      },
+      {
+        "powerLevel": 5,
+        "effect": "You can communicate telepathically with a single creature of humanoid intelligence"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "You can create a mental relay between yourself and up to five other creatures allowing each of them to communicate with the rest of the group simultaneously"
+      },
+      {
+        "powerLevel": 7,
+        "effect": "You can communicate telepathically with any number of creatures that you can see"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 3,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You can communicate telepathically with a single creature of animal-level intelligence or lower. Keep in mind that it can only communicate concepts with you that it can understand"
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You can communicate telepathically with a single creature of humanoid intelligence"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You can create a mental relay between yourself and up to five other creatures allowing each of them to communicate with the rest of the group simultaneously"
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "You can communicate telepathically with any number of creatures that you can see"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "6wXkqWzcFpGRlEY3",
+      "name": "Telepathy",
+      "type": "base",
+      "img": "icons/magic/control/energy-stream-link-white.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Telepathy",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

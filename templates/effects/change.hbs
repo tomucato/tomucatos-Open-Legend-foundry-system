@@ -1,0 +1,54 @@
+{{!-- One Active Effect change row, authored as Subject + Action + Modifier.
+      - Subject (key): a dropdown of system change targets (off-catalog keys
+        preserved as their own option).
+      - Action: Bonus (+) / Penalty (−) / Override (=). Not stored — derived
+        from the native value's sign + type. The select posts nothing; the
+        config's _onChangeForm re-signs the native value field when it changes.
+      - Modifier: Flat / Adv-Dis, posted to flags.openlegend.changeModes[i].
+      - Value: the native (signed) change value — what core persists.
+      The native type field is a hidden input driven by the Action select. --}}
+<li data-index="{{index}}">
+    <div class="key">
+        <select name="{{change.keyPath}}">
+            <option value=""{{#unless change.key}} selected{{/unless}}>&mdash;</option>
+            {{#if unknownKey}}
+            <option value="{{unknownKey}}" selected>{{unknownKey}}</option>
+            {{/if}}
+            {{#each keyGroups as |g|}}
+            <optgroup label="{{g.group}}">
+                {{#each g.keys as |label key|}}
+                <option value="{{key}}"{{#if (eq key ../../change.key)}} selected{{/if}}>{{label}}</option>
+                {{/each}}
+            </optgroup>
+            {{/each}}
+        </select>
+    </div>
+    <div class="action">
+        <select data-action-select{{#if change.toggleAction}} disabled{{/if}}>
+            {{#each actions as |label act|}}
+            <option value="{{act}}"{{#if (eq act ../change.action)}} selected{{/if}}>{{label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="modifier">
+        <select name="{{change.modePath}}"{{#if change.factorAction}} disabled{{/if}}{{#if change.toggleAction}} disabled{{/if}}>
+            {{#each modifierTypes as |label mode|}}
+            <option value="{{mode}}"{{#if (eq mode ../change.modifierType)}} selected{{/if}}>{{label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="value">
+        {{!-- readonly (not disabled) on Half/Double and toggle subjects so the
+              forced value still posts; the field is self-set, not user-editable. --}}
+        <input type="number" name="{{change.valuePath}}" value="{{change.value}}" step="any"{{#if change.factorAction}} readonly{{/if}}{{#if change.toggleAction}} readonly{{/if}}/>
+    </div>
+    <div class="level" title="Power level this row unlocks at (0 = always active). For each target, the strongest unlocked row applies.">
+        <input type="number" name="{{change.levelPath}}" value="{{change.level}}" min="0" step="1"/>
+    </div>
+    <input type="hidden" name="{{change.typePath}}" value="{{change.type}}">
+    <input type="hidden" name="{{change.phasePath}}" value="{{change.phase}}">
+    <input type="hidden" name="{{change.priorityPath}}" value="{{change.priority}}">
+    <div class="controls">
+        <button type="button" class="inline-control icon fa-solid fa-trash" data-action="deleteChange"></button>
+    </div>
+</li>

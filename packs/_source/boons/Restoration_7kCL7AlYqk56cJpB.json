@@ -1,0 +1,149 @@
+{
+  "_id": "7kCL7AlYqk56cJpB",
+  "name": "Restoration",
+  "type": "boon",
+  "img": "icons/magic/defensive/shield-barrier-deflect-gold.webp",
+  "system": {
+    "description": "<p>By invoking protective magic, creative force, or similar powers, you cancel all harmful afflictions that are affecting your target. Examples of this boon in action include a cleric breaking enchantments, an engineer deploying a team of rescue bots, or a combat medic applying advanced medical techniques.</p>",
+    "effect": "You can dispel all banes affecting your target of a power level less than or equal to the level at which you invoke this boon.\n\n<ul>\n<li><strong>Power Level 1</strong> - Cancel banes of Power Level 1 or less. </li>\n<li><strong>Power Level 2</strong> - Cancel banes of Power Level 2 or less. </li>\n<li><strong>Power Level 3</strong> - Cancel banes of Power Level 3 or less. </li>\n<li><strong>Power Level 4</strong> - Cancel banes of Power Level 4 or less. </li>\n<li><strong>Power Level 5</strong> - Cancel banes of Power Level 5 or less. </li>\n<li><strong>Power Level 6</strong> - Cancel banes of Power Level 6 or less. </li>\n<li><strong>Power Level 7</strong> - Cancel banes of Power Level 7 or less. </li>\n<li><strong>Power Level 8</strong> - Cancel banes of Power Level 8 or less. </li>\n<li><strong>Power Level 9</strong> - Cancel banes of Power Level 9 or less. </li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Creation",
+      "Protection"
+    ],
+    "powerLevel": 1,
+    "powerEffects": [
+      {
+        "powerLevel": 1,
+        "effect": "Cancel banes of Power Level 1 or less"
+      },
+      {
+        "powerLevel": 2,
+        "effect": "Cancel banes of Power Level 2 or less"
+      },
+      {
+        "powerLevel": 3,
+        "effect": "Cancel banes of Power Level 3 or less"
+      },
+      {
+        "powerLevel": 4,
+        "effect": "Cancel banes of Power Level 4 or less"
+      },
+      {
+        "powerLevel": 5,
+        "effect": "Cancel banes of Power Level 5 or less"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Cancel banes of Power Level 6 or less"
+      },
+      {
+        "powerLevel": 7,
+        "effect": "Cancel banes of Power Level 7 or less"
+      },
+      {
+        "powerLevel": 8,
+        "effect": "Cancel banes of Power Level 8 or less"
+      },
+      {
+        "powerLevel": 9,
+        "effect": "Cancel banes of Power Level 9 or less"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Instantaneous",
+    "gameEffects": [
+      {
+        "powerLevel": 1,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 1 or less"
+      },
+      {
+        "powerLevel": 2,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 2 or less"
+      },
+      {
+        "powerLevel": 3,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 3 or less"
+      },
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 4 or less"
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 5 or less"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 6 or less"
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 7 or less"
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 8 or less"
+      },
+      {
+        "powerLevel": 9,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Cancel banes of Power Level 9 or less"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "9GC8AIgQbHDO3Rkj",
+      "name": "Restoration",
+      "type": "base",
+      "img": "icons/magic/defensive/shield-barrier-deflect-gold.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Restoration",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

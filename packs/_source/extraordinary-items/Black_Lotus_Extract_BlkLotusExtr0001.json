@@ -1,0 +1,42 @@
+{
+  "_id": "BlkLotusExtr0001",
+  "name": "Black Lotus Extract",
+  "type": "gear",
+  "img": "icons/svg/poison.svg",
+  "system": {
+    "description": "<p>Of those who dabble in such dark secrets, no poison is more feared than that extracted from the petals of the black lotus.</p>",
+    "notes": "",
+    "wealthLevel": 6,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Death",
+        "powerLevel": 9
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "augmenting",
+        "value": ""
+      },
+      {
+        "name": "expendable",
+        "value": ""
+      },
+      {
+        "name": "potent",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

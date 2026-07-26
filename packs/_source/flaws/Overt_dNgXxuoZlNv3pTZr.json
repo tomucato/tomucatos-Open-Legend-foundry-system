@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxuoZlNv3pTZr",
+  "name": "Overt",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You have a strong aversion to subterfuge, legerdemain, and smooth talking. After all, the shortest distance between two points is a straight line, so why not follow the straight and narrow path? Your overtness may lead to you mistakenly foil the plans of allies, such as by blurting out a sensitive truth in the midst of a tense negotiation.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

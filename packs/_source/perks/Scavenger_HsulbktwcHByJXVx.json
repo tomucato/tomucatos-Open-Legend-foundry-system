@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbktwcHByJXVx",
+  "name": "Scavenger",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You have lived a life of need, and thus know how to make do when others would go without. Once per game session, you can easily acquire a single mundane item even though it would otherwise take time to get or be completely unattainable. Depending on the circumstances, the GM may decide that your acquisition is only temporary or subject to reasonable conditions. For example, you might use this perk to acquire a rope in the middle of a desert, but the GM may rule that it is so sun-baked and ancient that it will likely snap after a few uses.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

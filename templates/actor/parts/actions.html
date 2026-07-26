@@ -1,0 +1,145 @@
+{{!-- Actions tab body: four category sections (damaging / boon / bane / interrupt),
+      each a list of collapsible action rows. Included by character and NPC sheets. --}}
+<div class="tab actions {{tabs.actions.cssClass}}" data-group="primary" data-tab="actions">
+  <div class="actions-sustain" title="Sustain Slots: how many boons you may sustain with a single &quot;sustain a boon&quot; minor action. Base 1{{#if derived.superiorConcentrationTier}}, +{{derived.superiorConcentrationTier}} from Superior Concentration{{/if}}.">
+    <i class="fas fa-brain"></i>
+    <span class="actions-sustain-label">Sustain Slots</span>
+    <span class="actions-sustain-value">{{derived.sustainSlots}}</span>
+    <span class="actions-sustain-hint">boons per <em>sustain a boon</em> minor action</span>
+  </div>
+  {{#each actionGroups as |group|}}
+  <div class="inv-section">
+    <div class="inv-section-head">
+      <h2>{{group.label}}s</h2>
+      <a class="item-create" data-action="itemCreate" data-type="action" data-action-category="{{group.key}}">
+        <i class="fas fa-plus"></i> Add
+      </a>
+    </div>
+    <div class="inv-list">
+      <div class="inv-row action-row inv-head{{#if (or (eq group.key "bane") (eq group.key "boon"))}} action-row-swap{{/if}}">
+        <span class="inv-col-toggle"></span>
+        <span class="inv-col-name">Name</span>
+        <span class="inv-col-attr">Roll</span>
+        <span class="inv-col-type">Target</span>
+        <span class="inv-col-range">{{#if (eq group.key "bane")}}Bane{{else if (eq group.key "boon")}}Boon{{else}}Range{{/if}}</span>
+        <span class="inv-col-controls"></span>
+      </div>
+      {{#each group.actions as |item|}}
+      <details class="inv-item action-card act-cat-{{item.derived.categoryKey}}" data-sync="act-{{item.id}}">
+        <summary class="inv-row action-row item draggable{{#if (or (eq group.key "bane") (eq group.key "boon"))}} action-row-swap{{/if}}" data-item-id="{{item.id}}" draggable="true">
+          <span class="inv-col-toggle"><i class="fas fa-chevron-right inv-caret"></i></span>
+          <span class="inv-col-name">
+            <img src="{{item.img}}" title="{{item.name}}" width="22" height="22"/>
+            <a class="item-name action-roll" data-action="actionRoll" title="Roll {{item.name}} ({{item.derived.attribute}})"><i class="fas fa-dice-d20 action-name-roll"></i> {{item.name}}</a>
+          </span>
+          <span class="inv-col-attr">{{item.derived.attribute}}{{#if item.derived.resolve}} <span class="action-row-resolve">{{item.derived.resolve}}</span>{{/if}}</span>
+          <span class="inv-col-type">{{item.derived.target}}</span>
+          {{#if item.derived.invokeName}}
+          <span class="inv-col-range inv-col-invoke">
+            <span class="action-invoke-name" title="{{item.derived.invokeLabel}}">{{item.derived.invokeLabel}}</span>
+            {{#if item.derived.invokeUuid}}
+            <a class="action-invoke-open" data-action="openInvocation" data-uuid="{{item.derived.invokeUuid}}" title="Open {{item.derived.invokeName}} to read its rules"><i class="fas fa-book-open"></i></a>
+            {{/if}}
+          </span>
+          {{else}}
+          <span class="inv-col-range">{{item.derived.range}}</span>
+          {{/if}}
+          <span class="inv-col-controls item-controls">
+            <a class="item-control item-edit" data-action="itemEdit" title="Edit Action"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" data-action="itemDelete" title="Delete Action"><i class="fas fa-trash"></i></a>
+          </span>
+        </summary>
+        <div class="inv-details action-details">
+          {{!-- Header strip: category badge + action economy. --}}
+          <div class="action-detail-head">
+            <span class="action-cat-badge">
+              <i class="fas {{item.derived.categoryIcon}}"></i>
+              {{group.label}}
+            </span>
+            <span class="action-econ-badge">{{item.derived.actionType}}</span>
+          </div>
+
+          {{!-- Primary stat grid: how the roll resolves. --}}
+          <dl class="action-stat-grid">
+            <div class="inv-stat">
+              <dt>Attribute</dt>
+              <dd>{{item.derived.attribute}}</dd>
+            </div>
+            {{#if item.derived.targetDefense}}
+            <div class="inv-stat">
+              <dt>Resolves vs.</dt>
+              <dd class="is-defense">{{item.derived.targetDefense}}</dd>
+            </div>
+            {{/if}}
+            {{#if item.derived.interruptType}}
+            <div class="inv-stat">
+              <dt>Interrupt</dt>
+              <dd>{{item.derived.interruptType}}</dd>
+            </div>
+            {{/if}}
+            <div class="inv-stat">
+              <dt>Range</dt>
+              <dd>{{item.derived.range}}</dd>
+            </div>
+            <div class="inv-stat">
+              <dt>Targets</dt>
+              <dd>{{item.derived.target}}</dd>
+            </div>
+          </dl>
+
+          {{!-- Effect chips: what the action delivers, colour-coded by kind. --}}
+          {{#if (or item.derived.damageType item.derived.bane item.derived.boon)}}
+          <div class="action-effects">
+            {{#if item.derived.damageType}}<span class="action-chip chip-damage"><i class="fas fa-droplet"></i> {{item.derived.damageType}}</span>{{/if}}
+            {{#if item.derived.bane}}<span class="action-chip chip-bane"><i class="fas fa-skull"></i> {{item.derived.bane}}</span>{{/if}}
+            {{#if item.derived.boon}}<span class="action-chip chip-boon"><i class="fas fa-hands-holding"></i> {{item.derived.boon}}</span>{{/if}}
+          </div>
+          {{/if}}
+
+          {{!-- Aura: the bane/boon the aura radiates — draggable onto a token to
+                apply it, plus an open-to-read icon. --}}
+          {{#if item.derived.aura}}
+          <div class="action-effects">
+            <span class="action-chip action-aura-chip {{#if (eq item.derived.auraKind "bane")}}chip-bane{{else}}chip-boon{{/if}}"
+                  {{#if item.derived.auraDrag}}draggable="true" data-aura-drag="{{item.derived.auraDrag}}" title="Drag onto a token to apply {{item.derived.aura}}"{{/if}}>
+              {{#if item.derived.auraDrag}}<i class="fas fa-grip-lines-vertical action-aura-grip"></i>{{/if}}
+              <i class="fas fa-circle-notch"></i> Radiates: {{item.derived.aura}}
+              {{#if item.derived.auraUuid}}<a class="action-invoke-open" data-action="openInvocation" data-uuid="{{item.derived.auraUuid}}" title="Open {{item.derived.aura}} to read its rules"><i class="fas fa-book-open"></i></a>{{/if}}
+            </span>
+          </div>
+          {{/if}}
+
+          {{!-- Dice modifiers: the full itemized adv/dis breakdown the roll dialog
+                will pre-fill (weapon grip, feats, conditions, multi-targeting…). --}}
+          {{#if item.derived.modifiers.rows.length}}
+          <div class="action-mods">
+            <div class="action-mods-head">
+              <span><i class="fas fa-dice"></i> Dice Modifiers</span>
+              <span class="action-mods-net {{#if (gt item.derived.modifiers.net 0)}}is-adv{{/if}}{{#if (lt item.derived.modifiers.net 0)}}is-dis{{/if}}">
+                {{#if (gt item.derived.modifiers.net 0)}}Advantage {{item.derived.modifiers.netAbs}}{{else}}{{#if (lt item.derived.modifiers.net 0)}}Disadvantage {{item.derived.modifiers.netAbs}}{{else}}Net even{{/if}}{{/if}}
+              </span>
+            </div>
+            <ul class="action-mods-list">
+              {{#each item.derived.modifiers.rows as |mod|}}
+              <li class="action-mod-row">
+                <span class="action-mod-label">{{mod.label}}</span>
+                <span class="action-mod-value {{#if mod.advantage}}is-adv{{else}}is-dis{{/if}}">{{#if mod.advantage}}+{{mod.advantage}} Adv{{else}}&minus;{{mod.disadvantage}} Dis{{/if}}</span>
+              </li>
+              {{/each}}
+            </ul>
+            <p class="action-mods-hint">Pre-filled when you roll — adjustable in the dialog.</p>
+          </div>
+          {{/if}}
+
+          {{#if item.enrichedDescription}}
+          <div class="inv-detail-desc action-detail-desc">{{{item.enrichedDescription}}}</div>
+          {{/if}}
+        </div>
+      </details>
+      {{else}}
+      <div class="inv-empty">None.</div>
+      {{/each}}
+    </div>
+  </div>
+  {{/each}}
+</div>

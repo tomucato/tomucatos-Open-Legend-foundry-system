@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXx7Kb0McjhpP7",
+  "name": "Disabled",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You have some physical deficiency that holds you back in life. You decide the nature and severity of your disability. Some examples of disabilities include blindness, deafness, missing limbs, partial paralysis, bone deficiencies, or allergies.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

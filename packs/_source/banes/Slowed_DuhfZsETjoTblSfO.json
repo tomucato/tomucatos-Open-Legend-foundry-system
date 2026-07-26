@@ -1,0 +1,115 @@
+{
+  "name": "Slowed",
+  "type": "bane",
+  "_id": "DuhfZsETjoTblSfO",
+  "img": "icons/magic/control/debuff-energy-snare-purple-pink.webp",
+  "system": {
+    "description": "<p>The target's movement is impaired, either by extreme cold, prolonged heat, poison, or injury to one or both legs. This bane is a favored attack among rogues, ice mages, telekinetisists, and gunslingers.</p>",
+    "powerLevel": 1,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends ",
+    "tags": [],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Might",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Movement",
+        "defense": "Guard"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "Fail x 3 = 1 minute",
+    "special": "",
+    "gameEffects": [],
+    "effect": "<p>The afflicted target's speed is reduced to half its current speed, rounded down to the nearest 5' increment. This applies to all movement that is physical (flight, walking, climbing, etc.). If the target is currently under a magical effect that increases speed, the two effects are canceled for the duration that both affect the target.</p>"
+  },
+  "effects": [
+    {
+      "name": "Slowed",
+      "type": "base",
+      "img": "icons/magic/control/debuff-energy-snare-purple-pink.webp",
+      "disabled": false,
+      "transfer": false,
+      "flags": {
+        "openlegend": {
+          "changeLevels": [
+            1
+          ],
+          "powerLevel": 1,
+          "changeModes": [
+            "flat"
+          ]
+        }
+      },
+      "_id": "Ioua8gIjcSykD7UI",
+      "system": {
+        "changes": [
+          {
+            "key": "speed",
+            "value": 0.5,
+            "type": "multiply",
+            "phase": "final",
+            "priority": null
+          }
+        ]
+      },
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "<p>The target's movement is impaired, either by extreme cold, prolonged heat, poison, or injury to one or both legs. This bane is a favored attack among rogues, ice mages, telekinetisists, and gunslingers.<br><br><strong>The afflicted target's speed is reduced to half its current speed,</strong> rounded down to the nearest 5' increment. This applies to all movement that is physical (flight, walking, climbing, etc.). If the target is currently under a magical effect that increases speed, the two effects are canceled for the duration that both affect the target.</p>",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "showIcon": 2,
+      "folder": null,
+      "sort": 0,
+      "_stats": {
+        "coreVersion": "14.363",
+        "systemId": "tomucatos-open-legend-rpg-system",
+        "systemVersion": "1.0.66",
+        "createdTime": 1781683302035,
+        "modifiedTime": 1781686093455,
+        "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      }
+    }
+  ],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781683298381,
+    "modifiedTime": 1781688933302,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

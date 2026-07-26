@@ -1,0 +1,72 @@
+{
+  "_id": "xewkoPy9xuperMti",
+  "name": "Invisible",
+  "type": "boon",
+  "img": "icons/magic/control/silhouette-hold-change-blue.webp",
+  "system": {
+    "description": "<p>The target vanishes from the visible spectrum, either by bending light, creating an illusion, or stepping into an extradimensional space between the fabric of the planes. This boon is a favorite of special ops agents, illusionists, shadow dancers, inventors, and similar characters.</p>",
+    "effect": "<strong>NOTE:</strong> This Boon has been replaced by Concealment.\n<br>\nLight passes through the target, making them translucent, however their physical form distorts and refracts light in a way that only the keenest sight can perceive. The target gains advantage according to the boon's Power Level on Agility rolls to hide. If completely still, this bonus is doubled. The target's Guard defense is increased against melee and ranged attacks, though it is unchanged against area attacks. When making an attack against target's that can't see you, their Guard defense is reduced. You cannot be the target of opportunity attacks unless the enemy can see you through non-visual means.\n<ul>\n<li><strong>Power Level 5</strong> - Advantage 3 to hide, +3 to Guard against ranged and melee attacks, and -2 to Guard for targets that can't see you.</li>\n<li><strong>Power Level 6</strong> - Advantage 5 to hide, +5 to Guard against ranged and melee attacks, and -4 to Guard for targets that can't see you.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Influence"
+    ],
+    "powerLevel": 5,
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "Advantage 3 to hide, +3 to Guard against ranged and melee attacks, and -2 to Guard for targets that can't see you"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Advantage 5 to hide, +5 to Guard against ranged and melee attacks, and -4 to Guard for targets that can't see you"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Advantage 3 to hide, +3 to Guard against ranged and melee attacks, and -2 to Guard for targets that can't see you"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Advantage 5 to hide, +5 to Guard against ranged and melee attacks, and -4 to Guard for targets that can't see you"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "DIW6ZSomOTeIF1n7",
+      "name": "Invisible",
+      "type": "base",
+      "img": "icons/magic/control/silhouette-hold-change-blue.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Invisible",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

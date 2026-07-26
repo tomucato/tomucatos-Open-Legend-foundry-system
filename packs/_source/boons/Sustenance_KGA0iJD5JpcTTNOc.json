@@ -1,0 +1,106 @@
+{
+  "_id": "KGA0iJD5JpcTTNOc",
+  "name": "Sustenance",
+  "type": "boon",
+  "img": "icons/consumables/food/bowl-stew-tofu-potato-red.webp",
+  "system": {
+    "description": "<p>You protect the target from environmental dangers or suspend their usual biological needs. Examples include sprouting gills to allow for underwater breathing, calling on a divine power to be sustained without food, and using far-future biomodifications to endure extreme cold.</p>",
+    "effect": "You protect the target from one environmental danger, biological need, or similar condition. The power level of this boon determines the type of conditions you may protect against.\n<ul>\n<li><strong>Power Level 3</strong> - Target is unaffected by a chosen type of hostile climate. Examples include heat, cold, and radiation.</li>\n<li><strong>Power Level 4</strong> - Target can sustain a single biological need from an alternate source, such as by breathing the oxygen found in water, drinking from an irradiated stream, or eating food not normally edible</li>\n<li><strong>Power Level 5</strong> - Target can subsist without the essential nourishment periodically required for sustenance, such as food or water.</li>\n<li><strong>Power Level 7</strong> - Target can subsist without the most critical nourishment, that which is typically consumed on a moment-to-moment basis, such as air.</li>\n<li><strong>Power Level 9</strong> - Target is unaffected even when cut off from all biological necessities, including warmth, water, air, food, and any other biological need.</li>\n</ul>",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Alteration",
+      "Creation",
+      "Protection"
+    ],
+    "powerLevel": 3,
+    "powerEffects": [
+      {
+        "powerLevel": 3,
+        "effect": "Target is unaffected by a chosen type of hostile climate. Examples include heat, cold, and radiation"
+      },
+      {
+        "powerLevel": 4,
+        "effect": "Target can sustain a single biological need from an alternate source, such as by breathing the oxygen found in water, drinking from an irradiated stream, or eating food not normally edible"
+      },
+      {
+        "powerLevel": 5,
+        "effect": "Target can subsist without the essential nourishment periodically required for sustenance, such as food or water"
+      },
+      {
+        "powerLevel": 7,
+        "effect": "Target can subsist without the most critical nourishment, that which is typically consumed on a moment-to-moment basis, such as air"
+      },
+      {
+        "powerLevel": 9,
+        "effect": "Target is unaffected even when cut off from all biological necessities, including warmth, water, air, food, and any other biological need"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "24 hours",
+    "gameEffects": [
+      {
+        "powerLevel": 3,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Target is unaffected by a chosen type of hostile climate. Examples include heat, cold, and radiation"
+      },
+      {
+        "powerLevel": 4,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Target can sustain a single biological need from an alternate source, such as by breathing the oxygen found in water, drinking from an irradiated stream, or eating food not normally edible"
+      },
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Target can subsist without the essential nourishment periodically required for sustenance, such as food or water"
+      },
+      {
+        "powerLevel": 7,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Target can subsist without the most critical nourishment, that which is typically consumed on a moment-to-moment basis, such as air"
+      },
+      {
+        "powerLevel": 9,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Target is unaffected even when cut off from all biological necessities, including warmth, water, air, food, and any other biological need"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "P8jhERSalax39ssM",
+      "name": "Sustenance",
+      "type": "base",
+      "img": "icons/consumables/food/bowl-stew-tofu-potato-red.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Sustenance",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

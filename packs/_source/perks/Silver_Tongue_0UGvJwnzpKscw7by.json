@@ -1,0 +1,14 @@
+{
+  "_id": "0UGvJwnzpKscw7by",
+  "name": "Silver Tongue",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You have practiced the ways of sneaking hidden charms and subliminal messages within everyday conversation. Once per session, when you converse with an intelligent creature for at least five minutes, you will learn one useful secret of the GM's choosing about the creature.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

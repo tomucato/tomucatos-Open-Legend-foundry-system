@@ -1,0 +1,75 @@
+{
+  "name": "Persistent Damage",
+  "type": "bane",
+  "_id": "Ybl3PnMYxoVXhGTG",
+  "img": "icons/skills/wounds/injury-hand-blood-red.webp",
+  "system": {
+    "description": "<p>Whether by setting the target ablaze, covering them in acid, slicing an artery, or cursing them with a wasting disease, you inflict your foe with a lasting and recurring source of damage. Persistent damage is a favorite among assassins, mad scientists, and elementalists.</p>",
+    "powerLevel": 2,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (Fail x 3 = 1 minute)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 2,
+        "effect": "1d4 damage per round."
+      },
+      {
+        "powerLevel": 4,
+        "effect": "1d6 damage per round."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "1d8 damage per round."
+      },
+      {
+        "powerLevel": 8,
+        "effect": "1d10 damage per round."
+      },
+      {
+        "powerLevel": 9,
+        "effect": "2d6 damage per round."
+      }
+    ],
+    "failDuration": "1 minute",
+    "special": "Persistent damage comes in a number of different variations: physical damage (bleeding from a vital strike), energy damage (lightning, fire, cold, acid, etc.) and entropic damage (necromantic energy), among others. Each variation has its own cure. When that cure is applied with a major action (either by the afflicted character or another), the target receives a resist roll (as a free action) with advantage 1 to end the effect. The GM has the final word on whether a proposed cure can help a given type of persistent damage, but the  following examples can help with arbitration:\n<ul>\n  <li>Bleeding damage is cured with a successful roll using Learning, Logic, or Creation.</li>\n  <li>Lightning damage is cured by a discharge or grounding of the current.</li>\n  <li>Cold damage is countered with warmth, heat, or fire.</li>\n  <li>Acid damage is neutralized with alkalizing agents (powder, milk, etc.).</li>\n  <li>Fire damage is neutralized with water or smothering.</li>\n  <li>Entropic damage is neutralized with extraordinary or magical healing.</li>\n</ul>\nThis bane may still be resisted in the usual way of using the resist banes action.",
+    "gameEffects": [],
+    "effect": "<p>At the beginning of the target's turn, before they take any actions, they suffer damage determined by the power level of the bane. This damage automatically bypasses the afflicted character's defenses but it can be reduced by any resistance to damage of a certain type (see the resistance boon). Like all dice rolls, these dice explode.</p><ul><li><p><strong>Power Level 2</strong> - 1d4 damage per round.</p></li><li><p><strong>Power Level 4</strong> - 1d6 damage per round.</p></li><li><p><strong>Power Level 6</strong> - 1d8 damage per round.</p></li><li><p><strong>Power Level 8</strong> - 1d10 damage per round.</p></li><li><p><strong>Power Level 9</strong> - 2d6 damage per round.</p></li></ul>"
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781694742328,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

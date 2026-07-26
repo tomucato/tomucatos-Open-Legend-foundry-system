@@ -1,0 +1,56 @@
+{
+  "folder": "e2t5oRwXrkAjrsAs",
+  "name": "Charmed",
+  "type": "bane",
+  "_id": "ezXLV7Em1lqGDzOS",
+  "img": "icons/magic/control/hypnosis-mesmerism-eye.webp",
+  "system": {
+    "description": "<p>Charms are one of the great banes of legend, wielded by powerful enchantresses like Circe (of Homer's The Odyssey), nymphs, psychics, and other characters who control the will of others, not through total domination, but through a magical spell of love or friendship.</p>",
+    "powerLevel": 3,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (special) ",
+    "tags": [],
+    "attacks": [
+      {
+        "attackingAttribute": "Influence",
+        "defense": "Resolve"
+      }
+    ],
+    "powerEffects": [
+      {
+        "powerLevel": 3,
+        "effect": "You can Minor Charm creatures of animal level intelligence or lower."
+      },
+      {
+        "powerLevel": 4,
+        "effect": " You can Minor Charm creatures of humanoid intelligence. You can Major Charm creatures of animal level intelligence or lower."
+      },
+      {
+        "powerLevel": 6,
+        "effect": "You can Major Charm creatures of humanoid intelligence."
+      }
+    ],
+    "failDuration": "Fail x 3 = 24 hours",
+    "special": "<p>While most banes last until the target actively attempts to resist it, this bane prevents the target from being aware of their affliction and thus prevents them from actively attempting to break free. However, the target's true mind is magically suppressed but fights to regain control. As such, at the end of each of its turns, the target receives a resist roll as a free action to break free from the effect. When your target succeeds at a resist roll against this bane, they become immune to all subsequent attempts by you to inflict the bane for the next 24 hours.</p>",
+    "gameEffects": [],
+    "effect": "<p>The charmed bane can only be inflicted via a bane attack. Damaging attacks that trigger banes cannot trigger this bane. The charmed bane manifests at two levels: minor and major. Minor Charm - The target is mentally compelled to become more friendly, only changing their attitude toward you moderately. If they are about to strike you, they will restrain themselves - still angry and hostile, but no longer violent. If they want to help you and are leaning toward trusting you, but have some hesitation because you've just met, then that hesitation goes away. Major Charm - The attacker chooses whether the major charm is platonic or romantic. If platonic, the bane causes the target to consider the attacker their best friend and one of the most trustworthy and noble people they have met in all their lives. Alternatively, the attacker can choose for this trust and admiration to manifest as romantic love. The target is unable to do anything to plot against the one who afflicted them, and will (at the earliest possible opportunity) tell their charmer of any rumored harm or danger coming their way. The afflicted character becomes immediately suspicious of anyone who speaks ill of their attacker. The target is mentally compelled to like and trust you more, depending on the power level of the bane when invoked.</p>"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781688965180,
+    "modifiedTime": 1781689226287,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "_id": "t15nGG0EL9TRlO7A",
+  "name": "Life Drain",
+  "type": "boon",
+  "img": "icons/magic/death/mouth-bite-fangs-vampire.webp",
+  "system": {
+    "description": "<p>Like the bite of a vampire, the soul draining touch of a black mage, or the life sucking ray gun of a mad supervillain, this boon allows the target to steal the very lifeforce of their foes.</p>",
+    "effect": "While this boon persists, the target heals half (round up) of the damage they inflict with each attack. If an attack damages multiple foes, the target of this boon heals based on the total damage inflicted against all foes.",
+    "tags": [
+      "Extraordinary"
+    ],
+    "attributes": [
+      "Entropy"
+    ],
+    "powerLevel": 5,
+    "powerEffects": [
+      {
+        "powerLevel": 5,
+        "effect": "While this boon persists, the target heals half (round up) of the damage they inflict with each attack. If an attack damages multiple foes, the target of this boon heals based on the total damage inflicted against all foes."
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 5,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "While this boon persists, the target heals half (round up) of the damage they inflict with each attack. If an attack damages multiple foes, the target of this boon heals based on the total damage inflicted against all foes."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "4YFO7by0xuxUHcNL",
+      "name": "Life Drain",
+      "type": "base",
+      "img": "icons/magic/death/mouth-bite-fangs-vampire.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": []
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Life Drain",
+          "powerLevel": 0,
+          "changeLevels": [],
+          "changeModes": []
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

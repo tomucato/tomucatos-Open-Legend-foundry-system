@@ -1,0 +1,15 @@
+{
+    "_id": "restAllTokens000",
+    "name": "Rest All (Group)",
+    "type": "script",
+    "author": null,
+    "img": "icons/svg/sleep.svg",
+    "scope": "global",
+    "command": "// Open Legend Unofficial \u2014 Rest All\n// Choose the tokens (all targeted or all selected), then one prompt (days + attendant) rests every creature: heals lethal damage and relieves Fatigued.\nconst { DialogV2 } = foundry.applications.api;\nconst ol = game.openlegend;\nif ( !ol?.groupLethalRest ) {\n  ui.notifications?.error(\"Open Legend Unofficial group helpers are unavailable.\");\n  return;\n}\nconst selectedCount = canvas.tokens?.controlled?.length ?? 0;\nconst targetedCount = game.user?.targets?.size ?? 0;\nif ( !selectedCount && !targetedCount ) {\n  ui.notifications?.warn(\"Select or target one or more tokens first, then run this macro.\");\n  return;\n}\nconst mode = await DialogV2.wait({\n  window: { title: \"Rest All\" },\n  classes: [\"openlegend\"],\n  content: `\n    <div class=\"form-group\">\n      <label>Apply to</label>\n      <select name=\"mode\" style=\"flex:1;\" autofocus>\n        <option value=\"targeted\"${targetedCount ? \"\" : \" disabled\"}>All targeted tokens (${targetedCount})</option>\n        <option value=\"selected\"${selectedCount ? \"\" : \" disabled\"}${targetedCount ? \"\" : \" selected\"}>All selected tokens (${selectedCount})</option>\n      </select>\n    </div>`,\n  rejectClose: false,\n  buttons: [\n    { action: \"go\", label: \"Rest All\", icon: \"fas fa-bed\", default: true,\n      callback: (event, button, dialog) => dialog.element.querySelector('select[name=\"mode\"]')?.value ?? \"targeted\" },\n    { action: \"cancel\", label: \"Cancel\", icon: \"fas fa-times\" }\n  ]\n});\nif ( (mode !== \"targeted\") && (mode !== \"selected\") ) return;\nconst tokens = (mode === \"selected\")\n  ? (canvas.tokens?.controlled ?? [])\n  : [...(game.user?.targets ?? [])];\nif ( !tokens.length ) {\n  ui.notifications?.warn(mode === \"selected\"\n    ? \"No tokens are selected.\"\n    : \"No tokens are targeted.\");\n  return;\n}\nawait ol.groupLethalRest(tokens);\n",
+    "folder": null,
+    "ownership": {
+        "default": 0
+    },
+    "flags": {},
+    "_stats": {}
+}

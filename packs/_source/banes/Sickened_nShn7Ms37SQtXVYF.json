@@ -1,0 +1,46 @@
+{
+  "name": "Sickened",
+  "type": "bane",
+  "_id": "nShn7Ms37SQtXVYF",
+  "img": "icons/magic/death/blood-corruption-vomit-red.webp",
+  "system": {
+    "description": "<p>Entropic energy overcomes the target, bombarding their system and inducing nausea that makes self-defense and any kind of action difficult. This bane might stem from a witch's curse, chemical warfare, a powerful poison, or exposure to alien toxins.</p>",
+    "powerLevel": 5,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends (Fail x 3 = 1 minute)",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "1 minute",
+    "special": "",
+    "gameEffects": [],
+    "effect": "The target has disadvantage 1 on all action rolls and -1 to all defenses."
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781694875512,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

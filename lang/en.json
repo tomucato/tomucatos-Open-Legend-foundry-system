@@ -1,0 +1,16 @@
+{
+    "OPENLEGEND.ActorCharacter": "Character",
+    "OPENLEGEND.ActorNPC": "NPC",
+    "OPENLEGEND.ActorBoss": "Boss",
+    "OPENLEGEND.ActorCompanion": "Companion",
+    "OPENLEGEND.ActorMinion": "Minion",
+    "OPENLEGEND.ActorMount": "Mount / Vehicle",
+    "OPENLEGEND.ItemBoon": "Boon",
+    "OPENLEGEND.ItemBane": "Bane",
+    "TYPES.Actor.character": "Character",
+    "TYPES.Actor.npc": "NPC",
+    "TYPES.Actor.boss": "Boss",
+    "TYPES.Actor.companion": "Companion",
+    "TYPES.Actor.minion": "Minion",
+    "TYPES.Actor.mount": "Mount / Vehicle"
+}

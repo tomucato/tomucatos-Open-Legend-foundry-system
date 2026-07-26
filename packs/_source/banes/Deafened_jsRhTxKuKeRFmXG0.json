@@ -1,0 +1,54 @@
+{
+  "name": "Deafened",
+  "type": "bane",
+  "_id": "jsRhTxKuKeRFmXG0",
+  "img": "icons/skills/wounds/injury-face-impact-orange.webp",
+  "system": {
+    "description": "<p>You deafen your foe with a crash of thunder, a deft strike to their ears, or a dark energy that disables their hearing. This bane is common to storm mages, mad scientists, and assassins.</p>",
+    "powerLevel": 4,
+    "invocationTime": "1 Major Action",
+    "duration": "Resist ends ",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attacks": [
+      {
+        "attackingAttribute": "Agility",
+        "defense": "Guard"
+      },
+      {
+        "attackingAttribute": "Energy",
+        "defense": "Toughness"
+      },
+      {
+        "attackingAttribute": "Entropy",
+        "defense": "Toughness"
+      }
+    ],
+    "powerEffects": [],
+    "failDuration": "Fail x 3 = 1 minute",
+    "special": "",
+    "gameEffects": [],
+    "effect": "The target cannot hear as long as the effect persists. The target automatically fails any Perception rolls based solely on hearing. Perception rolls based partially on hearing that can be supplemented by another sense suffer disadvantage 3."
+  },
+  "effects": [],
+  "folder": "e2t5oRwXrkAjrsAs",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "xyQYuBPBSgDckbLZ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "tomucatos-open-legend-rpg-system",
+    "systemVersion": "1.0.66",
+    "createdTime": 1781689612576,
+    "modifiedTime": 1781690804409,
+    "lastModifiedBy": "xyQYuBPBSgDckbLZ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

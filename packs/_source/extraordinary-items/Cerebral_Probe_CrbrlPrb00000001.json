@@ -1,0 +1,34 @@
+{
+  "_id": "CrbrlPrb00000001",
+  "name": "Cerebral Probe",
+  "type": "gear",
+  "img": "icons/svg/circle.svg",
+  "system": {
+    "description": "<p>A mechanical apparatus of metal plates, leather straps, and buckles, this device has a cone-shaped metal protrusion that is inserted into the subject's ear and flares out like a phonograph. Once secured, the subject's darkest secrets are thence played like a classic tune from a vinyl record.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Mind Dredge",
+        "powerLevel": 6
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "special",
+        "value": "This apparatus must be carefully secured to the target. As such the target must first be unconscious, helpless, or immobile before a the mind dredge attack can be made. As long as the target is afflicted by a bane from this item, they are automatically inflicted with the immobile bane until the first bane ceases."
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

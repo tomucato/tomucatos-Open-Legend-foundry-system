@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbbM3EKhVomOS",
+  "name": "Fugitive",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You are part of a criminal network, whether it be a thieves' guild, band of smugglers, or otherwise. Once per game session, you can call in a favor from a contact within your network to perform a mundane task such as gathering information or arranging safe passage. If the favor puts your contact at risk, they will still perform it but may ask for an equally risky favor from you in return.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

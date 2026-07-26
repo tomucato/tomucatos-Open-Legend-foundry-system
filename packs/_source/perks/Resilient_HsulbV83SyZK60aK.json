@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbV83SyZK60aK",
+  "name": "Resilient",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>You are exceptionally difficult to kill or wear down. Once per game session, you can automatically succeed a Fortitude action roll of Challenge Rating less than or equal to 10 + twice your Fortitude score.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "_id": "F09MLjlr6Qs9tWXN",
+  "name": "Bolster",
+  "type": "boon",
+  "img": "icons/magic/control/buff-strength-muscle-damage-orange.webp",
+  "system": {
+    "description": "<p>You bolster your target's chances of success via inspiration, augmentation, divine blessing, or supernatural insight. Your target becomes more competent than they normally are. You might grant the sight of an eagle, the problem solving skills of an elite computer hacker, or the social grace of a trained courtier.</p>",
+    "effect": "Choose a single attribute. The target gains advantage on their action rolls with that attribute according to the power level of the boon.\n<ul>\n<li><strong>Power Level 3</strong> - Advantage 1.</li>\n<li><strong>Power Level 6</strong> - Advantage 2.</li>\n<li><strong>Power Level 8</strong> - Advantage 3.</li>\n</ul>",
+    "tags": [
+      "Extraordinary",
+      "Physical"
+    ],
+    "attributes": [
+      "Alteration",
+      "Creation",
+      "Prescience",
+      "Presence"
+    ],
+    "powerLevel": 3,
+    "powerEffects": [
+      {
+        "powerLevel": 3,
+        "effect": "Advantage 1"
+      },
+      {
+        "powerLevel": 6,
+        "effect": "Advantage 2"
+      },
+      {
+        "powerLevel": 8,
+        "effect": "Advantage 3"
+      }
+    ],
+    "invocationTime": "1 Major Action",
+    "duration": "Sustain Persists",
+    "gameEffects": [
+      {
+        "powerLevel": 3,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Advantage 1"
+      },
+      {
+        "powerLevel": 6,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Advantage 2"
+      },
+      {
+        "powerLevel": 8,
+        "kind": "descriptive",
+        "value": null,
+        "scope": "",
+        "label": "Advantage 3"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "_id": "gbibvfiOd07utg3f",
+      "name": "Bolster",
+      "type": "base",
+      "img": "icons/magic/control/buff-strength-muscle-damage-orange.webp",
+      "disabled": false,
+      "transfer": false,
+      "showIcon": 2,
+      "system": {
+        "changes": [
+          {
+            "key": "attr.__prompt__",
+            "type": "add",
+            "value": "1",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "attr.__prompt__",
+            "type": "add",
+            "value": "2",
+            "phase": "final",
+            "priority": 20
+          },
+          {
+            "key": "attr.__prompt__",
+            "type": "add",
+            "value": "3",
+            "phase": "final",
+            "priority": 20
+          }
+        ]
+      },
+      "flags": {
+        "openlegend": {
+          "fromBoon": "Bolster",
+          "powerLevel": 0,
+          "changeLevels": [
+            3,
+            6,
+            8
+          ],
+          "changeModes": [
+            "advdis",
+            "advdis",
+            "advdis"
+          ],
+          "promptSubject": "attribute"
+        }
+      }
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

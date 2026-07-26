@@ -1,0 +1,38 @@
+{
+  "_id": "UniversalAccessI",
+  "name": "Universal Access Implant",
+  "type": "gear",
+  "img": "icons/svg/circle.svg",
+  "system": {
+    "description": "<p>This implant is a coveted tool, gifted by the Intergalactic Alliance to their most trusted agents. For a resourceful user, it unlocks infinite doors. If not for the built-in AI monitoring your every move, it would priceless.</p>",
+    "notes": "",
+    "wealthLevel": 6,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [
+      {
+        "key": "persuasion",
+        "score": 7
+      }
+    ],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "autonomous",
+        "value": ""
+      },
+      {
+        "name": "special",
+        "value": "The UAI can only be removed by (illegal) surgery. The wielder always scans affirmatively as a high ranking government official, making them more persuasive via their rank. In addition, the UAI confers a wealth score of 6 for local purchases. Lastly, the device records every action performed by the user and transmits it to the creator. It has Perception 5, applied only to the user's thoughts and actions. If the user fails a contested roll to conceal their intentions, the device will secretly send out an alert and attempt to persuade the user to alter their course of action."
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "_id": "nbAbv78X9GXqVBu3",
+  "name": "Lethal Strike (I - IX)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Like a highly trained sniper, a ninja of legend, or a feinting melee dervish, you can devastate your foes with an expertly placed attack when you catch them off guard.</p>",
+    "effect": "Your attacks are considered lethal strikes whenever you fulfill <em>one</em> of the following conditions:\n<ul>\n<li>Your target is caught off guard or otherwise unaware of the attack, such as when you are hidden from them, disguised as a friend, or have successfully deceived them.</li>\n<li>Your target is within melee attack range of an ally.</li>\n</ul>\nYou gain advantage on lethal strikes equal to your tier in this feat. Additionally, a certain portion of the damage (not to exceed the total damage dealt) is considered lethal damage, which is more difficult to heal from (see Chapter 7: Combat).\n<ul>\n<li><strong>Tier 1</strong> - Advantage 1. Up to 5 lethal damage.</li>\n<li><strong>Tier 2</strong> - Advantage 2. Up to 5 lethal damage.</li>\n<li><strong>Tier 3</strong> - Advantage 3. Up to 10 lethal damage.</li>\n<li><strong>Tier 4</strong> - Advantage 4. Up to 10 lethal damage.</li>\n<li><strong>Tier 5</strong> - Advantage 5. Up to 15 lethal damage.</li>\n<li><strong>Tier 6</strong> - Advantage 6. Up to 20 lethal damage.</li>\n<li><strong>Tier 7</strong> - Advantage 7. Up to 20 lethal damage.</li>\n<li><strong>Tier 8</strong> - Advantage 8. Up to 25 lethal damage.</li>\n<li><strong>Tier 9</strong> - Advantage 9. Up to 25 lethal damage.</li>\n</ul>",
+    "special": "",
+    "tags": [
+      "Extraordinary",
+      "Agility",
+      "Combat"
+    ],
+    "cost": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "maxTier": 9,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 3
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 3
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 3
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 4,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 5,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 6,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 5
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 7,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 7
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 8,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 7
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      },
+      {
+        "tier": 9,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [
+            {
+              "key": "agility",
+              "label": "Agility",
+              "min": 7
+            }
+          ],
+          "feats": [],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Lethal Strike (I - IX)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

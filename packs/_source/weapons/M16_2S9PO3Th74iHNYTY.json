@@ -1,0 +1,47 @@
+{
+  "_id": "2S9PO3Th74iHNYTY",
+  "name": "M16",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Medium Ranged. Precise, Area (10' cube).</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "M16",
+    "categories": [
+      "medium-ranged"
+    ],
+    "rangeIncrement": 75,
+    "properties": [
+      {
+        "key": "precise"
+      },
+      {
+        "key": "area",
+        "detail": "10' cube"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      },
+      {
+        "name": "Provoked",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.fGfouj2vuuyiy3vM"
+      },
+      {
+        "name": "Demoralized",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.M5TnAHm1bWjzhJi9"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

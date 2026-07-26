@@ -1,0 +1,66 @@
+{
+  "_id": "K7olUYXVoXWAUVBt",
+  "name": "Superior Concentration (I - III)",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>Your powers of focus are exceptionally honed, allowing you to maintain concentration on multiple extraordinary effects at once. This feat is typical among character concepts built to enhance themselves or their allies, such as bards, platoon leaders, or engineers.</p>",
+    "effect": "When you take the <em>sustain a boon</em> minor action, you may sustain one additional boon per tier of this feat which you possess.",
+    "special": "",
+    "tags": [
+      "Extraordinary"
+    ],
+    "cost": [
+      3,
+      3,
+      3
+    ],
+    "maxTier": 3,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 2,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      },
+      {
+        "tier": 3,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [],
+          "other": [],
+          "hasNone": true
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Superior Concentration (I - III)"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

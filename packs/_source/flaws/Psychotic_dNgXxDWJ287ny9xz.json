@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxDWJ287ny9xz",
+  "name": "Psychotic",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You are severely mentally deranged to the extent that you occasionally lose touch with reality. You get to determine the extent and nature of your psychosis, including any potential triggers. For example, you might believe that beings from another dimension are trying to abduct you, or perhaps you relive a nightmarish scene from your past whenever you are in the midst of a gun fight.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

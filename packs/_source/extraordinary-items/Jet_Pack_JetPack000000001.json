@@ -1,0 +1,29 @@
+{
+  "_id": "JetPack000000001",
+  "name": "Jet Pack",
+  "type": "gear",
+  "img": "icons/svg/circle.svg",
+  "system": {
+    "description": "<p>A masterpiece of technology, the jet pack allows those daring enough to use it to take to the skies with the maneuverability of a hummingbird.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [
+      {
+        "name": "Flight",
+        "powerLevel": 6
+      }
+    ],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

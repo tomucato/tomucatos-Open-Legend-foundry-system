@@ -1,0 +1,14 @@
+{
+  "_id": "HsulbsDaAVQ3O5Im",
+  "name": "Courageous",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>When the odds are stacked against you, you never falter or waiver. Once per game session, as a free action you can cancel all negative effects upon you related to fear or low morale.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

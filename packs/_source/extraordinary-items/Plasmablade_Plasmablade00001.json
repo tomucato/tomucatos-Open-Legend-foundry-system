@@ -1,0 +1,55 @@
+{
+  "_id": "Plasmablade00001",
+  "name": "Plasmablade",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>This regal weapon features a compact hilt made of non-conducting carbon fiber. When activated, a blade of infinitely hot plasma emerges, along with dome-shaped force-field for a hand guard.</p>",
+    "notes": "",
+    "wealthLevel": 5,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Disarmed",
+        "powerLevel": 3
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "baneful",
+        "value": ""
+      },
+      {
+        "name": "damageType",
+        "value": "fire"
+      },
+      {
+        "name": "deadly",
+        "value": 1
+      },
+      {
+        "name": "special",
+        "value": "When an attack with the plasmablade exceeds the target's defense by 10 or more, the attack severs the target's limb completely and all damage from the attack is lethal. Furthermore, the target suffers demoralized (power level 3) for the remainder of the combat and the effect can't be canceled."
+      }
+    ],
+    "baseType": "Katana",
+    "categories": [
+      "versatile-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [],
+    "banes": [],
+    "equipped": false,
+    "equipHands": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

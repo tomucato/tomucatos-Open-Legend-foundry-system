@@ -1,0 +1,46 @@
+{
+  "_id": "h16HOyMrNatOnwqK",
+  "name": "Reckless Attack",
+  "type": "feat",
+  "img": "icons/svg/upgrade.svg",
+  "system": {
+    "description": "<p>By willingly punishing your own body in the heat of battle, you launch a relentless flurry of attacks that physically drains you but devastates your foes. A super soldier activating a stim pack and a berserker pushing their muscles to the breaking point are examples of this feat in action.</p>",
+    "effect": "While you are in a battle trance, on your turn you may choose to inflict 5 hit points of damage on yourself to make an attack as a minor action. Effects that prevent or reduce damage cannot affect this self-inflicted damage. You suffer the damage before making your extra attack, so you must be able to remain conscious after the damage is dealt in order to benefit from your extra attack.",
+    "special": "",
+    "tags": [
+      "Combat"
+    ],
+    "cost": [
+      3
+    ],
+    "maxTier": 1,
+    "tiers": [
+      {
+        "tier": 1,
+        "cost": 3,
+        "prerequisites": {
+          "attribute": [],
+          "feats": [
+            "Battle Trance"
+          ],
+          "other": [],
+          "hasNone": false
+        }
+      }
+    ],
+    "purchasedTier": 0,
+    "choice": {
+      "type": "",
+      "label": "",
+      "count": 1,
+      "value": ""
+    },
+    "multi": false,
+    "baseName": "Reckless Attack"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

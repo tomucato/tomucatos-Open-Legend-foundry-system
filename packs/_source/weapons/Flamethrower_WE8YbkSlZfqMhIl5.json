@@ -1,0 +1,46 @@
+{
+  "_id": "WE8YbkSlZfqMhIl5",
+  "name": "Flamethrower",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>Two-handed Melee. Precise, Slow, Area (5' / 10' cone).</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "baseType": "Flamethrower",
+    "categories": [
+      "two-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [
+      {
+        "key": "precise"
+      },
+      {
+        "key": "slow"
+      },
+      {
+        "key": "area",
+        "detail": "5' / 10' cone"
+      }
+    ],
+    "banes": [
+      {
+        "name": "Fear",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.H4eeAjn7RGyeOcve"
+      },
+      {
+        "name": "Persistent Damage",
+        "uuid": "Compendium.tomucatos-open-legend-rpg-system.banes.Item.GLmvmEheLRNcJn3Q"
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

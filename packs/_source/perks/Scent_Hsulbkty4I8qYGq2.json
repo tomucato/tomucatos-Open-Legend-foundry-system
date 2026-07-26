@@ -1,0 +1,14 @@
+{
+  "_id": "Hsulbkty4I8qYGq2",
+  "name": "Scent",
+  "type": "perk",
+  "img": "icons/svg/angel.svg",
+  "system": {
+    "description": "<p>Your sense of smell is almost feral or otherwise ultra-heightened. As a focus action, you can discern the number and relative location of living creatures within 60'. With an additional focus action you can lock onto a particular scent and maintain its relative location as long as it remains within 60'. Furthermore, you gain advantage 1 on attempts to track a creature if it has left a scent trail.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

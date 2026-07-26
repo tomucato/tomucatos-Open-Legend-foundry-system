@@ -1,0 +1,43 @@
+{
+  "_id": "MaulofDominance0",
+  "name": "Maul of Dominance",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "description": "<p>This massive two-handed hammer is etched with elegant patterns that indicate its value. When held, it pulses with a power felt by all nearby, emitting an aura of menace that draws the attention foes.</p>",
+    "notes": "",
+    "wealthLevel": 4,
+    "bulky": false,
+    "heavy": true,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [
+      {
+        "name": "Aura",
+        "powerLevel": 8
+      }
+    ],
+    "extraordinaryBanes": [],
+    "extraordinaryProperties": [
+      {
+        "name": "special",
+        "value": "The maul's aura boon can only emit the provoked bane. During the first round of combat, its aura can be invoked as a minor action."
+      }
+    ],
+    "baseType": "Maul",
+    "categories": [
+      "two-handed-melee"
+    ],
+    "rangeIncrement": 0,
+    "properties": [],
+    "banes": [],
+    "equipped": false,
+    "equipHands": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}

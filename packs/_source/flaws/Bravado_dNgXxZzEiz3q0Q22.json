@@ -1,0 +1,14 @@
+{
+  "_id": "dNgXxZzEiz3q0Q22",
+  "name": "Bravado",
+  "type": "flaw",
+  "img": "icons/svg/unconscious.svg",
+  "system": {
+    "description": "<p>You have a flair for the dramatic, and will often undertake bold or daring maneuvers simply for the thrill of it. For example, in combat you might swing from a chandelier even if it offers no tactical advantage.</p>"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "openlegend"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "_id": "BlwfshVnm0000001",
+  "name": "Blowfish Venom",
+  "type": "gear",
+  "img": "icons/svg/poison.svg",
+  "system": {
+    "description": "<p>With just a drop in an unattended goblet or a liberal dose on the edge of a blade, this poison renders its target completely immobile and incapable of escape.</p>",
+    "notes": "",
+    "wealthLevel": 3,
+    "bulky": false,
+    "heavy": false,
+    "quantity": 1,
+    "extraordinary": true,
+    "extraordinaryAttributes": [],
+    "extraordinaryBoons": [],
+    "extraordinaryBanes": [
+      {
+        "name": "Immobile",
+        "powerLevel": 5
+      }
+    ],
+    "extraordinaryProperties": [
+      {
+        "name": "augmenting",
+        "value": ""
+      },
+      {
+        "name": "expendable",
+        "value": ""
+      }
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "tomucatos-open-legend-rpg-system"
+  }
+}
