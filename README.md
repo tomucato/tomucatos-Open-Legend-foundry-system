@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://openlegendrpg.com/community-license"><img src="docs/images/open_legend_licensed_logo_gold.png" alt="Open Legend Licensed Product" width="420"></a>
+  <a href="https://openlegendrpg.com/community-license"><img src="docs/images/open_legend_licensed_logo_gold.png" alt="Open Legend Licensed Product" width="45%"></a>
 </p>
 
 An **unofficial, automation-heavy implementation of the [Open Legend RPG](https://openlegendrpg.com/)** for [Foundry Virtual Tabletop](https://foundryvtt.com/). Build an action once, roll it forever: exploding dice, per-target chat cards with one-click apply buttons, leveled bane/boon effects, live auras, template previews, and a long list of fully automated feats.
@@ -51,7 +51,7 @@ An **unofficial, automation-heavy implementation of the [Open Legend RPG](https:
    https://raw.githubusercontent.com/tomucato/tomucatos-Open-Legend-foundry-system/main/system.json
    ```
 
-3. Click **Install**, then create a world using the **Open Legend Unofficial** system.
+3. Click **Install**, then create a world using the **Tomucato's Open Legend RPG** system.
 
 **Compatibility:** Foundry VTT v11 – v14 (verified on v14).
 
