@@ -18,6 +18,10 @@
   min-width: 600px;
   min-height: 520px;
 }
+.openlegend.sheet.actor.minimized {
+  min-width: 0px;
+  min-height: 0px;
+}
 .openlegend.sheet .window-content {
   background:
     linear-gradient(rgba(246, 243, 236, 0.92), rgba(246, 243, 236, 0.92)),
