@@ -36,8 +36,8 @@
 </div>
 {{/if}}
 
-<section class="vitals stats-section">
-  <h3 class="vitals-title">Stats</h3>
+<details class="vitals stats-section" data-vitals="stats" {{#if vitalsOpen.stats}}open{{/if}}>
+  <summary class="vitals-title">Stats</summary>
   <div class="vitals-row">
     <div class="vital vital-health">
       <label>Health</label>
@@ -76,10 +76,10 @@
       </a>
     </div>
   </div>
-</section>
+</details>
 
-<section class="vitals defenses-section">
-  <h3 class="vitals-title">Defenses</h3>
+<details class="vitals defenses-section" data-vitals="defenses" {{#if vitalsOpen.defenses}}open{{/if}}>
+  <summary class="vitals-title">Defenses</summary>
   <div class="defenses">
     <div class="defense {{#if system.defenseImmune.guard}}is-immune{{/if}}">
       <label>Guard</label>
@@ -115,7 +115,7 @@
       </div>
     </div>
   </div>
-</section>
+</details>
 
 <section class="vitals mount-properties-section">
   <h3 class="vitals-title">Properties</h3>
@@ -163,8 +163,8 @@
   </div>
 </section>
 
-<section class="vitals actions-section">
-  <h3 class="vitals-title">Actions</h3>
+<details class="vitals actions-section" data-vitals="actions" {{#if vitalsOpen.actions}}open{{/if}}>
+  <summary class="vitals-title">Actions</summary>
   <div class="vitals-row">
     <div class="vital vital-resist vital-small" title="Resist (shake off) banes — 1d20, 10+ succeeds; a Potent bane rolls 2d20 and takes the lower.">
       <label>Resist</label>
@@ -174,7 +174,7 @@
       </a>
     </div>
   </div>
-</section>
+</details>
 
 {{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
 

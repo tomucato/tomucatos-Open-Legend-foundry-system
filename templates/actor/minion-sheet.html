@@ -24,8 +24,8 @@
   </div>
 </header>
 
-<section class="vitals stats-section">
-  <h3 class="vitals-title">Stats</h3>
+<details class="vitals stats-section" data-vitals="stats" {{#if vitalsOpen.stats}}open{{/if}}>
+  <summary class="vitals-title">Stats</summary>
   <div class="vitals-row">
     <div class="vital vital-health {{#if derived.lethalUnconscious}}is-lethal-out{{/if}}" title="Hit Points are fixed by the minion's power level.">
       <label>Health</label>
@@ -63,10 +63,10 @@
       </a>
     </div>
   </div>
-</section>
+</details>
 
-<section class="vitals defenses-section">
-  <h3 class="vitals-title">Defenses <span class="minion-fixed-note">(fixed by Power Level)</span></h3>
+<details class="vitals defenses-section" data-vitals="defenses" {{#if vitalsOpen.defenses}}open{{/if}}>
+  <summary class="vitals-title">Defenses <span class="minion-fixed-note">(fixed by Power Level)</span></summary>
   <div class="defenses">
     <div class="defense" title="All three defenses equal the minion's power-level defense value.">
       <label>Guard</label>
@@ -81,10 +81,10 @@
       <span class="derived">{{derived.resolve}}</span>
     </div>
   </div>
-</section>
+</details>
 
-<section class="vitals actions-section">
-  <h3 class="vitals-title">Actions</h3>
+<details class="vitals actions-section" data-vitals="actions" {{#if vitalsOpen.actions}}open{{/if}}>
+  <summary class="vitals-title">Actions</summary>
   <div class="vitals-row">
     <div class="vital vital-resist vital-small" title="Resist (shake off) banes — 1d20, 10+ succeeds; a Potent bane rolls 2d20 and takes the lower.">
       <label>Resist</label>
@@ -94,7 +94,7 @@
       </a>
     </div>
   </div>
-</section>
+</details>
 
 {{> "templates/generic/tab-navigation.hbs" tabs=tabs}}
 

@@ -1354,15 +1354,18 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     context.boonAttributeLabel = attrLabel;
     context.boonActorScore = score;
 
-    // Invocation power-level options: the chosen boon's DISCRETE levels, filtered
-    // to those the actor can reach. Item invocation caps by the item's listed
-    // value (dice not reduced); attribute invocation caps by the actor's score.
+    // No invocation power level is chosen by the player: the roll lands the boon
+    // at the highest defined level it clears (see resolveBoonTargets). The
+    // EFFECTIVE ceiling — the highest defined level the score (item invocation:
+    // the item's listed value) can reach — still drives the Aura/Barrier
+    // edit-time sub-pickers below.
     const chosen = OpenLegendItemSheet.#findChosenInvocation(options, sys.boonUuid, sys.invokeFromItemId);
     const cap = chosen?.fromItem ? Number(chosen.itemScore) : score;
-    const usable = chosen
-      ? chosen.levels.filter(pl => (cap === null) || (pl <= cap))
-      : [];
-    context.boonPowerLevelOptions = Object.fromEntries(usable.map(pl => [pl, String(pl)]));
+    const reachable = (chosen?.levels ?? []).filter(pl => (cap === null) || (pl <= cap));
+    const effectivePl = !chosen ? 0
+      : chosen.fromItem ? (Number(chosen.itemScore) || 0)
+      : reachable.length ? Math.max(...reachable)
+      : (Number(chosen.powerLevel) || 0);
     context.boonChosen = !!chosen;
     // When the selected boon comes from an extraordinary item (or the Boon Access
     // feat), the attribute is irrelevant: disable the attribute select and show
@@ -1379,8 +1382,8 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
 
     // Aura (boon): when the chosen boon is Aura, surface a picker to choose the
     // bane OR boon the aura radiates — same attribute, capped at half the aura's PL.
-    await this._prepareAuraOptions(context, sys, { attrKey, attrLabel, auraPl: Number(sys.invokePowerLevel ?? 0) });
-    await this._prepareBarrierOptions(context, sys, { attrLabel, barrierPl: Number(sys.invokePowerLevel ?? 0) });
+    await this._prepareAuraOptions(context, sys, { attrKey, attrLabel, auraPl: effectivePl });
+    await this._prepareBarrierOptions(context, sys, { attrLabel, barrierPl: effectivePl });
   }
 
   /**
@@ -1407,6 +1410,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const chosen = new Set(String(sys.barrierProperties ?? "").split(",").map(s => s.trim()).filter(Boolean));
 
     const defs = Object.fromEntries((cfg.BARRIER_PROPERTIES ?? []).map(p => [p.key, p]));
+    context.barrierPl = pl;
     context.barrierMaxCount = maxCount;
     context.barrierChosenCount = [...chosen].filter(k => pool.includes(k)).length;
     context.barrierDamageDie = damageDie;
@@ -1901,11 +1905,15 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   }
 
   /**
-   * Store the chosen boon on a boon action: its uuid + name, and reset the
-   * invocation power level to the boon's minimum. Boons have no target defense
-   * (they're invoked against a Challenge Rating, not an opposed roll), so unlike
-   * {@link #onBanePick} this sets no defense. The chosen option carries the
-   * power level in a data attribute.
+   * Store the chosen boon on a boon action: its uuid + name. Boons have no target
+   * defense (they're invoked against a Challenge Rating, not an opposed roll), so
+   * unlike {@link #onBanePick} this sets no defense. No power level is asked of
+   * the player either — the roll invokes the boon at the highest defined level it
+   * clears (see resolveBoonTargets). invokePowerLevel is still recorded as the
+   * EFFECTIVE ceiling (highest defined level the score reaches; item invocation:
+   * the listed value) so the Aura/Barrier edit-time sub-pickers and the sheet's
+   * PL/CR summary have a level to show. The option carries the boon's minimum
+   * level (data-power-level) and its defined levels (data-levels, CSV).
    * @param {Event} event
    * @private
    */
@@ -1919,8 +1927,20 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       "system.invokeFromItemId": itemId,
       "system.invokeItemScore": itemScore
     };
-    // Item invocation invokes at the listed value; attribute at the boon's minimum.
-    update["system.invokePowerLevel"] = uuid ? (itemId ? itemScore : Number(opt?.dataset.powerLevel ?? 0)) : 0;
+    let invokePl = 0;
+    if ( uuid ) {
+      if ( itemId ) invokePl = itemScore;
+      else {
+        const levels = String(opt?.dataset.levels ?? "").split(",")
+          .map(n => Math.floor(Number(n)))
+          .filter(n => Number.isFinite(n) && (n > 0));
+        const actor = this.item.actor;
+        const score = actor ? Number(actor.system?.attributes?.[this.item.system?.attribute]?.value ?? 0) : null;
+        const reachable = (score === null) ? levels : levels.filter(l => l <= score);
+        invokePl = reachable.length ? Math.max(...reachable) : Number(opt?.dataset.powerLevel ?? 0);
+      }
+    }
+    update["system.invokePowerLevel"] = invokePl;
     // A Boon Access option carries the attribute chosen for the feat — set the
     // action's invoking attribute to it (the roll still uses PL-as-score dice via
     // the item-invocation path, but the attribute type drives attr-scoped effects).
@@ -1972,6 +1992,31 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   }
 
   /**
+   * The highest defined power level this action's boon invocation can reach —
+   * its effective ceiling, now that no level is chosen up front. Item invocation
+   * caps by the item's listed value; attribute invocation caps by the owning
+   * actor's LIVE score in the action's attribute (so a score raised or lowered
+   * after the boon was picked is honoured). Falls back to the stored
+   * invokePowerLevel when the boon document can't be resolved.
+   * @returns {Promise<number>}
+   * @private
+   */
+  async #effectiveInvokePl() {
+    const sys = this.item.system ?? {};
+    if ( sys.invokeFromItemId ) return Math.max(0, Math.floor(Number(sys.invokeItemScore) || 0));
+    const fallback = Math.max(0, Math.floor(Number(sys.invokePowerLevel) || 0));
+    const doc = sys.boonUuid ? await fromUuid(sys.boonUuid).catch(() => null) : null;
+    if ( !doc ) return fallback;
+    const actor = this.item.actor;
+    const score = actor ? Number(actor.system?.attributes?.[sys.attribute]?.value ?? 0) : null;
+    const levels = [...new Set((doc.system?.powerEffects ?? [])
+      .map(pe => Math.floor(Number(pe.powerLevel)))
+      .filter(n => Number.isFinite(n) && (n > 0)))];
+    const reachable = (score === null) ? levels : levels.filter(l => l <= score);
+    return reachable.length ? Math.max(...reachable) : fallback;
+  }
+
+  /**
    * Toggle a Barrier property checkbox. Reads all checked `.action-barrier-prop`,
    * caps the selection to the power level's allowed count (ignoring the just-checked
    * box if it would exceed), and writes `system.barrierProperties` as a CSV. Clears
@@ -1983,7 +2028,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const cfg = CONFIG.OPENLEGEND ?? {};
     const just = event.currentTarget;
     const boxes = [...this.element.querySelectorAll(".action-barrier-prop")];
-    const pl = Math.max(0, Math.floor(Number(this.item.system?.invokePowerLevel ?? 0)));
+    const pl = await this.#effectiveInvokePl();
     const maxCount = cfg.barrierPropertyCount ? cfg.barrierPropertyCount(pl) : 0;
     let chosen = boxes.filter(b => b.checked).map(b => b.dataset.key);
     // Over the limit → drop the box just checked (and uncheck it visually).

@@ -240,20 +240,12 @@
       <select class="action-boon-pick">
         <option value="">— None —</option>
         {{#each boonOptions as |boon|}}
-        <option value="{{boon.value}}" data-name="{{boon.name}}" data-power-level="{{boon.powerLevel}}" data-attribute="{{boon.attribute}}" {{#if (eq boon.value ../boonSelectedValue)}}selected{{/if}}>
+        <option value="{{boon.value}}" data-name="{{boon.name}}" data-power-level="{{boon.powerLevel}}" data-levels="{{boon.levels}}" data-attribute="{{boon.attribute}}" {{#if (eq boon.value ../boonSelectedValue)}}selected{{/if}}>
           {{#if boon.boonAccess}}&#9733; {{boon.name}} — Boon Access ({{boon.itemScore}}){{else}}{{#if boon.fromItem}}&#10024; {{boon.name}} — {{boon.itemName}} ({{boon.itemScore}}){{else}}{{boon.name}} (PL {{boon.powerLevel}}){{/if}}{{/if}}
         </option>
         {{/each}}
       </select>
     </div>
-    {{#if boonChosen}}
-    <div class="form-field">
-      <label>Power Level</label>
-      <select name="system.invokePowerLevel" data-dtype="Number">
-        {{selectOptions boonPowerLevelOptions selected=system.invokePowerLevel}}
-      </select>
-    </div>
-    {{/if}}
   </div>
   {{#if showExtraordinaryHealing}}
   <label class="ol-xhealing-toggle" title="Extraordinary Healing feat: the invocation takes 1 hour and the healing roll also restores lethal damage (max HP), not just current HP.">
@@ -267,7 +259,7 @@
   {{#unless boonOptions.length}}
   <p class="form-hint">No boons are invokable by {{boonAttributeLabel}}{{#unless (eq boonActorScore null)}} at score {{boonActorScore}}{{/unless}}. Raise the attribute, or pick a different one.</p>
   {{else}}
-  <p class="form-hint">Listed boons are those {{boonAttributeLabel}} can invoke{{#unless (eq boonActorScore null)}} at its current score ({{boonActorScore}}){{/unless}}. The roll must beat the boon's Challenge Rating (10 + 2&times;PL) to invoke it.</p>
+  <p class="form-hint">Listed boons are those {{boonAttributeLabel}} can invoke{{#unless (eq boonActorScore null)}} at its current score ({{boonActorScore}}){{/unless}}. No power level is chosen here: the roll invokes the boon at the highest power level it clears (CR = 10 + 2&times;PL, capped by the attribute score), and the chat card lets you grant a lower one.</p>
   {{/unless}}
   {{/if}}
 
@@ -332,7 +324,7 @@
     </div>
     {{#if showBarrierBane}}
     <div class="form-field form-field-wide">
-      <label>Baneful — bane ({{barrierBaneAttributeLabel}}, max PL {{system.invokePowerLevel}})</label>
+      <label>Baneful — bane ({{barrierBaneAttributeLabel}}, max PL {{barrierPl}})</label>
       <select class="action-barrier-bane">
         <option value="">— None —</option>
         {{#each barrierBaneOptions as |bane|}}
@@ -353,7 +345,7 @@
   {{#unless barrierMaxCount}}
   <p class="form-hint form-warn">Pick a power level (3/5/7/9) to choose Barrier properties.</p>
   {{else}}
-  <p class="form-hint">A Barrier requires multi-targeting to define its area. Choose {{barrierMaxCount}} propert{{#if (eq barrierMaxCount 1)}}y{{else}}ies{{/if}} for power level {{system.invokePowerLevel}}.{{#if barrierDamageDie}} Damaging deals {{barrierDamageDie}}.{{/if}} Properties are recorded on the granted effect; if Damaging is chosen, a damage roll is offered on the grant card.</p>
+  <p class="form-hint">A Barrier requires multi-targeting to define its area. Choose {{barrierMaxCount}} propert{{#if (eq barrierMaxCount 1)}}y{{else}}ies{{/if}} for power level {{barrierPl}} (the highest your score can reach — a lower-rolled Barrier keeps only what its level allows).{{#if barrierDamageDie}} Damaging deals {{barrierDamageDie}}.{{/if}} Properties are recorded on the granted effect; if Damaging is chosen, a damage roll is offered on the grant card.</p>
   {{/unless}}
   {{/if}}
 

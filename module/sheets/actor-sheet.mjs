@@ -83,6 +83,14 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
   #expandedConditions = new Set();
 
   /**
+   * Open/closed state of the collapsible header panels (Stats, Defenses,
+   * Actions). Sheet-instance UI state; survives re-renders, resets when the
+   * sheet closes. Actions starts collapsed, the others expanded.
+   * @type {{stats: boolean, defenses: boolean, actions: boolean}}
+   */
+  #vitalsOpen = { stats: true, defenses: true, actions: false };
+
+  /**
    * FORM PREVIEW (view & edit a non-active form). Clicking a form tab no longer
    * switches the live actor (which changed its combat stats — defenses included —
    * just by "looking" at the form); it renders the sheet from an ephemeral clone
@@ -451,6 +459,9 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     context.actor = this.actor;
     context.system = actorData.system;
     context.config = CONFIG.OPENLEGEND;
+    // Collapsible header panels — the templates render the <details> `open`
+    // attribute from this so the state survives re-renders.
+    context.vitalsOpen = this.#vitalsOpen;
     // `editable`/`document`/`source`/`fields`/`tabs` are provided by super.
 
     // `context.system` is SOURCE data (toObject) — base values, before derived
@@ -1215,7 +1226,9 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       damaging: "fa-burst", bane: "fa-skull", boon: "fa-hands-holding", interrupt: "fa-shield-halved"
     })[categoryKey] ?? "fa-circle";
 
-    // Boons beat a fixed Challenge Rating (CR = 10 + 2·PL) at the chosen power level.
+    // Boons beat a fixed Challenge Rating (CR = 10 + 2·PL). No level is chosen up
+    // front — invokePowerLevel is auto-maintained as the highest defined level the
+    // score reaches, so this shows the best attemptable level's CR.
     const boonCr = (sys.actionCategory === "boon")
       ? (cfg.boonChallengeRating ? cfg.boonChallengeRating(sys.invokePowerLevel) : (10 + 2 * Number(sys.invokePowerLevel ?? 0)))
       : null;
@@ -1581,6 +1594,13 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     // the item handlers route by item ownership. The class just drives the amber
     // ring + banner styling.
     this.element?.classList.toggle("ol-form-preview", this.isFormPreview);
+    // Remember the Stats/Defenses/Actions panels' open state across re-renders
+    // (works for read-only viewers too, so bound before the editable guard).
+    for ( const panel of this.element.querySelectorAll("details.vitals[data-vitals]") ) {
+      panel.addEventListener("toggle", () => {
+        this.#vitalsOpen[panel.dataset.vitals] = panel.open;
+      });
+    }
     if ( !this.isEditable ) return;
     for ( const select of this.element.querySelectorAll(".feature-add") ) {
       select.addEventListener("change", this.#onFeatureAdd.bind(this));

@@ -583,8 +583,19 @@ async function finishActionRoll({ action, actor, ctx, choice, roll }) {
     if ( def ) bits.push(`vs. ${def}`);
   } else if ( sys.actionCategory === "boon" ) {
     // Boons beat a fixed Challenge Rating (CR = 10 + 2·PL) rather than a defense.
-    const cr = cfg.boonChallengeRating ? cfg.boonChallengeRating(sys.invokePowerLevel) : null;
-    if ( cr !== null ) bits.push(`CR ${cr}`);
+    // No level is chosen up front — the roll lands the boon at the highest defined
+    // level it clears, capped by the score — so show the CR span of the levels the
+    // score can attempt (a single level shows one CR).
+    const boonDoc = sys.boonUuid ? await fromUuid(sys.boonUuid).catch(() => null) : null;
+    const boonCap = fromItemInvocation ? itemScore : Number(actor.system.attributes?.[attrKey]?.value ?? 0);
+    let crLevels = [...new Set((boonDoc?.system?.powerEffects ?? [])
+      .map(pe => Math.floor(Number(pe.powerLevel)))
+      .filter(n => Number.isFinite(n) && (n > 0) && (n <= boonCap)))];
+    if ( !crLevels.length ) crLevels = [Math.max(1, Math.floor(Number(sys.invokePowerLevel) || 1))];
+    const crOf = pl => cfg.boonChallengeRating ? cfg.boonChallengeRating(pl) : (10 + 2 * pl);
+    const crLo = crOf(Math.min(...crLevels));
+    const crHi = crOf(Math.max(...crLevels));
+    bits.push(crLo === crHi ? `CR ${crLo}` : `CR ${crLo}–${crHi}`);
   }
   if ( (sys.actionCategory === "damaging") && sys.damageType ) {
     bits.push((cfg.allDamageTypes ? cfg.allDamageTypes() : (cfg.damageTypes ?? {}))[sys.damageType] ?? sys.damageType);
@@ -927,8 +938,14 @@ async function postBoonFocusAutoSuccess({ action, actor, focus, attrKey, attrSco
   const cfg = CONFIG.OPENLEGEND ?? {};
 
   // Flavor header: no dice rolled, so it reads "<Action> (<Attribute> · CR N) —
-  // <reason> auto-success".
-  const cr = cfg.boonChallengeRating ? cfg.boonChallengeRating(sys.invokePowerLevel) : null;
+  // <reason> auto-success". The auto-success lands at the highest defined level
+  // the score reaches (no level is chosen up front), so show that level's CR.
+  const boonDoc = sys.boonUuid ? await fromUuid(sys.boonUuid).catch(() => null) : null;
+  const autoLevels = (boonDoc?.system?.powerEffects ?? [])
+    .map(pe => Math.floor(Number(pe.powerLevel)))
+    .filter(n => Number.isFinite(n) && (n > 0) && (n <= Number(attrScore ?? Infinity)));
+  const autoPl = autoLevels.length ? Math.max(...autoLevels) : Number(sys.invokePowerLevel ?? 0);
+  const cr = cfg.boonChallengeRating ? cfg.boonChallengeRating(autoPl) : null;
   const bits = [attrLabel];
   if ( cr !== null ) bits.push(`CR ${cr}`);
   let flavor = renderCardHeader({
@@ -1033,16 +1050,16 @@ async function buildActionTargetSection({ snapshot, action = null }) {
   let invokedDoc = null;
   if ( (sys.actionCategory === "bane") && sys.baneUuid ) invokedDoc = await fromUuid(sys.baneUuid);
   else if ( (sys.actionCategory === "boon") && sys.boonUuid ) invokedDoc = await fromUuid(sys.boonUuid);
-  const invokeRoll = invokedDoc ? invocationRollFor(invokedDoc, sys.invokePowerLevel) : null;
   const instantaneous = /instant/i.test(String(invokedDoc?.system?.duration ?? ""));
 
   // A boon's DISCRETE power levels (its power-effect breakpoints, ascending) — the
-  // levels a player may actually land it at. The action's invokePowerLevel is the
-  // CEILING the player intended; after the roll, they can choose any reachable
-  // discrete level ≤ that ceiling AND ≤ what the roll's total cleared (see
-  // resolveBoonTargets / boonAchievedPowerLevel). Empty → fall back to the single
-  // chosen level so a boon without breakpoints still works.
+  // levels a player may actually land it at. No level is chosen up front: after
+  // the roll, the boon lands at the highest discrete level ≤ the invoking score
+  // whose CR the total cleared, and the card's PL picker offers every reachable
+  // level below it (see resolveBoonTargets / boonAchievedPowerLevel). Empty → fall
+  // back to the boon's minimum so a boon without breakpoints still works.
   let boonLevels = [];
+  let boonAchievedPl = 0;
   if ( (sys.actionCategory === "boon") && invokedDoc ) {
     boonLevels = [...new Set((invokedDoc.system?.powerEffects ?? [])
       .map(pe => Math.floor(Number(pe.powerLevel)))
@@ -1051,7 +1068,19 @@ async function buildActionTargetSection({ snapshot, action = null }) {
       const base = Math.max(1, Math.floor(Number(invokedDoc.system?.powerLevel) || 1));
       boonLevels = [base];
     }
+    // The level this invocation actually achieved (0 = failed). Mirrors the
+    // per-target math in resolveBoonTargets; used for the invocation dice (a Heal
+    // rolled at PL 5 heals more than at PL 1) and the drag chip below.
+    const boonCap = Number(attrScore ?? Infinity);
+    boonAchievedPl = autoSuccess
+      ? Math.max(0, ...boonLevels.filter(l => l <= boonCap))
+      : (cfg.boonAchievedPowerLevel ? (cfg.boonAchievedPowerLevel(total, boonLevels, boonCap) ?? 0) : 0);
   }
+  // Invocation dice: banes roll at the action's stored level; boons at the level
+  // the roll achieved (no button when the invocation failed).
+  const invokeRoll = invokedDoc
+    ? invocationRollFor(invokedDoc, (sys.actionCategory === "boon") ? boonAchievedPl : sys.invokePowerLevel)
+    : null;
 
   // Bane Focus lowers the margin-rider threshold from 10 to 5 (for the focused
   // bane only — the picker enforces which banes qualify at 5–9). Resolve the
@@ -1132,7 +1161,7 @@ async function buildActionTargetSection({ snapshot, action = null }) {
     const extraordinary = !!sys.extraordinaryHealing
       && /heal/i.test(String(sys.boonName ?? ""))
       && (cfg.hasExtraordinaryHealing?.(rollerActor) ?? false);
-    html += renderBoonHandle(sys, attrScore, total, { invokeRoll, instantaneous, healTargets, autoSuccess, extraordinary });
+    html += renderBoonHandle(sys, attrScore, total, { invokeRoll, instantaneous, healTargets, autoSuccess, extraordinary, achievedPl: boonAchievedPl });
   }
 
   return { html, results };
@@ -1596,28 +1625,28 @@ function renderBaneHandle(sys, invokeRoll = null, damageTargets = []) {
  * Render a draggable chat-card handle that grants a boon to a token when dropped
  * on it. Mirrors the bane handle. Boons aren't opposed: the roll total decides
  * the highest power level achieved (CR = 10 + 2·PL), capped by the invoking
- * attribute's score. That achieved level is encoded in the handle so dropping it
- * grants the boon at the level actually rolled. If the roll failed to reach even
- * the chosen level's CR, the handle is omitted (nothing to grant).
- * @param {object} sys       The boon action's system data (boonUuid, boonName, invokePowerLevel).
+ * attribute's score — no level is chosen up front. That achieved level is encoded
+ * in the handle so dropping it grants the boon at the level actually rolled. If
+ * the roll failed to reach even the lowest defined level's CR, the handle is
+ * omitted (nothing to grant).
+ * @param {object} sys       The boon action's system data (boonUuid, boonName).
  * @param {number} attrScore The invoking attribute's score (caps the level).
  * @param {number} total     The evaluated roll total.
  * @param {object} [opts]
- * @param {object|null} [opts.invokeRoll]    The boon's dice at the invoked level.
+ * @param {object|null} [opts.invokeRoll]    The boon's dice at the achieved level.
  * @param {boolean} [opts.instantaneous]     The boon has no lasting duration.
+ * @param {number}  [opts.achievedPl]        The level the roll achieved (0 = failed;
+ *                                           auto-success passes the score's maximum).
  * @returns {string} HTML, or "" if the action has no chosen boon / the roll failed.
  */
-function renderBoonHandle(sys, attrScore, total, { invokeRoll = null, instantaneous = false, healTargets = [], autoSuccess = false, extraordinary = false } = {}) {
+function renderBoonHandle(sys, attrScore, total, { invokeRoll = null, instantaneous = false, healTargets = [], autoSuccess = false, extraordinary = false, achievedPl = 0 } = {}) {
   if ( !sys.boonUuid ) return "";
-  const cfg = CONFIG.OPENLEGEND ?? {};
   const escape = foundry.utils.escapeHTML ?? (s => s);
-  const chosenPl = Number(sys.invokePowerLevel ?? 0);
-  const cr = cfg.boonChallengeRating ? cfg.boonChallengeRating(chosenPl) : (10 + 2 * chosenPl);
-  // The invocation succeeds only if the roll beats the chosen level's CR and the
-  // attribute can reach that level — OR Boon Focus auto-succeeds it (single target,
-  // null total). On failure, there's nothing to do.
-  const reachable = chosenPl <= Number(attrScore ?? Infinity);
-  if ( !reachable || (!autoSuccess && (Number(total ?? 0) < cr)) ) return "";
+  // The level the invocation landed at (computed by the caller from the roll
+  // total, the boon's defined levels and the invoking score — auto-success lands
+  // at the score's maximum). No level → the invocation failed, nothing to grant.
+  const chosenPl = Math.max(0, Math.floor(Number(achievedPl) || 0));
+  if ( chosenPl <= 0 ) return "";
 
   // Extraordinary Healing note shown on the card (before rolling) so the player
   // knows the upcoming roll will heal lethal damage too (1-hour invocation).
@@ -2408,32 +2437,38 @@ function resolveBoonTargets({ sys, total, attrScore = Infinity, suppressGrant = 
   const cfg = CONFIG.OPENLEGEND ?? {};
   const boonUuid = sys.boonUuid ?? "";
   const boonName = sys.boonName ?? "";
-  // The action's invokePowerLevel is the CEILING the player intended — the
-  // highest level they'll attempt. The roll then sets what they can actually
-  // reach: the player may land the boon at ANY discrete level ≤ the ceiling, ≤
-  // their attribute, whose CR the roll met. So a Haste PL6 attempt that rolls 14
-  // (short of PL6's CR 22) can still be taken at PL2 (CR 14). See
-  // boonAchievedPowerLevel. Boon Focus single-target auto-succeeds at the full
-  // ceiling (total is null → CR bypassed).
-  const ceiling = Math.max(0, Math.floor(Number(sys.invokePowerLevel ?? 0)));
-  const cap = Math.min(ceiling, Number(attrScore ?? Infinity));
-  // The discrete levels this boon offers (fallback to just the ceiling).
+  // No power level is chosen up front: the roll decides everything. The player
+  // lands the boon at the HIGHEST discrete level ≤ their invoking score whose CR
+  // the roll met — and may take ANY lower reachable level instead (the card's PL
+  // picker). So a Haste roll of 14 lands at PL2 (CR 14) even though PL6 (CR 22)
+  // was in reach of the score. See boonAchievedPowerLevel. Boon Focus
+  // single-target auto-succeeds at the score's maximum (total is null → CR
+  // bypassed).
+  const cap = Number(attrScore ?? Infinity);
+  // The discrete levels this boon offers (fallback to the stored level for
+  // legacy snapshots that carry no boonLevels).
+  const fallbackPl = Math.max(0, Math.floor(Number(sys.invokePowerLevel ?? 0)));
   const levels = (Array.isArray(boonLevels) && boonLevels.length)
     ? boonLevels.filter(l => Number.isFinite(l) && (l > 0))
-    : [ceiling].filter(l => l > 0);
+    : [fallbackPl].filter(l => l > 0);
+  // The effective ceiling: the highest defined level the score can reach at all.
+  const attemptable = levels.filter(l => l <= cap);
+  const ceiling = attemptable.length ? Math.max(...attemptable) : 0;
   // Highest level actually reached this roll, and every reachable discrete level
   // (for the card's PL picker). On a Boon Focus auto-success, everything ≤ cap is
   // reachable without a roll.
   const achievedPl = autoSuccess
-    ? Math.max(0, ...levels.filter(l => l <= cap), 0)
+    ? ceiling
     : (cfg.boonAchievedPowerLevel ? (cfg.boonAchievedPowerLevel(total, levels, cap) ?? 0) : 0);
   const reachableLevels = levels.filter(l => (l <= cap) && (l <= (achievedPl || 0)));
   const success = achievedPl > 0;
   // The level to GRANT: the highest reached (the player can pick a lower one from
   // the card's dropdown, which overrides this at apply time).
   const appliedPl = achievedPl;
-  // CR shown on the card is the ceiling's CR (what they were attempting).
-  const cr = cfg.boonChallengeRating ? cfg.boonChallengeRating(ceiling) : (10 + 2 * ceiling);
+  // CR shown on the card: the achieved level's CR on a success; on a failure, the
+  // lowest attemptable level's CR (what the roll needed to succeed at all).
+  const crPl = success ? achievedPl : (attemptable.length ? Math.min(...attemptable) : (levels.length ? Math.min(...levels) : 0));
+  const cr = cfg.boonChallengeRating ? cfg.boonChallengeRating(crPl) : (10 + 2 * crPl);
 
   // Aura (boon): on a successful grant, the radiated bane/boon + the aura radius
   // ride along to the Grant button so the granted Aura effect can carry them (the
@@ -2466,10 +2501,10 @@ function resolveBoonTargets({ sys, total, attrScore = Infinity, suppressGrant = 
   } : null;
 
   // Restoration: at ROLL TIME, surface on the card which of THIS target's banes
-  // ABOVE the chosen ceiling the roll already reached — a bane at PL P is
-  // dispellable when the roll met CR 20 + 2·P. Shown as a note on each target's
-  // row (with the CRs) so the player knows before granting that they can also
-  // clear the tougher banes. Only meaningful with a real numeric total.
+  // ABOVE the score's reachable ceiling the roll already reached — a bane at PL P
+  // is dispellable when the roll met CR 20 + 2·P. Shown as a note on each
+  // target's row (with the CRs) so the player knows before granting that they can
+  // also clear the tougher banes. Only meaningful with a real numeric total.
   const isRestoration = String(boonName).trim().toLowerCase() === "restoration";
   const restorationTotal = Number.isFinite(Number(total)) && (total !== null) ? Number(total) : null;
   const restorationHigherCr = epl => 20 + (2 * Math.max(0, Math.floor(epl)));
@@ -2479,8 +2514,8 @@ function resolveBoonTargets({ sys, total, attrScore = Infinity, suppressGrant = 
     const tActor = token.actor;
     if ( !tActor ) continue;
 
-    // Restoration: list EVERY of this target's banes ABOVE the chosen ceiling with
-    // its dispel CR, each flagged whether the roll reached it (total ≥ CR) — so the
+    // Restoration: list EVERY of this target's banes ABOVE the reachable ceiling
+    // with its dispel CR, each flagged whether the roll reached it (total ≥ CR) — so the
     // player sees the tougher banes and their CRs at roll time even when the roll
     // fell short of some (or all) of them. The dispel prompt then offers the reached
     // ones.

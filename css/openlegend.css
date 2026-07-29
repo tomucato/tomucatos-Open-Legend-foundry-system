@@ -253,6 +253,16 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+/* The Stats/Defenses/Actions panels are collapsible <details>; the title is
+   their <summary>. Collapsed, the title stands alone, so drop its underline. */
+.openlegend.sheet details.vitals > summary.vitals-title {
+  cursor: pointer;
+  user-select: none;
+}
+.openlegend.sheet details.vitals:not([open]) > summary.vitals-title {
+  padding-bottom: 0;
+  border-bottom: none;
+}
 /* Health / Speed / Initiative share the row equally. */
 .openlegend.sheet .vitals-row {
   display: flex;
