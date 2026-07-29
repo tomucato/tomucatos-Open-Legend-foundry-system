@@ -70,7 +70,7 @@
     {{#if showDamageType}}
     <div class="form-field">
       <label>Damage Type</label>
-      <select name="system.damageType" title="Damage types are grouped by the action's attribute; a selected Damage (type) weapon adds its type.">
+      <select name="system.damageType" title="{{damageTypeSelectTitle}}">
         {{selectOptions damageTypeOptions selected=system.damageType}}
       </select>
       {{#if damageTypeDescription}}<p class="form-hint">{{damageTypeDescription}}</p>{{/if}}

@@ -75,6 +75,28 @@ Hooks.once('init', async function() {
     }
   });
 
+  // Unfiltered damage types: when on, a damaging action's Damage Type picker
+  // offers the FULL damage-type catalog instead of only the types grouped under
+  // the action's attribute. Re-render open item sheets on change so pickers
+  // reflect the new scope immediately.
+  game.settings.register(OPENLEGEND.SYSTEM_ID, "unfilteredDamageTypes", {
+    name: "Show All Damage Types",
+    hint: "Offer every damage type on a damaging action's Damage Type picker, instead of only the types grouped under the action's attribute.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: () => {
+      const apps = [
+        ...(foundry.applications?.instances?.values?.() ?? []),
+        ...Object.values(ui.windows ?? {})
+      ];
+      for ( const app of apps ) {
+        if ( (app instanceof OpenLegendItemSheet) && app.rendered ) app.render();
+      }
+    }
+  });
+
   // Area auto-targeting: when on, placing an area (a Region shape) prompts the
   // placer to target the tokens it covers (Friends / Foes / All). World-scoped
   // so the GM enables it for the table; the prompt only ever shows to the user

@@ -814,15 +814,17 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
 
     // Damage type, shown for damaging actions. The selectable types are scoped
     // strictly to the action's chosen attribute (damage types are grouped
-    // per-attribute). Attributes with no damage group offer no types at all.
-    // A leading blank option means "none", so an attribute without a matching
-    // group — or whose stored value no longer fits — reads as unset rather than
-    // silently showing a stale type.
+    // per-attribute) — unless the "Show All Damage Types" world setting is on,
+    // which offers the full catalog. Attributes with no damage group offer no
+    // types at all. A leading blank option means "none", so an attribute without
+    // a matching group — or whose stored value no longer fits — reads as unset
+    // rather than silently showing a stale type.
     context.showDamageType = (sys.actionCategory === "damaging");
     if ( context.showDamageType ) {
       const all = cfg.allDamageTypes ? cfg.allDamageTypes() : (cfg.damageTypes ?? {});
       const byAttr = cfg.allDamageTypesByAttribute ? cfg.allDamageTypesByAttribute() : (cfg.damageTypesByAttribute ?? {});
-      const forAttr = byAttr[sys.attribute] ?? [];
+      const unfiltered = game.settings.get("tomucatos-open-legend-rpg-system", "unfilteredDamageTypes");
+      const forAttr = unfiltered ? Object.keys(all) : (byAttr[sys.attribute] ?? []);
       const opts = { "": "—", ...Object.fromEntries(forAttr.map(k => [k, all[k] ?? k])) };
       // A selected weapon with the Damage (type) Extraordinary property lets this
       // attack inflict that type INSTEAD of its normal one — so offer it here even
@@ -836,6 +838,9 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         context.weaponDamageTypeHint = `${weapon.name} can inflict ${wLabel} damage in lieu of the normal type.`;
       }
       context.damageTypeOptions = opts;
+      context.damageTypeSelectTitle = unfiltered
+        ? "All damage types are offered (per the Show All Damage Types world setting)."
+        : "Damage types are grouped by the action's attribute; a selected Damage (type) weapon adds its type.";
       // Flavor description of the currently-selected damage type, shown as a hint.
       context.damageTypeDescription = (cfg.allDamageTypeDescriptions ? cfg.allDamageTypeDescriptions(sys.attribute) : (cfg.damageTypeDescriptions ?? {}))[sys.damageType] ?? "";
     }
