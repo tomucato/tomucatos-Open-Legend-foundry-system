@@ -51,6 +51,21 @@ Hooks.once('init', async function() {
     onChange: () => game.openlegend?.effectsPanel?.render()
   });
 
+  // Per-client dark theme: restyles the parchment surfaces of the system's
+  // sheets, dialogs, and chat cards. Driven purely by a class on <body> so a
+  // toggle re-themes every open window without re-rendering anything.
+  game.settings.register(OPENLEGEND.SYSTEM_ID, "darkTheme", {
+    name: "Dark Theme",
+    hint: "Use a dark color scheme for the Open Legend sheets, dialogs, and chat cards. Pairs best with Foundry's own dark interface theme. Per-user setting.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: value => document.body.classList.toggle("ol-dark-theme", value)
+  });
+  document.body.classList.toggle("ol-dark-theme",
+    game.settings.get(OPENLEGEND.SYSTEM_ID, "darkTheme"));
+
   // User-defined damage types (world setting): an array of {key, label, description,
   // attribute}, merged into the built-in catalog by OPENLEGEND.allDamageTypes* and
   // loaded everywhere damage types appear. Hidden from the basic list (config:false);

@@ -11,6 +11,7 @@
   --ol-gold-light: #e3b94f;
   --ol-ink: #2b2440;
   --ol-parchment: #f6f3ec;
+  --ol-heading: #301e69;    /* heading/label text; lightened by the dark theme */
 }
 
 /* ---- Window frame ------------------------------------------------------- */
@@ -251,7 +252,7 @@
   margin: 0;
   padding-bottom: 4px;
   border-bottom: 2px solid var(--ol-gold);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -559,7 +560,7 @@ body.game .openlegend.sheet .sheet-tabs .item {
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 0.5px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   border: 1px solid transparent;
   border-bottom: none;
   border-radius: 6px 6px 0 0;
@@ -594,7 +595,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   border: 1px solid var(--ol-gold);
   background: linear-gradient(90deg, rgba(48, 30, 105, 0.10), rgba(194, 146, 43, 0.10));
   font-size: 13px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .creation-budget strong {
   font-size: 16px;
@@ -631,7 +632,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   background: rgba(255, 255, 255, 0.35);
   border: 1px solid transparent;
 }
@@ -686,7 +687,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .ol-form-tier-bar label {
   font-weight: 600;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   white-space: nowrap;
 }
 .openlegend.sheet .ol-form-tier-bar select {
@@ -706,7 +707,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .ol-form-token-bar label {
   font-weight: 600;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   white-space: nowrap;
 }
 .openlegend.sheet .ol-form-token-img {
@@ -751,7 +752,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   border-top: none;
   background: repeating-linear-gradient(45deg, rgba(194, 146, 43, 0.16), rgba(194, 146, 43, 0.16) 8px, rgba(194, 146, 43, 0.06) 8px, rgba(194, 146, 43, 0.06) 16px);
   font-size: 12px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .ol-form-preview-banner a {
   margin-left: auto;
@@ -837,7 +838,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 
 /* ---- Attribute rows -----------------------------------------------------
@@ -863,7 +864,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 600;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   cursor: pointer;
   white-space: nowrap;
 }
@@ -901,7 +902,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   text-align: center;
   font-size: 11px;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.8;
   white-space: nowrap;
 }
@@ -919,7 +920,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   width: 42px;
   text-align: center;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   background: var(--ol-parchment);
   border: 1px solid rgba(48, 30, 105, 0.3);
   border-radius: 5px;
@@ -998,7 +999,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   margin: 12px 0 6px;
   padding-bottom: 3px;
   border-bottom: 2px solid var(--ol-gold);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1030,13 +1031,13 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   flex: 1;
   margin: 0;
   font-weight: 600;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .items-list .item .item-controls {
   flex: 0 0 50px;
   display: flex;
   justify-content: space-around;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .items-list .item .item-control:hover {
   color: var(--ol-gold);
@@ -1184,7 +1185,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   margin: 0;
   padding-bottom: 3px;
   border-bottom: 2px solid var(--ol-gold);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1220,7 +1221,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   border: 1px solid rgba(48, 30, 105, 0.3);
   border-radius: 4px;
   background: var(--ol-parchment);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .feature-picker .feature-create:hover {
   color: var(--ol-gold);
@@ -1231,7 +1232,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-size: 11px;
   font-style: italic;
   opacity: 0.7;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .feature-list {
   list-style: none;
@@ -1263,10 +1264,10 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   flex: 1;
   margin: 0;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .feature-item-header .item-delete {
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   cursor: pointer;
 }
 .openlegend.sheet .feature-item-header .item-delete:hover {
@@ -1288,13 +1289,13 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   text-align: center;
   font-style: italic;
   opacity: 0.7;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .bio-heading {
   margin: 12px 0 4px;
   padding-bottom: 3px;
   border-bottom: 2px solid var(--ol-gold);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1406,6 +1407,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   --ol-gold-light: #e3b94f;
   --ol-ink: #2b2440;
   --ol-parchment: #f6f3ec;
+  --ol-heading: #301e69;    /* heading/label text; lightened by the dark theme */
   /* `--background` is what `.application { background: var(--background) }` uses;
      overriding the variable recolors the whole window opaquely. */
   --background: var(--ol-parchment);
@@ -1454,7 +1456,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.5px;
-  color: var(--ol-purple, #301e69);
+  color: var(--ol-heading, #301e69);
 }
 .ol-roll-dialog input[name="bonusDice"] {
   padding: 4px 8px;
@@ -1589,7 +1591,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.5px;
-  color: var(--ol-purple, #301e69);
+  color: var(--ol-heading, #301e69);
 }
 .ol-roll-dialog .ol-stepper {
   display: flex;
@@ -1651,6 +1653,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   --ol-gold-light: #e3b94f;
   --ol-ink: #2b2440;
   --ol-parchment: #f6f3ec;
+  --ol-heading: #301e69;    /* heading/label text; lightened by the dark theme */
   --background: var(--ol-parchment);
   color: var(--ol-ink);
 }
@@ -1693,7 +1696,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   background: rgba(48, 30, 105, 0.05);
 }
 .ol-defense-breakdown .ol-defense-label {
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .ol-defense-breakdown .ol-defense-val {
   font-variant-numeric: tabular-nums;
@@ -1715,7 +1718,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .ol-defense-breakdown .ol-defense-total .ol-defense-val {
   font-size: 18px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 
 /* ---- Inventory tab ------------------------------------------------------ */
@@ -1767,7 +1770,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   margin: 0;
   border: none;
   padding: 0;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 16px;
 }
 .openlegend.sheet .inv-section-head .item-create {
@@ -1812,7 +1815,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .inv-caret {
   font-size: 10px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   transition: transform 0.12s ease;
 }
 .openlegend.sheet .inv-item[open] > summary .inv-caret {
@@ -1823,7 +1826,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   border-bottom: 1px solid rgba(48, 30, 105, 0.25);
   border-radius: 0;
 }
@@ -1856,7 +1859,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.7;
   margin: 0;
 }
@@ -1876,7 +1879,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.7;
   padding-top: 3px;
 }
@@ -1906,7 +1909,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .inv-extra-head {
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 12px;
 }
 .openlegend.sheet .inv-extra-head i { color: var(--ol-gold); margin-right: 4px; }
@@ -1920,7 +1923,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .inv-detail-desc p:first-child { margin-top: 0; }
 .openlegend.sheet .inv-detail-line { margin: 0; }
-.openlegend.sheet .inv-flag-on { font-weight: 700; color: var(--ol-purple); }
+.openlegend.sheet .inv-flag-on { font-weight: 700; color: var(--ol-heading); }
 .openlegend.sheet .inv-col-name {
   display: flex;
   align-items: center;
@@ -2106,7 +2109,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 600;
   white-space: nowrap;
   background: rgba(48, 30, 105, 0.1);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .hands-badge.is-versatile {
   background: rgba(194, 146, 43, 0.18);
@@ -2120,7 +2123,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   margin-left: auto;
   margin-right: 10px;
   font-size: 12px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .weapon-hands-tally.over {
   color: #b5482b;
@@ -2134,7 +2137,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 /* The .gear-stat labels and .gear-check text are gold/white for the dark
    header; inside the parchment Stats tab body they need dark ink for contrast. */
 .openlegend.sheet .tab.stats .gear-stat label {
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .tab.stats .gear-check {
   color: var(--ol-ink);
@@ -2152,7 +2155,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   margin: 12px 0 6px;
   padding-bottom: 3px;
   border-bottom: 2px solid var(--ol-gold);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 14px;
 }
 .openlegend.sheet .bane-hint {
@@ -2200,7 +2203,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   border-bottom: 1px solid rgba(48, 30, 105, 0.25);
   border-radius: 0;
 }
@@ -2245,7 +2248,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .bane-pl {
   flex: 0 0 48px;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .bane-empty {
   padding: 6px;
@@ -2270,13 +2273,13 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   margin-bottom: 4px;
   font-size: 11px;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   cursor: pointer;
   white-space: nowrap;
 }
 .openlegend.sheet .bane-row-add:hover { color: var(--ol-gold); }
 .openlegend.sheet .bane-row-del {
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.6;
   cursor: pointer;
 }
@@ -2305,7 +2308,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   border-bottom: 1px solid rgba(48, 30, 105, 0.25);
   border-radius: 0;
 }
@@ -2341,7 +2344,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .bane-pl-field label {
   font-size: 10px;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .bane-pl-field input { width: 100%; text-align: center; }
 .openlegend.sheet .bane-pl-text {
@@ -2369,7 +2372,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   border-radius: 4px;
   font-size: 11px;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   white-space: nowrap;
 }
 .openlegend.sheet .bane-ae-add:hover {
@@ -2405,7 +2408,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .bane-ae-name {
   display: block;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .bane-ae-changes {
   list-style: none;
@@ -2430,7 +2433,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   gap: 8px;
 }
 .openlegend.sheet .bane-ae-controls a {
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.7;
 }
 .openlegend.sheet .bane-ae-controls a:hover {
@@ -2441,7 +2444,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 /* ---- Weapon item sheet -------------------------------------------------- */
 .openlegend.sheet .weapon-range {
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .weapon-categories {
   display: flex;
@@ -2553,7 +2556,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .carry-stat .carry-value {
   font-size: 18px;
@@ -2717,7 +2720,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .condition-expand {
   cursor: pointer;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .condition-kind {
   margin-left: 6px;
@@ -2750,7 +2753,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   margin: 6px 0 3px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .condition-notes {
   font-size: 12px;
@@ -2790,7 +2793,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 /* The "vs. Defense / vs. CR / Defend|Improvise" qualifier after the attribute in
    an action row — muted so the attribute reads as primary. */
 .openlegend.sheet .action-row-resolve {
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.7;
   font-size: 11px;
   white-space: nowrap;
@@ -2812,7 +2815,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .action-invoke-open {
   flex: 0 0 auto;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.7;
   cursor: pointer;
 }
@@ -2844,7 +2847,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 /* The action name is a roll link: clickable, hover hint. */
 .openlegend.sheet .action-row .item-name.action-roll {
   cursor: pointer;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   text-decoration: none;
 }
 .openlegend.sheet .action-row .item-name.action-roll:hover {
@@ -2907,7 +2910,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   background: rgba(48, 30, 105, 0.1);
   border: 1px solid rgba(48, 30, 105, 0.25);
   border-radius: 10px;
@@ -2970,7 +2973,7 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .action-mods-head i { margin-right: 4px; color: var(--ol-gold); }
 .openlegend.sheet .action-mods-net { font-size: 11px; color: #555; }
@@ -4114,7 +4117,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .ol-xhealing-toggle input[type="checkbox"] {
   flex: 0 0 auto;
@@ -4125,7 +4128,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .form-field select,
 .openlegend.sheet .form-field input {
@@ -4135,7 +4138,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
 .openlegend.sheet .form-readout {
   padding: 5px 0;
   font-weight: 700;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 /* The category select is locked (set by the Add section); show it as read-only. */
 .openlegend.sheet .form-field select:disabled {
@@ -4146,7 +4149,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   margin: 16px 0 8px;
   padding-bottom: 3px;
   border-bottom: 2px solid var(--ol-gold);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   font-size: 14px;
 }
 .openlegend.sheet .form-hint {
@@ -4293,7 +4296,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   background: rgba(48, 30, 105, 0.05);
 }
 .openlegend.sheet .dice-modifier-label {
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .dice-modifier-value {
   font-weight: 700;
@@ -4331,6 +4334,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   --ol-gold-light: #e3b94f;
   --ol-ink: #2b2440;
   --ol-parchment: #f6f3ec;
+  --ol-heading: #301e69;    /* heading/label text; lightened by the dark theme */
 
   position: fixed;
   top: 12px;
@@ -4689,7 +4693,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   border-top: 1px dashed rgba(48, 30, 105, 0.25);
   font-size: 15px;
 }
-.ol-rest-dialog .ol-rest-total > span:last-child { font-weight: 700; color: var(--ol-purple); }
+.ol-rest-dialog .ol-rest-total > span:last-child { font-weight: 700; color: var(--ol-heading); }
 .ol-rest-result i { color: #8a2526; margin-right: 4px; }
 
 /* ============================================================
@@ -4715,7 +4719,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   border: 1px solid var(--ol-gold);
   border-radius: 6px;
   background: rgba(48, 30, 105, 0.06);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .ol-xtra-toggle > span {
   font-weight: 700;
@@ -4742,7 +4746,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
 .openlegend.sheet .ol-xtra-head h3 {
   margin: 0;
   font-size: 14px;
-  color: var(--ol-purple);
+  color: var(--ol-heading);
 }
 .openlegend.sheet .ol-xtra-head h3 i { color: var(--ol-gold); margin-right: 4px; }
 /* Legendary section: a stronger gold accent to set it apart from the
@@ -5224,7 +5228,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
 }
 .openlegend.sheet .mount-pilot-slot.is-empty {
   border: 2px dashed rgba(194, 146, 43, 0.55);
-  color: var(--ol-purple);
+  color: var(--ol-heading);
   opacity: 0.8;
 }
 .openlegend.sheet .mount-pilot-slot.is-empty i {
@@ -5287,4 +5291,277 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
 .openlegend.sheet .mount-pilot-clear:hover {
   background: rgba(170, 45, 45, 0.9);
   color: #fff;
+}
+
+/* =========================================================================
+   Dark theme
+   Enabled per-user via the "Dark Theme" system setting, which toggles the
+   `ol-dark-theme` class on <body> (see openlegend.mjs). The purple/gold
+   header, vital tiles, buttons, and pills are already dark-on-purple and keep
+   their look; these overrides retheme the parchment surfaces — sheet bodies,
+   the roll/defense dialogs, the chat-message surface itself (core keeps
+   messages parchment-light even under its dark interface theme), and the
+   system's chat-card widgets.
+   ========================================================================= */
+
+/* ---- Palette remap ------------------------------------------------------ */
+/* Every system window carries .openlegend on its application root. The
+   effects panel is natively dark and keeps its palette. Chat messages get the
+   ink/heading vars so card titles (`var(--ol-ink, …)` fallbacks) lighten. */
+body.ol-dark-theme .openlegend.sheet,
+body.ol-dark-theme .openlegend.ol-roll-dialog-app,
+body.ol-dark-theme .application.ol-defense-report,
+body.ol-dark-theme .chat-message {
+  --ol-ink: #ddd8ea;
+  --ol-parchment: #211d2e;
+  --ol-heading: #b3a4e6;
+}
+
+/* ---- Sheet body surface -------------------------------------------------- */
+body.ol-dark-theme .openlegend.sheet .window-content {
+  background:
+    linear-gradient(rgba(33, 29, 46, 0.96), rgba(33, 29, 46, 0.96)),
+    radial-gradient(circle at top left, rgba(179, 164, 230, 0.08), transparent 60%);
+}
+body.ol-dark-theme .openlegend.sheet.ol-battle-trance .window-content {
+  background:
+    linear-gradient(rgba(38, 28, 32, 0.94), rgba(38, 28, 32, 0.94)),
+    radial-gradient(circle at top, rgba(217, 83, 30, 0.20), transparent 55%);
+}
+
+/* Raised "card" surfaces that were translucent white over parchment. */
+body.ol-dark-theme .openlegend.sheet .vitals,
+body.ol-dark-theme .openlegend.sheet .attribute-category,
+body.ol-dark-theme .openlegend.sheet .items-list .item,
+body.ol-dark-theme .openlegend.sheet .feature-item,
+body.ol-dark-theme .openlegend.sheet .inv-details,
+body.ol-dark-theme .openlegend.sheet .carry-stat,
+body.ol-dark-theme .openlegend.sheet .action-details,
+body.ol-dark-theme .openlegend.sheet .action-mods,
+body.ol-dark-theme .openlegend.sheet .ol-form-tab {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(179, 164, 230, 0.22);
+}
+
+/* ---- Form fields on the dark body ---------------------------------------- */
+/* Header inputs are already dark (black translucent on purple); these are the
+   body fields, which assumed dark text on parchment. */
+body.ol-dark-theme .openlegend.sheet .sheet-body input[type="text"],
+body.ol-dark-theme .openlegend.sheet .sheet-body input[type="number"],
+body.ol-dark-theme .openlegend.sheet .sheet-body select,
+body.ol-dark-theme .openlegend.sheet .sheet-body textarea {
+  background: rgba(0, 0, 0, 0.30);
+  border-color: rgba(179, 164, 230, 0.28);
+  color: var(--ol-ink);
+}
+body.ol-dark-theme .openlegend.sheet .sheet-body select option {
+  background: var(--ol-parchment);
+  color: var(--ol-ink);
+}
+/* Rich-text editors: dark writing surface instead of translucent white. */
+body.ol-dark-theme .openlegend.sheet prose-mirror[open],
+body.ol-dark-theme .openlegend.sheet prose-mirror:not([toggled]) {
+  background: rgba(0, 0, 0, 0.30);
+  border-color: rgba(179, 164, 230, 0.30);
+}
+body.ol-dark-theme .openlegend.sheet prose-mirror[toggled]:not([open]):hover {
+  border-color: rgba(179, 164, 230, 0.25);
+}
+
+/* ---- Tabs ---------------------------------------------------------------- */
+body.game.ol-dark-theme .openlegend.sheet .sheet-tabs > a:hover,
+body.game.ol-dark-theme .openlegend.sheet .sheet-tabs .item:hover {
+  background: rgba(179, 164, 230, 0.10);
+  color: #cfc3f2;
+}
+
+/* Attribute roll labels darken (--ol-purple-light) on hover — flip to a
+   lighter shade so hovering brightens instead. */
+body.ol-dark-theme .openlegend.sheet .attribute-roll:hover {
+  color: #cfc3f2;
+}
+
+/* Unequipped equip toggle was 40% dark purple — invisible on dark. */
+body.ol-dark-theme .openlegend.sheet .equip-toggle {
+  color: rgba(221, 216, 234, 0.35);
+}
+
+/* ---- Muted / hardcoded text lightened ------------------------------------ */
+body.ol-dark-theme .ol-roll-dialog .ol-tgt-penalty,
+body.ol-dark-theme .openlegend.sheet .action-mods-net,
+body.ol-dark-theme .openlegend.sheet .dice-modifier-value {
+  color: #a9a3bd;
+}
+body.ol-dark-theme .openlegend.sheet .action-mods-hint,
+body.ol-dark-theme .ol-roll-dialog .ol-legend-cap {
+  color: #9c96b0;
+}
+body.ol-dark-theme .ol-roll-dialog .ol-src-adv,
+body.ol-dark-theme .openlegend.sheet .action-mods-net.is-adv,
+body.ol-dark-theme .openlegend.sheet .action-mod-value.is-adv,
+body.ol-dark-theme .openlegend.sheet .dice-modifier-value.is-advantage {
+  color: #7fd695;
+}
+body.ol-dark-theme .ol-roll-dialog .ol-src-dis,
+body.ol-dark-theme .openlegend.sheet .action-mods-net.is-dis,
+body.ol-dark-theme .openlegend.sheet .action-mod-value.is-dis {
+  color: #e8917f;
+}
+body.ol-dark-theme .openlegend.sheet .feat-warn-text {
+  color: #e8837f;
+}
+/* Roll-dialog fields: dark writing surface + visible borders (their purple
+   borders vanish on dark, and this dialog isn't covered by the .sheet-body
+   input overrides above). */
+body.ol-dark-theme .ol-roll-dialog input[name="bonusDice"],
+body.ol-dark-theme .ol-roll-dialog .ol-augment-controls select,
+body.ol-dark-theme .ol-roll-dialog .ol-targeting-controls select,
+body.ol-dark-theme .ol-roll-dialog .ol-targeting-controls input[type="number"] {
+  background: rgba(0, 0, 0, 0.30);
+  border-color: rgba(179, 164, 230, 0.35);
+  color: var(--ol-ink);
+}
+body.ol-dark-theme .ol-roll-dialog select option {
+  background: var(--ol-parchment);
+  color: var(--ol-ink);
+}
+
+/* Subtle purple striping / tinted panels are invisible on dark — use white. */
+body.ol-dark-theme .ol-roll-dialog .ol-roll-sources,
+body.ol-dark-theme .ol-roll-dialog .ol-adv-control,
+body.ol-dark-theme .ol-defense-breakdown .ol-defense-row:nth-child(odd),
+body.ol-dark-theme .openlegend.sheet .dice-modifier-row:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.05);
+}
+/* Action effect chips: same tints, lightened label text. */
+body.ol-dark-theme .openlegend.sheet .action-chip.chip-damage { color: #eba28c; }
+body.ol-dark-theme .openlegend.sheet .action-chip.chip-bane   { color: #d3a4e3; }
+body.ol-dark-theme .openlegend.sheet .action-chip.chip-boon,
+body.ol-dark-theme .openlegend.sheet .action-chip.chip-adv    { color: #96d6a4; }
+
+/* ---- Chat message surface ------------------------------------------------ */
+/* Core keeps chat messages on light parchment even under its own dark
+   interface theme (v13+ stamps every message `themed theme-light`), so the
+   lightened card text above would float on a light background. Retheme the
+   message surface ourselves: dark panel, light core text, dark dice boxes.
+   The `.themed.theme-light` selector out-ranks core's per-message theme. */
+body.ol-dark-theme .chat-message,
+body.ol-dark-theme .chat-message.themed.theme-light {
+  /* v13+ text vars core uses inside messages */
+  --color-text-primary: #ddd8ea;
+  --color-text-secondary: #b8b1cc;
+  --color-text-subtle: #a39cba;
+  color: var(--ol-ink);
+  background: #211d2e;
+  border-color: rgba(179, 164, 230, 0.25);
+}
+/* Whisper / blind / emote keep a recognizable tint, just dark. */
+body.ol-dark-theme .chat-message.whisper { background: #242138; }
+body.ol-dark-theme .chat-message.blind   { background: #2a1f33; }
+body.ol-dark-theme .chat-message.emote   { background: #2b2530; }
+body.ol-dark-theme .chat-message .message-header  { color: #cfc9e0; }
+body.ol-dark-theme .chat-message .message-sender  { color: #eae6f4; }
+body.ol-dark-theme .chat-message .message-metadata { color: #9c96b0; }
+body.ol-dark-theme .chat-message .flavor-text { color: var(--ol-ink); }
+/* Core dice boxes were translucent-dark-on-parchment; flip to dark chips. */
+body.ol-dark-theme .chat-message .dice-roll .dice-formula,
+body.ol-dark-theme .chat-message .dice-roll .dice-total {
+  background: rgba(0, 0, 0, 0.35);
+  border-color: rgba(179, 164, 230, 0.30);
+  color: var(--ol-ink);
+}
+body.ol-dark-theme .chat-message .dice-roll .dice-total.critical { color: #7fd695; }
+body.ol-dark-theme .chat-message .dice-roll .dice-total.fumble   { color: #e8917f; }
+/* Tooltip die faces are black glyphs with dark numerals — seat them on a light
+   chip so both stay readable on the dark panel. */
+body.ol-dark-theme .chat-message .dice-rolls .roll {
+  background-color: rgba(236, 232, 245, 0.9);
+  border-radius: 3px;
+  color: #191813;
+}
+body.ol-dark-theme .chat-message .dice-rolls .roll.max { color: #18730f; }
+body.ol-dark-theme .chat-message .dice-rolls .roll.min { color: #aa0200; }
+
+/* ---- Chat cards ----------------------------------------------------------- */
+body.ol-dark-theme .ol-card-sub,
+body.ol-dark-theme .ol-target-line,
+body.ol-dark-theme .ol-tr-vs,
+body.ol-dark-theme .ol-card-hint {
+  color: #a39cba;
+}
+body.ol-dark-theme .ol-card-divider {
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+body.ol-dark-theme .ol-target-results:not(.ol-heal-targets) .ol-target-row {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(179, 164, 230, 0.20);
+}
+body.ol-dark-theme .ol-target-results:not(.ol-heal-targets) .ol-target-row.is-hit {
+  border-left-color: #1d7a3a;
+}
+body.ol-dark-theme .ol-target-results:not(.ol-heal-targets) .ol-target-row.is-miss {
+  border-left-color: #b03a3a;
+}
+body.ol-dark-theme .ol-heal-targets .ol-target-row {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+body.ol-dark-theme .ol-tr-margin.is-under { color: #e89286; }
+/* Tag pills / result chips: keep their tinted fills, lighten the label. */
+body.ol-dark-theme .ol-tag-adv    { color: #7fd695; }
+body.ol-dark-theme .ol-tag-dis    { color: #ec9187; }
+body.ol-dark-theme .ol-tag-legend,
+body.ol-dark-theme .ol-tag-auto   { color: #dcc06c; }
+body.ol-dark-theme .ol-tag-feat   { color: #8ec0e8; }
+body.ol-dark-theme .ol-chip.ol-tr-damage { color: #e89184; }
+body.ol-dark-theme .ol-chip.ol-tr-resist { color: #7db8dd; }
+body.ol-dark-theme .ol-chip.ol-tr-lethal { color: #c79bd6; }
+body.ol-dark-theme .ol-chip.ol-tr-slay   { color: #d8a0a0; }
+body.ol-dark-theme .ol-hbanes-label      { color: #dcc06c; }
+body.ol-dark-theme .ol-hbane.is-reached  { color: #7fd695; }
+body.ol-dark-theme .ol-tr-actions .ol-hit { color: #7fd695; }
+body.ol-dark-theme .ol-miss-head         { color: #e08585; }
+/* Feat-card icons drawn in dark greens/blues. */
+body.ol-dark-theme .ol-aura-note i,
+body.ol-dark-theme .ol-aura-attack .ol-aura-hit { color: #7fd695; }
+body.ol-dark-theme .ol-barrier-note i,
+body.ol-dark-theme .ol-resistance-note i { color: #8fb3e8; }
+body.ol-dark-theme .ol-resist-adv { color: #7fd695; }
+
+/* Small chat controls (boon PL picker, re-aim, retarget, miss options): the
+   purple-tinted light chrome flips to a light-on-dark equivalent. */
+body.ol-dark-theme select.ol-boon-pl,
+body.ol-dark-theme button.ol-aim-target,
+body.ol-dark-theme button.ol-aim-selected,
+body.ol-dark-theme button.ol-retarget,
+body.ol-dark-theme button.ol-miss-damage,
+body.ol-dark-theme button.ol-miss-bane,
+body.ol-dark-theme button.ol-miss-move {
+  color: #c9c0e8;
+  background: rgba(179, 164, 230, 0.10);
+  border-color: rgba(179, 164, 230, 0.35);
+}
+body.ol-dark-theme button.ol-aim-target:hover,
+body.ol-dark-theme button.ol-aim-selected:hover,
+body.ol-dark-theme button.ol-retarget:hover,
+body.ol-dark-theme button.ol-miss-damage:hover,
+body.ol-dark-theme button.ol-miss-bane:hover,
+body.ol-dark-theme button.ol-miss-move:hover {
+  background: rgba(179, 164, 230, 0.22);
+}
+body.ol-dark-theme button.ol-aim-target.is-applied,
+body.ol-dark-theme button.ol-aim-selected.is-applied,
+body.ol-dark-theme button.ol-miss-damage.is-applied,
+body.ol-dark-theme button.ol-miss-bane.is-applied,
+body.ol-dark-theme button.ol-miss-move.is-applied {
+  color: #6ecc8a;
+  border-color: #3f8f58;
+  background: rgba(29, 122, 58, 0.18);
+}
+/* Undo buttons were a parchment gradient. */
+body.ol-dark-theme button.ol-undo-damage,
+body.ol-dark-theme button.ol-undo-healing,
+body.ol-dark-theme button.ol-undo-bane {
+  background: linear-gradient(180deg, #3a3547, #2a2637);
+  border-color: rgba(227, 185, 79, 0.45);
+  color: var(--ol-ink);
 }
