@@ -1154,12 +1154,37 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   font-weight: 700;
   color: var(--ol-gold);
 }
+.openlegend.sheet .feature-count-over {
+  color: #b03a2e;
+}
+.openlegend.sheet .feature-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 .openlegend.sheet .feature-picker .feature-add {
+  flex: 1;
   width: 100%;
   border: 1px solid rgba(48, 30, 105, 0.3);
   border-radius: 4px;
   background: var(--ol-parchment);
   color: var(--ol-ink);
+}
+.openlegend.sheet .feature-picker .feature-create {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(48, 30, 105, 0.3);
+  border-radius: 4px;
+  background: var(--ol-parchment);
+  color: var(--ol-purple);
+}
+.openlegend.sheet .feature-picker .feature-create:hover {
+  color: var(--ol-gold);
+  border-color: var(--ol-gold);
 }
 .openlegend.sheet .feature-maxed {
   display: block;

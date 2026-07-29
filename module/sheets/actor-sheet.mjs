@@ -12,7 +12,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
  * template is chosen per-type in {@link _configureRenderParts}.
  */
 export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
-  /** Maximum number of each per character. */
+  /** Recommended number of each per character (soft rule — exceeding only warns). */
   static MAX_PERKS = 2;
   static MAX_FLAWS = 2;
 
@@ -39,6 +39,7 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       imagePopout: OpenLegendActorSheet.#onImagePopout,
       statReport: OpenLegendActorSheet.#onStatReport,
       itemCreate: OpenLegendActorSheet.#onItemCreate,
+      featureCreate: OpenLegendActorSheet.#onFeatureCreate,
       itemEdit: OpenLegendActorSheet.#onItemEdit,
       itemDelete: OpenLegendActorSheet.#onItemDelete,
       actionGenerate: OpenLegendActorSheet.#onActionGenerate,
@@ -781,15 +782,16 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     };
 
     // Perk / Flaw pickers: options from the compendium (excluding owned), plus
-    // whether the per-character cap has been reached.
+    // whether the recommended per-character count has been exceeded (soft rule:
+    // the picker stays available, the sheet just flags the overage).
     context.perkPicker = {
       options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.perks", context.perks),
-      atMax: context.perks.length >= OpenLegendActorSheet.MAX_PERKS,
+      overMax: context.perks.length > OpenLegendActorSheet.MAX_PERKS,
       max: OpenLegendActorSheet.MAX_PERKS
     };
     context.flawPicker = {
       options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.flaws", context.flaws),
-      atMax: context.flaws.length >= OpenLegendActorSheet.MAX_FLAWS,
+      overMax: context.flaws.length > OpenLegendActorSheet.MAX_FLAWS,
       max: OpenLegendActorSheet.MAX_FLAWS
     };
 
@@ -1680,8 +1682,8 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
   /* -------------------------------------------- */
 
   /**
-   * Add the selected compendium perk/flaw to the actor as an embedded Item,
-   * enforcing the per-character cap.
+   * Add the selected compendium perk/flaw to the actor as an embedded Item.
+   * Soft rules: the recommended cap only warns — the add always goes through.
    * @param {Event} event
    * @private
    */
@@ -1695,9 +1697,7 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     const max = type === "flaw" ? OpenLegendActorSheet.MAX_FLAWS : OpenLegendActorSheet.MAX_PERKS;
     const current = this.actor.items.filter(i => i.type === type).length;
     if ( current >= max ) {
-      ui.notifications?.warn(`A character may have at most ${max} ${type}s.`);
-      this.render();
-      return;
+      ui.notifications?.warn(`Characters normally have at most ${max} ${type}s — adding anyway (check with your GM).`);
     }
 
     const doc = await fromUuid(uuid);
@@ -1708,6 +1708,33 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     // Perks/flaws are SHARED across forms — always created on the live actor
     // (this.document; this.actor is the clone while previewing a form).
     await this.document.createEmbeddedDocuments("Item", [doc.toObject()]);
+  }
+
+  /**
+   * Create a blank CUSTOM perk/flaw on the actor and open its item sheet, the
+   * same editing experience as creating one from the Items sidebar. Soft rules:
+   * exceeding the recommended count only warns, same as the picker.
+   * @this {OpenLegendActorSheet}
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target  The control carrying data-type ("perk" | "flaw").
+   */
+  static async #onFeatureCreate(event, target) {
+    event.preventDefault();
+    const type = target.dataset.type === "flaw" ? "flaw" : "perk";
+
+    const max = type === "flaw" ? OpenLegendActorSheet.MAX_FLAWS : OpenLegendActorSheet.MAX_PERKS;
+    const current = this.actor.items.filter(i => i.type === type).length;
+    if ( current >= max ) {
+      ui.notifications?.warn(`Characters normally have at most ${max} ${type}s — adding anyway (check with your GM).`);
+    }
+
+    // Perks/flaws are SHARED across forms — always created on the live actor.
+    const [created] = await this.document.createEmbeddedDocuments("Item", [{
+      name: `New ${type.capitalize()}`,
+      type,
+      img: type === "flaw" ? "icons/svg/unconscious.svg" : "icons/svg/angel.svg"
+    }]);
+    await OpenLegendActorSheet.#openDocumentSheet(created);
   }
 
   /**

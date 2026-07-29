@@ -262,17 +262,19 @@
 
     <div class="features-columns">
       <div class="feature-block">
-        <h3 class="feature-heading">Perks <span class="feature-count">{{perks.length}}/{{perkPicker.max}}</span></h3>
+        <h3 class="feature-heading">Perks <span class="feature-count{{#if perkPicker.overMax}} feature-count-over{{/if}}">{{perks.length}}/{{perkPicker.max}}</span></h3>
         <div class="feature-picker">
-          {{#if perkPicker.atMax}}
-          <span class="feature-maxed">Maximum perks reached.</span>
-          {{else}}
-          <select class="feature-add" data-type="perk">
-            <option value="">+ Add a perk…</option>
-            {{#each perkPicker.options as |opt|}}
-            <option value="{{opt.uuid}}">{{opt.name}}</option>
-            {{/each}}
-          </select>
+          <div class="feature-picker-row">
+            <select class="feature-add" data-type="perk">
+              <option value="">+ Add a perk…</option>
+              {{#each perkPicker.options as |opt|}}
+              <option value="{{opt.uuid}}">{{opt.name}}</option>
+              {{/each}}
+            </select>
+            <a class="feature-create" data-action="featureCreate" data-type="perk" title="Create a custom perk"><i class="fas fa-plus"></i></a>
+          </div>
+          {{#if perkPicker.overMax}}
+          <span class="feature-maxed">Above the recommended {{perkPicker.max}} — check with your GM.</span>
           {{/if}}
         </div>
         <ol class="feature-list">
@@ -280,7 +282,8 @@
           <li class="feature-item" data-item-id="{{item.id}}">
             <div class="feature-item-header">
               <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
-              <h4 class="feature-name">{{item.name}}</h4>
+              <h4 class="feature-name"><a data-action="itemEdit" title="Edit">{{item.name}}</a></h4>
+              <a class="item-control item-edit" data-action="itemEdit" title="Edit"><i class="fas fa-edit"></i></a>
               <a class="item-control item-delete" data-action="itemDelete" title="Remove"><i class="fas fa-trash"></i></a>
             </div>
             <div class="feature-desc">{{{item.system.description}}}</div>
@@ -292,17 +295,19 @@
       </div>
 
       <div class="feature-block">
-        <h3 class="feature-heading">Flaws <span class="feature-count">{{flaws.length}}/{{flawPicker.max}}</span></h3>
+        <h3 class="feature-heading">Flaws <span class="feature-count{{#if flawPicker.overMax}} feature-count-over{{/if}}">{{flaws.length}}/{{flawPicker.max}}</span></h3>
         <div class="feature-picker">
-          {{#if flawPicker.atMax}}
-          <span class="feature-maxed">Maximum flaws reached.</span>
-          {{else}}
-          <select class="feature-add" data-type="flaw">
-            <option value="">+ Add a flaw…</option>
-            {{#each flawPicker.options as |opt|}}
-            <option value="{{opt.uuid}}">{{opt.name}}</option>
-            {{/each}}
-          </select>
+          <div class="feature-picker-row">
+            <select class="feature-add" data-type="flaw">
+              <option value="">+ Add a flaw…</option>
+              {{#each flawPicker.options as |opt|}}
+              <option value="{{opt.uuid}}">{{opt.name}}</option>
+              {{/each}}
+            </select>
+            <a class="feature-create" data-action="featureCreate" data-type="flaw" title="Create a custom flaw"><i class="fas fa-plus"></i></a>
+          </div>
+          {{#if flawPicker.overMax}}
+          <span class="feature-maxed">Above the recommended {{flawPicker.max}} — check with your GM.</span>
           {{/if}}
         </div>
         <ol class="feature-list">
@@ -310,7 +315,8 @@
           <li class="feature-item" data-item-id="{{item.id}}">
             <div class="feature-item-header">
               <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
-              <h4 class="feature-name">{{item.name}}</h4>
+              <h4 class="feature-name"><a data-action="itemEdit" title="Edit">{{item.name}}</a></h4>
+              <a class="item-control item-edit" data-action="itemEdit" title="Edit"><i class="fas fa-edit"></i></a>
               <a class="item-control item-delete" data-action="itemDelete" title="Remove"><i class="fas fa-trash"></i></a>
             </div>
             <div class="feature-desc">{{{item.system.description}}}</div>
