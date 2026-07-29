@@ -520,7 +520,22 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     // not context.system (toObject source), which lacks the derived per-attribute
     // fields (ownValue, dice, subDice, substitutionPrimary/Tier) that the rows and
     // the Attribute Substitution locked row need.
-    context.attributeGroups = this._buildAttributeGroups(this.actor.system.attributes);
+    // Characters/companions also get the level-derived attribute-score cap so
+    // rows above it render the over-max warning (NPC-family sheets are free-form).
+    let maxScore = null;
+    if ( (this.actor.type === "character") || (this.actor.type === "companion") ) {
+      const cfg = CONFIG.OPENLEGEND ?? {};
+      if ( (this.actor.type === "character") && cfg.budgetForXp ) {
+        maxScore = cfg.budgetForXp(context.system.xp).maxScore ?? null;
+      } else if ( cfg.budgetForLevel ) {
+        // Companions cap by the PARENT's level (their budgets derive from it);
+        // fall back to their own level when unlinked.
+        const parent = (this.actor.type === "companion") ? Companion.companionParent(this.actor) : null;
+        const lvl = Number(parent?.system?.level ?? context.system.level ?? 1);
+        maxScore = cfg.budgetForLevel(lvl).maxScore ?? null;
+      }
+    }
+    context.attributeGroups = this._buildAttributeGroups(this.actor.system.attributes, maxScore);
 
     // Minions have only six attributes (Agility, Fortitude, Might, Perception, Energy,
     // Entropy) — filter the groups to those, dropping any now-empty category.
@@ -1037,7 +1052,7 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
    * @returns {Array<{key: string, label: string, attributes: Array}>}
    * @private
    */
-  _buildAttributeGroups(attributes = {}) {
+  _buildAttributeGroups(attributes = {}, maxScore = null) {
     const cfg = CONFIG.OPENLEGEND ?? {};
     const categories = cfg.categories ?? {};
     const costForScore = cfg.costForScore ?? (s => (Number(s) * (Number(s) + 1)) / 2);
@@ -1058,7 +1073,11 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
           value: ownValue,
           dice: attr.dice,                 // own-score dice (derived from ownValue)
           cost: costForScore(ownValue),
-          substituted: false
+          substituted: false,
+          // Over the level cap: only the OWN (bought) score counts — a
+          // substituted value is granted by a feat, not purchased.
+          maxScore,
+          overMax: (maxScore !== null) && (ownValue > maxScore)
         });
         // Attribute Substitution: a second, LOCKED row for this dependent
         // attribute showing the substituted (primary) value + dice. No points,

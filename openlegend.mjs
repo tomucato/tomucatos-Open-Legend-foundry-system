@@ -9,7 +9,7 @@ import { OpenLegendActiveEffectConfig } from "./module/sheets/active-effect-conf
 import { OpenLegendEffectsPanel } from "./module/apps/effects-panel.mjs";
 import { OpenLegendDamageTypesConfig } from "./module/apps/damage-types-config.mjs";
 import { OPENLEGEND } from "./module/config/index.mjs";
-import { rollAction, createActionMacro, rollActionByUuid, rollActorAttribute, rollAttributeByActorUuid, createAttributeMacro, applyDamageToToken, undoDamageToToken, applyLethalDamageToToken, undoLethalDamageToToken, applyHealingToToken, undoHealingToToken, applyRolledToAim, rollInvokeButton, placeAreaTemplate, applyBaneToActor, applyBaneByTokenUuid, applyBaneToTokenAt, applyBoonToActor, applyBoonByTokenUuid, applyBoonToTokenAt, applyEffectItemToActor, applyEffectItemToTokenAt, createInvocationMacro, applyInvocationByUuid, retargetActionMessage, attackBaneDialog, postPunisherBaneCard, missDealDamage, missMoveNote, missEffectBaneDialog, resistBanesDialog, resistBanesByActorUuid, createResistMacro, groupResistBanes, hospitalerResist, hospitalerByActorUuid, createHospitalerMacro, lethalRestDialog, groupLethalRest, toggleBattleTrance, toggleBattleTranceByActorUuid, createBattleTranceMacro, onBattleTranceEffectDeleted, recklessAttack, recklessAttackByActorUuid, createRecklessAttackMacro, deathBlowFollowUp, deathBlowReduceToZero, undoDeathBlowZero, deathBlowSilence, slayingKill, crushingKnockdown, autoRollTurnStartEffects, applyPersistentItemBoons } from "./module/dice/action-roll.mjs";
+import { rollAction, createActionMacro, rollActionByUuid, rollActorAttribute, rollAttributeByActorUuid, createAttributeMacro, applyDamageToToken, undoDamageToToken, applyLethalDamageToToken, undoLethalDamageToToken, applyHealingToToken, undoHealingToToken, applyRolledToAim, rollInvokeButton, placeAreaTemplate, applyBaneToActor, applyBaneByTokenUuid, applyBaneToTokenAt, undoBaneApply, applyBoonToActor, applyBoonByTokenUuid, applyBoonToTokenAt, applyEffectItemToActor, applyEffectItemToTokenAt, createInvocationMacro, applyInvocationByUuid, retargetActionMessage, attackBaneDialog, postPunisherBaneCard, missDealDamage, missMoveNote, missEffectBaneDialog, resistBanesDialog, resistBanesByActorUuid, createResistMacro, groupResistBanes, hospitalerResist, hospitalerByActorUuid, createHospitalerMacro, lethalRestDialog, groupLethalRest, toggleBattleTrance, toggleBattleTranceByActorUuid, createBattleTranceMacro, onBattleTranceEffectDeleted, recklessAttack, recklessAttackByActorUuid, createRecklessAttackMacro, deathBlowFollowUp, deathBlowReduceToZero, undoDeathBlowZero, deathBlowSilence, slayingKill, crushingKnockdown, autoRollTurnStartEffects, applyPersistentItemBoons } from "./module/dice/action-roll.mjs";
 import { openDefendDialog } from "./module/dice/defend.mjs";
 import { processAuras, refreshAuraDrawings, clearAuraRoundTracking, removeAuraGrants } from "./module/canvas/aura.mjs";
 import { TEMPLATE_AUTOTARGET_SETTING } from "./module/canvas/template-target.mjs";
@@ -24,7 +24,7 @@ Hooks.once('init', async function() {
 
   // System API, reachable as `game.openlegend.*`. Generated hotbar macros call
   // rollActionByUuid; the others are exposed for convenience / future use.
-  game.openlegend = { rollAction, rollActionByUuid, createActionMacro, rollActorAttribute, rollAttributeByActorUuid, applyDamageToToken, undoDamageToToken, applyLethalDamageToToken, undoLethalDamageToToken, placeAreaTemplate, applyBaneToActor, applyBaneByTokenUuid, applyBaneToTokenAt, applyBoonToActor, applyBoonByTokenUuid, applyBoonToTokenAt, applyEffectItemToActor, applyEffectItemToTokenAt, applyInvocationByUuid, attackBaneDialog, missDealDamage, missMoveNote, missEffectBaneDialog, resistBanesDialog, resistBanesByActorUuid, groupResistBanes, hospitalerResist, hospitalerByActorUuid, lethalRestDialog, groupLethalRest, toggleBattleTrance, toggleBattleTranceByActorUuid, recklessAttack, recklessAttackByActorUuid, openDefendDialog, processAuras, refreshAuraDrawings, Companion };
+  game.openlegend = { rollAction, rollActionByUuid, createActionMacro, rollActorAttribute, rollAttributeByActorUuid, applyDamageToToken, undoDamageToToken, applyLethalDamageToToken, undoLethalDamageToToken, placeAreaTemplate, applyBaneToActor, applyBaneByTokenUuid, applyBaneToTokenAt, undoBaneApply, applyBoonToActor, applyBoonByTokenUuid, applyBoonToTokenAt, applyEffectItemToActor, applyEffectItemToTokenAt, applyInvocationByUuid, attackBaneDialog, missDealDamage, missMoveNote, missEffectBaneDialog, resistBanesDialog, resistBanesByActorUuid, groupResistBanes, hospitalerResist, hospitalerByActorUuid, lethalRestDialog, groupLethalRest, toggleBattleTrance, toggleBattleTranceByActorUuid, recklessAttack, recklessAttackByActorUuid, openDefendDialog, processAuras, refreshAuraDrawings, Companion };
 
   // Assign document classes
   CONFIG.Actor.documentClass = OpenLegendActor;
@@ -526,6 +526,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   const applyButtons = html.querySelectorAll(".ol-apply-damage");
   const undoButtons = html.querySelectorAll(".ol-undo-damage");
   const baneButtons = html.querySelectorAll(".ol-apply-bane");
+  const undoBaneButtons = html.querySelectorAll(".ol-undo-bane");
   const boonButtons = html.querySelectorAll(".ol-apply-boon");
   const healButtons = html.querySelectorAll(".ol-apply-healing");
   const undoHealButtons = html.querySelectorAll(".ol-undo-healing");
@@ -551,7 +552,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   const crushingKnockdownButtons = html.querySelectorAll(".ol-crushing-knockdown");
   // Slaying (legendary weapon): "Slay" on a margin-5+ damaging hit (GM resolution).
   const slayingKillButtons = html.querySelectorAll(".ol-slaying-kill");
-  if ( !applyButtons.length && !undoButtons.length && !baneButtons.length && !boonButtons.length
+  if ( !applyButtons.length && !undoButtons.length && !baneButtons.length && !undoBaneButtons.length && !boonButtons.length
     && !healButtons.length && !undoHealButtons.length && !retargetButtons.length
     && !attackBaneButtons.length && !punishButtons.length && !aimTargetButtons.length && !aimSelectedButtons.length
     && !missDamageButtons.length && !missBaneButtons.length && !missMoveButtons.length
@@ -598,7 +599,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   // GM's attack-resolution flow: strip them for non-GMs (the aim buttons above cover
   // self-service healing/damage). The aim buttons themselves are left in place.
   if ( !game.user?.isGM ) {
-    for ( const b of [...applyButtons, ...undoButtons, ...baneButtons, ...boonButtons,
+    for ( const b of [...applyButtons, ...undoButtons, ...baneButtons, ...undoBaneButtons, ...boonButtons,
       ...healButtons, ...undoHealButtons, ...retargetButtons, ...attackBaneButtons, ...punishButtons,
       ...missDamageButtons, ...missBaneButtons,
       ...deathBlowZeroButtons, ...deathBlowUndoButtons, ...deathBlowSilenceButtons,
@@ -755,7 +756,37 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
       const { tokenUuid, baneUuid, powerLevel, potent } = btn.dataset;
       await applyBaneByTokenUuid(tokenUuid, baneUuid, Number(powerLevel), potent === "1");
       btn.classList.add("is-applied");
+      // Keep the pristine label so the afflicted card's Undo can restore it.
+      btn.dataset.origHtml = btn.innerHTML;
       btn.innerHTML = `<i class="fas fa-check"></i> Applied`;
+    });
+  }
+
+  // Undo (on the "is afflicted by" / "escalates to level N" message): remove the
+  // applied condition (or revert the stack level) and re-enable the source Apply
+  // button wherever it is in the chat log.
+  for ( const btn of undoBaneButtons ) {
+    btn.addEventListener("click", async ev => {
+      ev.preventDefault();
+      btn.disabled = true;
+      const { actorUuid, effectIds, itemId, baneName, stackEffectId, prevLevel, tokenUuid, baneUuid } = btn.dataset;
+      await undoBaneApply(actorUuid, {
+        effectIds: (effectIds ?? "").split(",").filter(Boolean),
+        itemId: itemId ?? "",
+        baneName: baneName ?? "",
+        stackEffectId: stackEffectId ?? "",
+        prevLevel: Number(prevLevel) || 0
+      });
+      btn.innerHTML = `<i class="fas fa-check"></i> Undone`;
+      if ( tokenUuid && baneUuid ) {
+        const sources = document.querySelectorAll(
+          `.ol-apply-bane[data-token-uuid="${CSS.escape(tokenUuid)}"][data-bane-uuid="${CSS.escape(baneUuid)}"]`);
+        for ( const source of sources ) {
+          source.classList.remove("is-applied");
+          source.disabled = false;
+          if ( source.dataset.origHtml ) source.innerHTML = source.dataset.origHtml;
+        }
+      }
     });
   }
 

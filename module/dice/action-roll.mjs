@@ -3830,9 +3830,13 @@ function applyChosenAttribute(effectDataList, attrKey) {
  * @param {Actor} actor       The target actor.
  * @param {string} baneUuid   The bane Item's UUID.
  * @param {number|null} [powerLevel]
+ * @param {boolean} [potent]
+ * @param {object} [opts]
+ * @param {string} [opts.sourceTokenUuid]  Token UUID the chat-card Apply button
+ *   targeted, stamped on the Undo button so it can re-enable that button.
  * @returns {Promise<void>}
  */
-export async function applyBaneToActor(actor, baneUuid, powerLevel = null, potent = false) {
+export async function applyBaneToActor(actor, baneUuid, powerLevel = null, potent = false, { sourceTokenUuid = "" } = {}) {
   if ( !actor ) return;
   // A GM can afflict anyone; a player may apply only to a character they own
   // (e.g. dropping a bane onto their own sheet).
@@ -3891,9 +3895,15 @@ export async function applyBaneToActor(actor, baneUuid, powerLevel = null, poten
         return;
       }
       await existing.update({ "flags.openlegend.stackLevel": next });
+      // Undo reverts the stack to its pre-click level (it does not remove the bane).
+      const undoStackBtn =
+        `<button type="button" class="ol-undo-bane" data-actor-uuid="${escape0(actor.uuid)}"`
+        + ` data-stack-effect-id="${escape0(existing.id)}" data-prev-level="${cur}"`
+        + ` data-bane-name="${escape0(bane.name)}">`
+        + `<i class="fas fa-rotate-left"></i> Undo</button>`;
       await ChatMessage.create({
         speaker: ChatMessage.getSpeaker({ actor }),
-        content: `<div class="ol-bane-applied"><strong>${escape0(actor.name)}</strong>'s <strong>${escape0(bane.name)}</strong> escalates to level <strong>${next}</strong>.</div>`
+        content: `<div class="ol-bane-applied"><span class="ol-bane-row"><span class="ol-damage-text"><strong>${escape0(actor.name)}</strong>'s <strong>${escape0(bane.name)}</strong> escalates to level <strong>${next}</strong>.</span><span class="ol-damage-actions">${undoStackBtn}</span></span></div>`
       });
       actor.sheet?.render(false);
       return;
@@ -3933,7 +3943,7 @@ export async function applyBaneToActor(actor, baneUuid, powerLevel = null, poten
     if ( provoker === false ) return; // dismissed
   }
 
-  await actor.createEmbeddedDocuments("Item", [bane.toObject()]);
+  const [baneItem] = await actor.createEmbeddedDocuments("Item", [bane.toObject()]);
   const effectDataList = baneActiveEffectData(bane, powerLevel);
   // Mark the applied effect(s) Potent (target resists at disadvantage 1). The
   // flag is toggleable later on the condition row / effects panel.
@@ -3963,16 +3973,25 @@ export async function applyBaneToActor(actor, baneUuid, powerLevel = null, poten
     const first = effectDataList[0];
     first.description = `${first.description ?? ""}<p>${rollButton}</p>`;
   }
-  await actor.createEmbeddedDocuments("ActiveEffect", effectDataList);
+  const createdEffects = await actor.createEmbeddedDocuments("ActiveEffect", effectDataList);
 
   const plText = powerLevel ? ` (PL ${powerLevel})` : "";
   const potentText = potent ? ` <span class="ol-potent-tag"><i class="fas fa-biohazard"></i> Potent</span>` : "";
   const provokerText = provoker
     ? ` Provoked by <strong>${escape(provoker.name)}</strong> — attacks not targeting them suffer disadvantage ${Math.max(1, (Number(powerLevel) || 4) - 3)}.`
     : "";
+  // Undo (mirroring the damage flow): deletes exactly the effect(s) + embedded
+  // bane item this apply created, and re-enables the source Apply button (found
+  // in the chat log by its token + bane UUIDs, when the apply came from one).
+  const undoBtn =
+    `<button type="button" class="ol-undo-bane" data-actor-uuid="${escape(actor.uuid)}"`
+    + ` data-effect-ids="${escape(createdEffects.map(e => e.id).join(","))}"`
+    + ` data-item-id="${escape(baneItem?.id ?? "")}" data-bane-name="${escape(bane.name)}"`
+    + (sourceTokenUuid ? ` data-token-uuid="${escape(sourceTokenUuid)}" data-bane-uuid="${escape(baneUuid)}"` : "")
+    + `><i class="fas fa-rotate-left"></i> Undo</button>`;
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
-    content: `<div class="ol-bane-applied"><strong>${escape(actor.name)}</strong> is afflicted by <strong>${escape(bane.name)}</strong>${plText}.${potentText}${provokerText}${rollButton}</div>`
+    content: `<div class="ol-bane-applied"><span class="ol-bane-row"><span class="ol-damage-text"><strong>${escape(actor.name)}</strong> is afflicted by <strong>${escape(bane.name)}</strong>${plText}.${potentText}${provokerText}</span><span class="ol-damage-actions">${undoBtn}</span></span>${rollButton}</div>`
   });
   actor.sheet?.render(false);
 }
@@ -3993,7 +4012,63 @@ export async function applyBaneByTokenUuid(tokenUuid, baneUuid, powerLevel = 0, 
     ui.notifications?.warn("Could not find the target to apply the bane.");
     return;
   }
-  return applyBaneToActor(actor, baneUuid, powerLevel, potent);
+  return applyBaneToActor(actor, baneUuid, powerLevel, potent, { sourceTokenUuid: tokenUuid });
+}
+
+/**
+ * Undo a bane application from its confirmation chat card ("<Name> is afflicted
+ * by <Bane>"): delete exactly the Active Effect(s) and embedded bane Item that
+ * the apply created, and announce the reversal in chat. For a stacking-bane
+ * escalation card, revert the stack to its recorded prior level instead of
+ * removing the condition. Effects/items already gone (e.g. resisted or removed
+ * from the sheet in the meantime) are skipped silently.
+ * @param {string} actorUuid  UUID of the afflicted actor (world or token-synthetic).
+ * @param {object} [opts]
+ * @param {string[]} [opts.effectIds]     Ids of the ActiveEffects the apply created.
+ * @param {string} [opts.itemId]          Id of the embedded bane Item the apply created.
+ * @param {string} [opts.baneName]        The bane's name, for the chat note.
+ * @param {string} [opts.stackEffectId]   Stacking escalation: id of the escalated effect.
+ * @param {number} [opts.prevLevel]       Stacking escalation: the level to revert to.
+ * @returns {Promise<void>}
+ */
+export async function undoBaneApply(actorUuid, { effectIds = [], itemId = "", baneName = "", stackEffectId = "", prevLevel = 0 } = {}) {
+  const doc = await fromUuid(actorUuid);
+  const actor = doc?.actor ?? doc;
+  if ( !actor ) {
+    ui.notifications?.warn("Could not find the afflicted character to undo the bane.");
+    return;
+  }
+  // Mirror the apply permission: a GM always may; a player only on a character
+  // they own (their own drag-and-drop applies).
+  if ( !game.user?.isGM && !actor.isOwner ) {
+    ui.notifications?.warn("Only a GM can undo a bane on that character.");
+    return;
+  }
+  const escape = foundry.utils.escapeHTML ?? (s => s);
+  // Stacking escalation: drop the stack back to its pre-click level.
+  if ( stackEffectId ) {
+    const effect = actor.effects.get(stackEffectId);
+    if ( !effect ) {
+      ui.notifications?.warn(`${baneName || "That bane"} is no longer on ${actor.name}.`);
+      return;
+    }
+    const level = Math.max(1, Math.floor(Number(prevLevel) || 1));
+    await effect.update({ "flags.openlegend.stackLevel": level });
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: `<div class="ol-damage-reverted"><strong>${escape(actor.name)}</strong>'s <strong>${escape(baneName)}</strong> reverted to level <strong>${level}</strong>.</div>`
+    });
+    actor.sheet?.render(false);
+    return;
+  }
+  const ids = effectIds.filter(id => actor.effects.get(id));
+  if ( ids.length ) await actor.deleteEmbeddedDocuments("ActiveEffect", ids);
+  if ( itemId && actor.items.get(itemId) ) await actor.deleteEmbeddedDocuments("Item", [itemId]);
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: `<div class="ol-damage-reverted"><strong>${escape(baneName)}</strong> removed from <strong>${escape(actor.name)}</strong> (undo).</div>`
+  });
+  actor.sheet?.render(false);
 }
 
 /**

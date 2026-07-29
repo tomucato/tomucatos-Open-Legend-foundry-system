@@ -240,7 +240,7 @@
           <span class="attribute-value attribute-value-locked" title="Substituted from {{attr.substitutionPrimaryLabel}}"><i class="fas fa-link"></i> {{attr.value}}</span>
         </div>
         {{else}}
-        <div class="attribute flexrow">
+        <div class="attribute flexrow{{#if attr.overMax}} attribute-over-max{{/if}}"{{#if attr.overMax}} data-tooltip="{{attr.label}} {{attr.value}} exceeds the maximum attribute score of {{attr.maxScore}} for your level."{{/if}}>
           <a class="attribute-roll" data-action="attributeRoll" data-attribute="{{attr.key}}" draggable="true" title="Roll {{attr.label}} (1d20{{#if attr.dice}} + {{attr.dice}}{{/if}}). Drag to the hotbar for a macro.">
             <i class="fas fa-dice-d20"></i> {{attr.label}}
           </a>

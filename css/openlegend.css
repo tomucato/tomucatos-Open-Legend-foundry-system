@@ -794,11 +794,11 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .attribute-categories {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* Left column stacks Physical → Social → Mental; Extraordinary fills the right. */
+  /* Left column stacks Physical → Mental → Social; Extraordinary fills the right. */
   grid-template-areas:
     "physical      extraordinary"
-    "social        extraordinary"
-    "mental        extraordinary";
+    "mental        extraordinary"
+    "social        extraordinary";
   align-items: start;
   gap: 12px 18px;
 }
@@ -826,9 +826,13 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   color: var(--ol-purple);
 }
 
-/* ---- Attribute rows ----------------------------------------------------- */
+/* ---- Attribute rows -----------------------------------------------------
+   A row must never wrap onto a second line nor spill out of its category box.
+   Under width pressure the mostly-empty dice/cost columns (high flex-shrink)
+   collapse toward their text first; only after that does the label ellipsize. */
 .openlegend.sheet .attribute {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 6px;
   padding: 2px 4px;
@@ -839,16 +843,19 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   background: rgba(194, 146, 43, 0.12);
 }
 .openlegend.sheet .attribute-roll {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  flex: 1 1 auto;
+  width: 91px !important;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 600;
   color: var(--ol-purple);
   cursor: pointer;
   white-space: nowrap;
 }
 .openlegend.sheet .attribute-roll i {
+  display: inline-block;
+  margin-right: 3px;
   color: var(--ol-gold);
   opacity: 0.85;
   transition: transform 0.15s ease;
@@ -874,19 +881,23 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   text-shadow: 0 0 6px var(--ol-gold);
 }
 .openlegend.sheet .attribute-dice {
-  flex: 0 0 46px;
+  /* High shrink: gives up its padding space before the label ellipsizes;
+     min-width:auto keeps it from shrinking past its own text ("2d6"). */
+  flex: 0 8 46px;
   text-align: center;
   font-size: 11px;
   font-weight: 700;
   color: var(--ol-purple);
   opacity: 0.8;
+  white-space: nowrap;
 }
 .openlegend.sheet .attribute-cost {
-  flex: 0 0 30px;
+  flex: 0 8 30px;
   text-align: right;
   font-size: 11px;
   color: var(--ol-gold);
   opacity: 0.85;
+  white-space: nowrap;
 }
 .openlegend.sheet .attribute input[type="text"],
 .openlegend.sheet .attribute input[type="number"] {
@@ -914,7 +925,8 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   opacity: 0.95;
 }
 .openlegend.sheet .attribute-cost-none {
-  flex: 0 0 30px;
+  flex: 0 8 30px;
+  white-space: nowrap;
   text-align: right;
   font-size: 11px;
   color: var(--ol-gold);
@@ -937,6 +949,20 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .attribute-value-locked i {
   font-size: 9px;
   opacity: 0.7;
+}
+
+/* Over the level cap: the score exceeds the max attribute score for the
+   character's level (STATS.levels). The whole row's text — label, dice, cost
+   and the score input — turns red; the row's data-tooltip explains why. */
+.openlegend.sheet .attribute.attribute-over-max .attribute-roll,
+.openlegend.sheet .attribute.attribute-over-max .attribute-dice,
+.openlegend.sheet .attribute.attribute-over-max .attribute-cost {
+  color: #b32d2e;
+}
+.openlegend.sheet .attribute.attribute-over-max input[type="number"] {
+  color: #b32d2e;
+  border-color: #b32d2e;
+  background: rgba(179, 45, 46, 0.10);
 }
 
 /* ---- Body --------------------------------------------------------------
@@ -3553,6 +3579,13 @@ button.ol-attack-bane:hover { filter: brightness(1.18); }
 .ol-bane-applied {
   padding: 2px 0;
 }
+/* Text + Undo row on the "is afflicted by" message (a Persistent Damage roll
+   button, when present, stays a full-width block below the row). */
+.ol-bane-applied .ol-bane-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 /* Boon drag handle — full-width block matching the bane handle, but green
    (beneficial); hands icon; shows the boon name + PL. */
 /* Item-invocation chat card (extraordinary item → drag chip onto a token/hotbar) */
@@ -3628,7 +3661,8 @@ button.ol-apply-boon.is-applied {
   padding: 2px 0;
 }
 button.ol-undo-damage,
-button.ol-undo-healing {
+button.ol-undo-healing,
+button.ol-undo-bane {
   cursor: pointer;
   padding: 2px 8px;
   font-size: 0.85em;
@@ -3641,11 +3675,13 @@ button.ol-undo-healing {
   white-space: nowrap;
 }
 button.ol-undo-damage:hover,
-button.ol-undo-healing:hover {
+button.ol-undo-healing:hover,
+button.ol-undo-bane:hover {
   filter: brightness(1.05);
 }
 button.ol-undo-damage:disabled,
-button.ol-undo-healing:disabled {
+button.ol-undo-healing:disabled,
+button.ol-undo-bane:disabled {
   opacity: 0.6;
   cursor: default;
 }
