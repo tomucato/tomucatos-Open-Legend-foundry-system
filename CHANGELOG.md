@@ -2,6 +2,14 @@
 
 All notable changes to this system are documented in this file.
 
+## [1.1.3] - 2026-07-30
+
+### Added
+- Dark mode support — the system now respects Foundry's dark theme (#5).
+- Single-target or multi-target can now be chosen directly in the roll dialog, with a system setting to toggle the feature on/off (#3).
+- System setting to unlock damage type restrictions on attributes (#9).
+- Automated Foundry VTT package publishing when a release tag is pushed.
+
 ## [1.1.1] - 2026-07-29
 
 ### Added
