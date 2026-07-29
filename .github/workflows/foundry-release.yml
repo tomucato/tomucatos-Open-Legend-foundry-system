@@ -1,0 +1,46 @@
+name: Foundry VTT Release
+
+# Publishes to the Foundry VTT Package Release API when a version tag is pushed.
+# Requires the repository secret FOUNDRY_RELEASE_TOKEN (the "Package Release
+# Token" from the package's page on foundryvtt.com).
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run only (validate without publishing)'
+        type: boolean
+        default: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify tag matches system.json version
+        if: github.event_name == 'push'
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          MANIFEST_VERSION="$(node -p "JSON.parse(require('fs').readFileSync('system.json','utf8')).version")"
+          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match system.json version $MANIFEST_VERSION" >&2
+            exit 1
+          fi
+
+      - name: Dry run
+        env:
+          FOUNDRY_RELEASE_TOKEN: ${{ secrets.FOUNDRY_RELEASE_TOKEN }}
+        run: node scripts/foundry-release.mjs --dry-run
+
+      - name: Publish release
+        if: github.event_name == 'push' || inputs.dry_run == false
+        env:
+          FOUNDRY_RELEASE_TOKEN: ${{ secrets.FOUNDRY_RELEASE_TOKEN }}
+        run: node scripts/foundry-release.mjs
