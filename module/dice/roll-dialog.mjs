@@ -168,10 +168,21 @@ export function actorRollModifiers(actor, { attack = false, attribute = null } =
  *        current pool, `max` the per-roll cap (level + 1). A stepper 0..min(both)
  *        appears; each point spent adds advantage 1 AND a flat +1 to the result.
  *        The chosen count is returned as `legendPoints` so the caller can deduct it.
- * @returns {Promise<{formula: string, advantage: number, disadvantage: number, net: number, legendPoints: number, [toggle:string]: boolean}|null>}
+ * @param {object|null} [options.targeting]
+ *        Live targeting controls (world setting "dialogTargeting"): lets the roller
+ *        change the targeting mode / target count / area (or summon count) on the
+ *        fly, with the multi-targeting disadvantage recomputed as they do. Fields:
+ *        `targets` ("single"/"multiple"/"area"/"summon"), `targetCount`,
+ *        `summonCount`, `area` ({shape,length,lines}), `summon` (true locks the UI
+ *        to a summon-count stepper), `areaShapes` ({key: label}), and `compute(t)`
+ *        — a callback returning `{disadvantage, raw, reduction, reductionLabel}`
+ *        for a candidate targeting `t` (the caller owns the rules math, feats
+ *        included). The derived disadvantage is folded into the live net and the
+ *        chosen targeting is returned as `targeting` on the result.
+ * @returns {Promise<{formula: string, advantage: number, disadvantage: number, net: number, legendPoints: number, targeting?: object, [toggle:string]: boolean}|null>}
  *          The chosen roll spec, or null if the dialog was dismissed.
  */
-export async function openRollDialog({ title, bonusDice, advantage = 0, disadvantage = 0, sources = null, explodeBelowMax = false, extraD20 = 0, extraToggles = [], legend = null, augmentOptions = [] }) {
+export async function openRollDialog({ title, bonusDice, advantage = 0, disadvantage = 0, sources = null, explodeBelowMax = false, extraD20 = 0, extraToggles = [], legend = null, augmentOptions = [], targeting = null }) {
   const esc = s => foundry.utils.escapeHTML?.(s) ?? s;
   const hasBonus = !!parseBonusDice(bonusDice);
   // Starting adv/disadv: derived from the itemized sources when provided, else
@@ -227,6 +238,69 @@ export async function openRollDialog({ title, bonusDice, advantage = 0, disadvan
         </div>
       </div>` : "";
 
+  // Live targeting controls (see options.targeting): a mode select with
+  // contextual inputs (target count / area shape+size), or a summon-count input
+  // for a summon invocation. The multi-targeting disadvantage is recomputed via
+  // targeting.compute on every change and folded into the net (state.targetingDis).
+  const tgt = (targeting && (typeof targeting.compute === "function")) ? targeting : null;
+  const tgtShapes = tgt ? (tgt.areaShapes ?? { cone: "Cone", line: "Line", cube: "Cube" }) : {};
+  const tgtState = tgt ? {
+    targets: tgt.summon ? "summon"
+      : (["single", "multiple", "area"].includes(tgt.targets) ? tgt.targets : "single"),
+    targetCount: Math.max(1, Math.floor(Number(tgt.targetCount) || 1)),
+    summonCount: Math.max(1, Math.floor(Number(tgt.summonCount) || 1)),
+    area: {
+      shape: ((tgt.area?.shape ?? "") in tgtShapes) ? tgt.area.shape : (Object.keys(tgtShapes)[0] ?? "cone"),
+      length: Math.max(5, Math.floor(Number(tgt.area?.length) || 5)),
+      lines: Math.max(1, Math.floor(Number(tgt.area?.lines) || 1))
+    }
+  } : null;
+  // The candidate targeting in the caller's shape (a line area carries its line
+  // count, other shapes a length) — fed to compute() and returned on the result.
+  const currentTargeting = () => tgt.summon
+    ? { targets: "summon", targetCount: tgtState.targetCount, summonCount: tgtState.summonCount, area: { ...tgtState.area } }
+    : {
+      targets: tgtState.targets,
+      targetCount: tgtState.targetCount,
+      summonCount: tgtState.summonCount,
+      area: (tgtState.area.shape === "line")
+        ? { shape: "line", length: 0, lines: tgtState.area.lines }
+        : { shape: tgtState.area.shape, length: tgtState.area.length, lines: 1 }
+    };
+  const tgtIsArea = tgtState?.targets === "area";
+  const tgtIsMulti = tgtState?.targets === "multiple";
+  const tgtIsLine = tgtState?.area.shape === "line";
+  const targetingBlock = !tgt ? "" : (tgt.summon ? `
+      <div class="ol-roll-row ol-roll-targeting">
+        <label title="Change how many creatures this invocation summons; the multi-targeting disadvantage updates to match.">Targeting</label>
+        <div class="ol-targeting-controls">
+          <span class="ol-tgt-static">Summon</span>
+          <input type="number" class="ol-tgt-summon" min="1" step="1" value="${tgtState.summonCount}"
+                 title="Creatures summoned by this invocation (disadvantage 2 per creature beyond the first)."/>
+        </div>
+        <span class="ol-tgt-penalty" data-tgt-penalty></span>
+      </div>` : `
+      <div class="ol-roll-row ol-roll-targeting">
+        <label title="Change this roll's targeting on the fly; the multi-targeting disadvantage updates to match (feat reductions included).">Targeting</label>
+        <div class="ol-targeting-controls">
+          <select class="ol-tgt-mode">
+            <option value="single" ${tgtState.targets === "single" ? "selected" : ""}>Single Target</option>
+            <option value="multiple" ${tgtState.targets === "multiple" ? "selected" : ""}>Multiple Targets</option>
+            <option value="area" ${tgtState.targets === "area" ? "selected" : ""}>Area</option>
+          </select>
+          <input type="number" class="ol-tgt-count" min="1" step="1" value="${tgtState.targetCount}"
+                 title="Number of targets (disadvantage equal to the count when above one)."
+                 ${tgtIsMulti ? "" : `style="display:none"`}/>
+          <select class="ol-tgt-shape" ${tgtIsArea ? "" : `style="display:none"`}>
+            ${Object.entries(tgtShapes).map(([k, v]) => `<option value="${esc(k)}" ${tgtState.area.shape === k ? "selected" : ""}>${esc(v)}</option>`).join("")}
+          </select>
+          <input type="number" class="ol-tgt-size" min="${tgtIsLine ? 1 : 5}" step="${tgtIsLine ? 1 : 5}"
+                 value="${tgtIsLine ? tgtState.area.lines : tgtState.area.length}"
+                 ${tgtIsArea ? "" : `style="display:none"`}/>
+        </div>
+        <span class="ol-tgt-penalty" data-tgt-penalty></span>
+      </div>`);
+
   // Legend Points (PC only): a stepper 0..cap, where cap = min(pool, level+1).
   // Each point spent adds advantage 1 AND a flat +1 to the result (SRD rule).
   const legendAvail = legend ? Math.max(0, Math.floor(Number(legend.available) || 0)) : 0;
@@ -252,6 +326,7 @@ export async function openRollDialog({ title, bonusDice, advantage = 0, disadvan
                ${hasBonus ? "" : "disabled"}/>
       </div>
       ${sourcesBlock}
+      ${targetingBlock}
       ${togglesBlock}
       ${augmentBlock}
       ${legendBlock}
@@ -288,15 +363,22 @@ export async function openRollDialog({ title, bonusDice, advantage = 0, disadvan
     advantage: startAdv,
     disadvantage: startDis,
     toggleAdv: toggles.reduce((s, t) => s + (t.checked ? Math.max(0, Number(t.advantage ?? 0)) : 0), 0),
+    // Multi-targeting disadvantage from the live targeting controls, seeded from
+    // the incoming targeting so the first paint matches the caller's derivation.
+    targetingDis: tgt ? Math.max(0, Math.floor(Number(tgt.compute(currentTargeting())?.disadvantage) || 0)) : 0,
     legendPts: 0
   };
+
+  // The live net advantage: stepper + toggle + legend advantage, minus the
+  // stepper disadvantage and the targeting-derived multi-target penalty.
+  const netAdv = () => (state.advantage + state.toggleAdv + state.legendPts)
+    - (state.disadvantage + state.targetingDis);
 
   // Compose the final roll: advantage formula (legend points count as advantage too)
   // plus a flat "+N" for the N legend points spent. One source of truth for preview
   // and the rolled formula.
   const composeFormula = (dice) => {
-    const net = (state.advantage + state.toggleAdv + state.legendPts) - state.disadvantage;
-    const base = buildFormula(dice, net, { explodeBelowMax, extraD20 });
+    const base = buildFormula(dice, netAdv(), { explodeBelowMax, extraD20 });
     return state.legendPts > 0 ? `${base} + ${state.legendPts}` : base;
   };
 
@@ -307,9 +389,9 @@ export async function openRollDialog({ title, bonusDice, advantage = 0, disadvan
    */
   const refresh = (root) => {
     const dice = root.querySelector('input[name="bonusDice"]')?.value ?? bonusDice ?? "";
-    const net = (state.advantage + state.toggleAdv + state.legendPts) - state.disadvantage;
+    const net = netAdv();
     root.querySelector('[data-value="advantage"]').textContent = String(state.advantage + state.toggleAdv + state.legendPts);
-    root.querySelector('[data-value="disadvantage"]').textContent = String(state.disadvantage);
+    root.querySelector('[data-value="disadvantage"]').textContent = String(state.disadvantage + state.targetingDis);
     const lp = root.querySelector('[data-value="legend"]');
     if ( lp ) lp.textContent = String(state.legendPts);
     const netText = net === 0 ? "None" : `${Math.abs(net)} ${net > 0 ? "Advantage" : "Disadvantage"}`;
@@ -331,14 +413,16 @@ export async function openRollDialog({ title, bonusDice, advantage = 0, disadvan
         callback: (event, button, dialog) => {
           const root = dialog.element;
           const dice = root.querySelector('input[name="bonusDice"]')?.value ?? bonusDice ?? "";
-          const net = (state.advantage + state.toggleAdv + state.legendPts) - state.disadvantage;
           const out = {
             formula: composeFormula(dice),
             advantage: state.advantage + state.toggleAdv + state.legendPts,
-            disadvantage: state.disadvantage,
-            net,
+            disadvantage: state.disadvantage + state.targetingDis,
+            net: netAdv(),
             legendPoints: state.legendPts
           };
+          // The targeting chosen in the dialog (mode / count / area / summon),
+          // so the caller can resolve the roll against it.
+          if ( tgt ) out.targeting = currentTargeting();
           // Report each extra toggle's final on/off state, keyed by its name.
           for ( const t of toggles ) {
             out[t.name] = !!root.querySelector(`input[name="${t.name}"]`)?.checked;
@@ -393,6 +477,75 @@ export async function openRollDialog({ title, bonusDice, advantage = 0, disadvan
             : `<option value="">—</option>`;
           augBaneSel.disabled = !banes.length;
         });
+      }
+      // Targeting controls: re-read the inputs, recompute the multi-target
+      // penalty via the caller's compute(), toggle the contextual inputs, and
+      // refresh the preview.
+      if ( tgt ) {
+        const modeSel = root.querySelector(".ol-tgt-mode");
+        const countInput = root.querySelector(".ol-tgt-count");
+        const shapeSel = root.querySelector(".ol-tgt-shape");
+        const sizeInput = root.querySelector(".ol-tgt-size");
+        const summonInput = root.querySelector(".ol-tgt-summon");
+        const penalty = root.querySelector("[data-tgt-penalty]");
+        // The size input doubles as line count / length in feet — swap its
+        // constraints and remembered value when the shape changes.
+        const applySizeInput = () => {
+          if ( !sizeInput ) return;
+          const line = tgtState.area.shape === "line";
+          sizeInput.min = line ? "1" : "5";
+          sizeInput.step = line ? "1" : "5";
+          sizeInput.value = String(line ? tgtState.area.lines : tgtState.area.length);
+          sizeInput.title = line
+            ? "Number of 5'-wide lines (disadvantage 1 per line)."
+            : "Length in feet (disadvantage 1 per full 5'; a single 5' incurs none).";
+        };
+        const syncTargeting = () => {
+          if ( modeSel ) tgtState.targets = modeSel.value;
+          if ( summonInput ) tgtState.summonCount = Math.max(1, Math.floor(Number(summonInput.value) || 1));
+          if ( countInput ) tgtState.targetCount = Math.max(1, Math.floor(Number(countInput.value) || 1));
+          if ( shapeSel && (shapeSel.value !== tgtState.area.shape) ) {
+            tgtState.area.shape = shapeSel.value;
+            applySizeInput();
+          } else if ( sizeInput && (tgtState.targets === "area") ) {
+            if ( tgtState.area.shape === "line" ) {
+              tgtState.area.lines = Math.max(1, Math.floor(Number(sizeInput.value) || 0));
+            } else {
+              // Snap the length to the 5' steps SRD areas use: round to the
+              // NEAREST multiple of 5 (12 → 10, 13 → 15), never in between.
+              const v = Number(sizeInput.value) || 0;
+              tgtState.area.length = Math.max(5, Math.round(v / 5) * 5);
+            }
+          }
+          if ( countInput ) countInput.style.display = (tgtState.targets === "multiple") ? "" : "none";
+          if ( shapeSel ) shapeSel.style.display = (tgtState.targets === "area") ? "" : "none";
+          if ( sizeInput ) sizeInput.style.display = (tgtState.targets === "area") ? "" : "none";
+          const res = tgt.compute(currentTargeting()) ?? {};
+          state.targetingDis = Math.max(0, Math.floor(Number(res.disadvantage) || 0));
+          if ( penalty ) {
+            const raw = Math.max(0, Math.floor(Number(res.raw) || 0));
+            const red = Math.max(0, Math.floor(Number(res.reduction) || 0));
+            if ( state.targetingDis > 0 ) {
+              const feat = red > 0 ? ` (${raw} &minus; ${red} ${esc(res.reductionLabel ?? "feat")})` : "";
+              penalty.innerHTML = `Multi-targeting: <strong class="ol-src-dis">&minus;${state.targetingDis} Dis</strong>${feat}`;
+            } else if ( raw > 0 ) {
+              penalty.innerHTML = `Multi-targeting: <strong class="ol-src-adv">no penalty</strong> &mdash; negated by ${esc(res.reductionLabel ?? "feats")}`;
+            } else {
+              penalty.textContent = "No multi-targeting penalty.";
+            }
+          }
+          refresh(root);
+        };
+        for ( const el of [countInput, sizeInput, summonInput] ) el?.addEventListener("input", syncTargeting);
+        for ( const el of [modeSel, shapeSel] ) el?.addEventListener("change", syncTargeting);
+        // On commit (blur / Enter), snap the size input's DISPLAYED value back to
+        // the state's snapped value — the penalty already used it; typing is left
+        // alone mid-edit so "1" on the way to "15" isn't clobbered.
+        sizeInput?.addEventListener("change", () => {
+          if ( tgtState.targets !== "area" ) return;
+          sizeInput.value = String(tgtState.area.shape === "line" ? tgtState.area.lines : tgtState.area.length);
+        });
+        syncTargeting();
       }
       // Extra toggles: recompute the summed toggle advantage on any change.
       for ( const cb of root.querySelectorAll(".ol-roll-toggles input[type='checkbox']") ) {

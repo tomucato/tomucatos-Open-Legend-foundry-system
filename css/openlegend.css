@@ -1473,6 +1473,36 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   border: 1px solid rgba(48, 30, 105, 0.4);
   border-radius: 4px;
 }
+/* Live targeting controls: mode select + contextual count / shape / size inputs,
+   with the recomputed multi-targeting penalty underneath. */
+.ol-roll-dialog .ol-targeting-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ol-roll-dialog .ol-targeting-controls select {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 4px 6px;
+  border: 1px solid rgba(48, 30, 105, 0.4);
+  border-radius: 4px;
+}
+.ol-roll-dialog .ol-targeting-controls input[type="number"] {
+  flex: 0 0 64px;
+  width: 64px;
+  padding: 4px 6px;
+  border: 1px solid rgba(48, 30, 105, 0.4);
+  border-radius: 4px;
+  text-align: center;
+}
+.ol-roll-dialog .ol-tgt-static {
+  font-weight: 600;
+  font-size: 12px;
+}
+.ol-roll-dialog .ol-tgt-penalty {
+  font-size: 12px;
+  color: #555;
+}
 /* Itemized advantage/disadvantage sources: how the seeded values came to be. */
 .ol-roll-dialog .ol-roll-sources {
   list-style: none;

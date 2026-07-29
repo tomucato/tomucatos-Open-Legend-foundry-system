@@ -172,6 +172,21 @@ Hooks.once('init', async function() {
     default: true
   });
 
+  // Roll-dialog targeting controls: when on, the action roll dialog offers the
+  // targeting mode (single / multiple / area — or the summon count) so the
+  // multi-targeting disadvantage can be changed on the fly. The penalty is
+  // recomputed live, including the Multi-Target Attack/Boon Specialist feat
+  // reductions. Off → the dialog only shows the action's configured targeting
+  // as a fixed modifier row (the previous behavior).
+  game.settings.register(OPENLEGEND.SYSTEM_ID, "dialogTargeting", {
+    name: "Adjust Targeting in the Roll Dialog",
+    hint: "Show targeting controls in the action roll dialog (single / multiple / area and their sizes), recomputing the multi-targeting disadvantage — after Multi-Target Specialist feat reductions — as it changes. The rolled card uses the adjusted targeting.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true
+  });
+
   // GM-side handler that creates an area Region on request from a non-GM placer
   // (see previewAreaTemplate). Registered here so CONFIG.queries is ready before
   // the first placement.

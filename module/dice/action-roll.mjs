@@ -117,18 +117,80 @@ export async function rollAction(action, { actor } = {}) {
   // the success card directly (the helper flagged it).
   if ( autoSuccess ) return postBoonFocusAutoSuccess(autoSuccess);
 
+  // On-the-fly targeting (world setting "dialogTargeting"): offer targeting
+  // controls in the dialog for the categories that resolve against targets, so
+  // the mode / target count / area can be changed at roll time. The multi-target
+  // disadvantage source row is replaced by the dialog's live row (same math:
+  // raw penalty minus the matching Multi-Target Specialist feat reduction). An
+  // Area weapon locks the action to its area and never incurs the penalty, so
+  // it keeps the static behavior.
+  const sys = action.system;
+  const dialogTargeting = game.settings.get("tomucatos-open-legend-rpg-system", "dialogTargeting")
+    && ["damaging", "bane", "boon"].includes(sys.actionCategory ?? "")
+    && !ctx.areaWeapon;
+  const targeting = dialogTargeting ? {
+    targets: sys.targets ?? "single",
+    targetCount: Math.max(1, Math.floor(Number(sys.targetCount ?? 2) || 2)),
+    summonCount: Math.max(1, Math.floor(Number(sys.summonCount ?? 1) || 1)),
+    area: {
+      shape: sys.area?.shape ?? "cone",
+      length: Math.max(5, Math.floor(Number(sys.area?.length ?? 15) || 15)),
+      lines: Math.max(1, Math.floor(Number(sys.area?.lines ?? 1) || 1))
+    },
+    summon: sys.targets === "summon",
+    areaShapes: { ...(cfg.areaShapes ?? { cone: "Cone", line: "Line", cube: "Cube" }) },
+    // Live penalty for a candidate targeting — the same derivation the seeded
+    // source used (see prepareActionRoll): raw multi-target disadvantage minus
+    // the matching Multi-Target Specialist reduction, floored at zero.
+    compute: (t) => {
+      const tSys = {
+        actionCategory: sys.actionCategory, rangeMode: sys.rangeMode,
+        targets: t.targets, targetCount: t.targetCount, summonCount: t.summonCount, area: t.area
+      };
+      const raw = cfg.multiTargetDisadvantage ? cfg.multiTargetDisadvantage(tSys) : 0;
+      const reduction = (raw > 0)
+        ? ((sys.actionCategory === "boon")
+            ? (cfg.multiTargetBoonReduction?.(actor) ?? 0)
+            : (cfg.multiTargetAttackReduction?.(actor, tSys) ?? 0))
+        : 0;
+      return {
+        disadvantage: Math.max(0, raw - reduction),
+        raw,
+        reduction: Math.min(raw, reduction),
+        reductionLabel: (sys.actionCategory === "boon") ? "Multi-Target Boon Spec" : "Multi-Target Attack Spec"
+      };
+    }
+  } : null;
+
   // Open the dialog; it seeds advantage / disadvantage from the sources above.
+  // With live targeting controls, the static multi-target row is dropped — the
+  // dialog derives and displays that penalty itself.
   const choice = await openRollDialog({
     title: action.name,
     bonusDice,
-    sources,
+    sources: targeting ? sources.filter(s => s.kind !== "multiTarget") : sources,
     explodeBelowMax,
     extraD20,
     extraToggles,
     legend: cfg.legendSpendContext?.(actor),
-    augmentOptions
+    augmentOptions,
+    targeting
   });
   if ( !choice ) return;
+
+  // Targeting adjusted in the dialog: the card (flavor, per-target snapshot,
+  // area-template handle) must reflect the CHOSEN targeting, not the action's
+  // configured one. Overlay it on a detached copy of the system data — the
+  // action item itself is never mutated.
+  if ( choice.targeting ) {
+    const t = choice.targeting;
+    ctx.sys = Object.assign(sys.toObject?.() ?? foundry.utils.deepClone(sys), {
+      targets: t.targets,
+      targetCount: t.targetCount,
+      summonCount: t.summonCount,
+      area: t.area
+    });
+  }
 
   const roll = await (new Roll(choice.formula, actor.getRollData())).evaluate();
   await cfg.spendLegendPoints?.(actor, choice.legendPoints);
@@ -339,7 +401,9 @@ export async function prepareActionRoll(action, actor, { quiet = false } = {}) {
     // Note the Multi-Target Specialist reduction when it partially applies.
     const specName = (sys.actionCategory === "boon") ? "Multi-Target Boon Spec" : "Multi-Target Attack Spec";
     const label = mtReduction > 0 ? `${base} − ${specName} ${mtReduction}` : base;
-    sources.push({ label, disadvantage: multiTarget });
+    // Tagged so rollAction can swap this row for the dialog's live targeting
+    // controls (world setting "dialogTargeting") without re-deriving it.
+    sources.push({ label, disadvantage: multiTarget, kind: "multiTarget" });
   }
   if ( bossEdge > 0 ) sources.push({ label: "Boss Edge", advantage: bossEdge });
   if ( gripAdv > 0 ) {
@@ -531,7 +595,8 @@ export async function prepareActionRoll(action, actor, { quiet = false } = {}) {
   return {
     sys, cfg, attrKey, attrLabel, fromItemInvocation, itemScore, invokingItem,
     bonusDice, isAttack, weapon, grip, multiBane, martialFocusMatch, focus,
-    sources, explodeBelowMax, extraD20, extraToggles, lethalStrike, autoSuccess, augmentOptions
+    sources, explodeBelowMax, extraD20, extraToggles, lethalStrike, autoSuccess, augmentOptions,
+    areaWeapon
   };
 }
 
