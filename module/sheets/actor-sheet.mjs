@@ -2632,6 +2632,8 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
    *
    * - Feats from elsewhere go through {@link #addFeat} (land at tier 1, skip
    *   duplicates) — matching the feat picker.
+   * - Banes / boons dropped ONTO THE ACTIONS TAB create a bane/boon ACTION
+   *   (attribute requirement enforced — see #createInvocationActionFromDrop).
    * - Banes / boons from elsewhere are APPLIED as conditions (embed the item +
    *   add the leveled Active Effect), the same as dropping them on a token, so
    *   the character gains the condition rather than just stashing a copy. The
@@ -2654,6 +2656,14 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     // routes into the previewed form's snapshot while previewing).
     if ( (item?.type === "feat") && fromElsewhere ) {
       return this.#addFeat(item);
+    }
+    // Dropping a bane/boon ONTO THE ACTIONS TAB creates a bane/boon ACTION for
+    // it instead of applying it as a condition — provided the actor meets the
+    // invocation's attribute requirement (else an explanatory dialog blocks it).
+    // Drops anywhere else on the sheet (or on tokens) keep the condition flow.
+    if ( ((item?.type === "bane") || (item?.type === "boon"))
+      && event.target?.closest?.('.tab[data-tab="actions"]') ) {
+      return this.#createInvocationActionFromDrop(item);
     }
     // Dropping a bane/boon from a compendium/sidebar applies it as a condition,
     // prompting for the power level (null → prompt). Conditions are live-actor
@@ -2680,6 +2690,109 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       return this.document.createEmbeddedDocuments("Item", [item.toObject()]);
     }
     return super._onDropItem(event, item);
+  }
+
+  /**
+   * Create a bane/boon ACTION from a bane/boon item dropped onto the Actions tab.
+   *
+   * The invocation's attribute requirement is enforced first: the actor must have
+   * a score ≥ the bane/boon's minimum power level in at least ONE of its listed
+   * invoking attributes (a bane's attack attributes / a boon's attribute list).
+   * If not, an error dialog explains which attribute to raise and nothing is
+   * created. Otherwise the action is preset to the actor's HIGHEST qualifying
+   * attribute and the highest defined power level that score can invoke (both
+   * editable on the action sheet afterward). For a bane, the target defense
+   * comes from the matched attack entry.
+   * @param {Item} item  The dropped bane or boon document.
+   * @returns {Promise<Item|null>}
+   */
+  async #createInvocationActionFromDrop(item) {
+    const kind = item.type;                       // "bane" | "boon"
+    const cfg = CONFIG.OPENLEGEND ?? {};
+    const { DialogV2 } = foundry.applications.api;
+    const esc = s => foundry.utils.escapeHTML?.(s) ?? s;
+
+    // Bane/boon documents list invoking attributes as capitalized LABELS; map
+    // label → attribute key.
+    const keyForLabel = {};
+    for ( const [k, lbl] of Object.entries(cfg.attributeLabels ?? {}) ) {
+      keyForLabel[String(lbl).toLowerCase()] = k;
+    }
+    const attacks = (kind === "bane") ? (item.system?.attacks ?? []) : [];
+    const attrLabels = (kind === "bane")
+      ? attacks.map(a => String(a.attackingAttribute ?? "")).filter(Boolean)
+      : (item.system?.attributes ?? []).map(a => String(a)).filter(Boolean);
+
+    // Discrete power levels + the minimum PL (the attribute prerequisite).
+    const levels = [...new Set((item.system?.powerEffects ?? [])
+      .map(pe => Number(pe.powerLevel)).filter(n => Number.isFinite(n) && (n > 0)))].sort((a, b) => a - b);
+    const minPl = Math.max(1, Math.floor(Number(item.system?.powerLevel) || (levels[0] ?? 1)));
+
+    // The actor's score in each listed attribute; best one wins (ties → first
+    // listed). Reads the sheet's actor (the preview clone while previewing).
+    const candidates = attrLabels
+      .map(lbl => {
+        const key = keyForLabel[lbl.toLowerCase()];
+        return key ? { key, label: lbl, score: Number(this.actor.system?.attributes?.[key]?.value ?? 0) } : null;
+      })
+      .filter(Boolean);
+    const best = candidates.reduce((a, c) => (!a || (c.score > a.score)) ? c : a, null);
+
+    if ( !best || (best.score < minPl) ) {
+      const scoreRows = candidates.length
+        ? candidates.map(c => `<li><strong>${esc(c.label)}</strong>: ${c.score}</li>`).join("")
+        : `<li><em>None of this ${kind}'s attributes are known to this actor.</em></li>`;
+      await DialogV2.prompt({
+        window: { title: "Attribute Requirement Not Met" },
+        classes: ["openlegend"],
+        content: `
+          <div class="ol-generate-action">
+            <p><i class="fas fa-triangle-exclamation"></i> <strong>${esc(this.actor.name)}</strong> cannot invoke the
+              <strong>${esc(item.name)}</strong> ${kind}.</p>
+            <p>Invoking it requires a score of <strong>${minPl}</strong> or higher in one of:
+              <strong>${attrLabels.map(esc).join(", ") || "—"}</strong>.</p>
+            <p>Current score${candidates.length === 1 ? "" : "s"}:</p>
+            <ul>${scoreRows}</ul>
+            <p>Increase one of these attributes to at least <strong>${minPl}</strong> to create this action.</p>
+          </div>`,
+        rejectClose: false,
+        ok: { label: "Close", icon: "fas fa-times" }
+      });
+      return null;
+    }
+
+    // Invoke at the highest defined power level the attribute score reaches.
+    const reachable = levels.filter(l => l <= best.score);
+    const invokePl = reachable.length ? reachable[reachable.length - 1] : minPl;
+
+    const sys = {
+      actionCategory: kind,
+      attribute: best.key,
+      targets: "single",
+      invokePowerLevel: invokePl
+    };
+    if ( kind === "bane" ) {
+      const match = attacks.find(a => String(a.attackingAttribute ?? "").toLowerCase() === best.label.toLowerCase());
+      sys.targetDefense = String(match?.defense ?? "guard").toLowerCase();
+      sys.baneUuid = item.uuid;
+      sys.baneName = item.name;
+    } else {
+      sys.boonUuid = item.uuid;
+      sys.boonName = item.name;
+    }
+    const data = { name: item.name, type: "action", img: item.img, system: sys };
+
+    // Previewing a form: the new action belongs to that form's stored snapshot.
+    if ( this.isFormPreview ) {
+      const newId = await Forms.addItemToForm(this.document, this.#previewFormId, data);
+      ui.notifications?.info(`Created ${kind} action “${data.name}” on the previewed form.`);
+      if ( newId ) await this.#openStoredFormItemSheet(newId);
+      return null;
+    }
+    const [created] = await this.document.createEmbeddedDocuments("Item", [data]);
+    ui.notifications?.info(`Created ${kind} action “${data.name}”.`);
+    OpenLegendActorSheet.#openDocumentSheet(created);
+    return created;
   }
 
   /**
