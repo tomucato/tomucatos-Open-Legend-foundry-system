@@ -1627,15 +1627,18 @@ function renderTemplateHandle(action, sys, template) {
   // Size readout mirrors the sheet: line → "N × 5'×10'×10'" (chained segments),
   // cube/cone → "N'".
   let size = "";
+  let ruleNote = "";
   if ( sys.area?.shape === "line" ) {
     const n = Math.max(1, Math.floor(Number(sys.area?.lines ?? 1)));
     size = n > 1 ? `${n} × 5'×10'×10'` : `5'×10'×10'`;
+    // Surface the SRD chaining rule on the chip itself, before the drop.
+    if ( n > 1 ) ruleNote = `. Lines are placed one at a time — each after the first must start from a corner of an already-placed line (no overlap); a counter by the cursor shows how many are left`;
   } else {
     const len = Math.max(0, Math.floor(Number(sys.area?.length ?? 0)));
     if ( len ) size = `${len}'`;
   }
   const payload = escape(JSON.stringify({ type: "openlegend.areaTemplate", template }));
-  const tip = `Drag &amp; drop onto the battlefield to place this ${escape(shapeLabel)}${size ? ` (${escape(size)})` : ""} area template`;
+  const tip = `Drag &amp; drop onto the battlefield to place this ${escape(shapeLabel)}${size ? ` (${escape(size)})` : ""} area template${ruleNote}`;
   return `
     <div class="ol-template-handle" draggable="true" data-template="${payload}"
          data-tooltip="${tip}" title="${tip}">

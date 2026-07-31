@@ -397,7 +397,12 @@ async function previewChainedLines(shape, start = {}) {
     return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
   };
   const orients = [];
-  const addOrient = (cells, ring) => orients.push({ cells, ring, c: bboxCenter(ring) });
+  const addOrient = (cells, ring) => {
+    // Footprint top (min ring y, cell units) — where the progress HUD hangs.
+    let top = Infinity;
+    for ( let i = 1; i < ring.length; i += 2 ) top = Math.min(top, ring[i]);
+    orients.push({ cells, ring, c: bboxCenter(ring), top });
+  };
   const allowDiag = (wCells === 1) && (lCells > 1);
   addOrient(gridCells(wCells, lCells), rectRing(wCells, lCells));            // vertical |
   if ( allowDiag ) addOrient(diagCells(lCells, false), diagRing(lCells));    // diagonal \
@@ -439,6 +444,26 @@ async function previewChainedLines(shape, start = {}) {
   const overlay = new PIXI.Graphics();
   overlay.eventMode = "none";
   (canvas.interface ?? canvas.stage).addChild(overlay);
+
+  // Cursor-following progress HUD: rides above the ghost showing which segment
+  // is being placed and how many remain, tinting red with the ghost while the
+  // spot is illegal. Destroyed with the overlay when placement ends.
+  const TextCls = foundry.canvas?.containers?.PreciseText ?? PIXI.Text;
+  const hudStyle = CONFIG.canvasTextStyle?.clone?.() ?? new PIXI.TextStyle({ fill: "#ffffff" });
+  hudStyle.fontSize = 22;
+  hudStyle.align = "center";
+  const hud = new TextCls("", hudStyle);
+  hud.anchor.set(0.5, 1);
+  hud.eventMode = "none";
+  overlay.addChild(hud);
+  const updateHud = (anchor, o, index, valid) => {
+    const left = total - index - 1;
+    hud.text = (total > 1 ? `Line ${index + 1} of ${total}\n` : "")
+      + (left > 0 ? `${left} more after this` : "last line")
+      + (valid ? "" : (index === 0 ? "\n⚠ must align to the grid" : "\n⚠ must touch a placed line, no overlap"));
+    hud.tint = valid ? 0xFFFFFF : 0xFF6666;
+    hud.position.set(anchor.x + o.c.x * sq, anchor.y + o.top * sq - 8);
+  };
   const drawOverlay = () => {
     overlay.clear();
     for ( const s of placedShapes ) {
@@ -487,6 +512,12 @@ async function previewChainedLines(shape, start = {}) {
   };
   let cancelled = false;
 
+  // Up-front heads-up on how SRD line areas resolve, so the rules are known
+  // BEFORE the first click instead of only after an illegal one.
+  ui.notifications?.info(total > 1
+    ? `Placing ${total} lines (each 5'×10', 10' high). Open Legend rules: the first line goes anywhere; every additional line must start from a corner of an already-placed line and may not overlap one. Scroll to rotate, click to place, right-click / Esc to stop early (you may use fewer lines).`
+    : `Placing a 5'×10' line (10' high). Scroll to rotate, click to place, right-click / Esc to cancel.`);
+
   try {
     for ( let i = 0; i < total; i++ ) {
       let committed = null;
@@ -494,6 +525,7 @@ async function previewChainedLines(shape, start = {}) {
         let o = orients[orient];
         let anchor = snapAnchor(cursor, o);
         ghostValid = true;
+        updateHud(anchor, o, i, isValid(anchor, o, i));
         const data = {
           ...areaRegionChrome(total > 1 ? `Line ${i + 1} of ${total}` : "Line Area"),
           shapes: [{ type: "polygon", points: ringAt(anchor, o), origin: { ...anchor } }],
@@ -501,7 +533,9 @@ async function previewChainedLines(shape, start = {}) {
         };
         const rebuild = shp => {
           shp.updateSource({ points: ringAt(anchor, o), origin: { ...anchor } });
-          setGhostValidity(isValid(anchor, o, i));
+          const valid = isValid(anchor, o, i);
+          setGhostValidity(valid);
+          updateHud(anchor, o, i, valid);
         };
         const onMove = ({ shape: shp, position, snap }) => {
           anchor = (snap || !gridBased)
@@ -561,7 +595,7 @@ async function previewChainedLines(shape, start = {}) {
       cursor = { x: committed.anchor.x + committed.o.c.x * sq, y: committed.anchor.y + committed.o.c.y * sq };
     }
   } finally {
-    overlay.destroy();
+    overlay.destroy({ children: true });
   }
 
   if ( !placedCount ) return null;   // first segment cancelled → abort
