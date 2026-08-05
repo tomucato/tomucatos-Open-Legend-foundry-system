@@ -1600,12 +1600,14 @@ FEATS.substitutedAttributeScore = function(actor, attrKey, purpose = "general") 
  */
 FEATS.formatPrerequisite = function(pre = {}) {
   const parts = [];
-  const attrs = pre.attribute ?? [];
+  // Skip incomplete entries — the feat sheet's prerequisite editor keeps
+  // in-progress rows (no attribute picked yet, empty text) in the data.
+  const attrs = (pre.attribute ?? []).filter(a => a?.label);
   if ( attrs.length ) {
     parts.push(attrs.map(a => `${a.label} ${a.min}`).join(" or "));
   }
-  for ( const f of (pre.feats ?? []) ) parts.push(f);
-  for ( const o of (pre.other ?? []) ) parts.push(o);
+  for ( const f of (pre.feats ?? []) ) if ( String(f).trim() ) parts.push(f);
+  for ( const o of (pre.other ?? []) ) if ( String(o).trim() ) parts.push(o);
   return parts.length ? parts.join(", ") : "None";
 };
 
@@ -1626,8 +1628,9 @@ FEATS.checkPrerequisite = function(actor, pre = {}) {
   const unverifiable = [];
   const extraordinary = STATS.categories?.extraordinary?.attributes ?? [];
 
-  // Attribute alternatives — ANY satisfies.
-  const attrs = pre.attribute ?? [];
+  // Attribute alternatives — ANY satisfies. Incomplete editor rows (no
+  // attribute picked yet) are not requirements.
+  const attrs = (pre.attribute ?? []).filter(a => a?.key || a?.label);
   if ( attrs.length ) {
     const ok = attrs.some(a => {
       const min = Number(a.min) || 0;
@@ -1643,8 +1646,9 @@ FEATS.checkPrerequisite = function(actor, pre = {}) {
   }
 
   // Feat prerequisites — the actor must own a feat of that name (and tier, if the
-  // requirement names one like "Lethal Strike III").
+  // requirement names one like "Lethal Strike III"). Empty rows are skipped.
   for ( const req of (pre.feats ?? []) ) {
+    if ( !String(req).trim() ) continue;
     const m = /^(.*?)(?:\s+([IVX]+))?$/.exec(req.trim());
     const baseName = (m?.[1] ?? req).trim();
     const reqTier = m?.[2] ? FEATS.romanToInt(m[2]) : 1;
@@ -1655,7 +1659,7 @@ FEATS.checkPrerequisite = function(actor, pre = {}) {
   }
 
   // Other textual prerequisites can't be auto-verified.
-  for ( const o of (pre.other ?? []) ) unverifiable.push(o);
+  for ( const o of (pre.other ?? []) ) if ( String(o).trim() ) unverifiable.push(o);
 
   return { met: unmet.length === 0, unmet, unverifiable };
 };

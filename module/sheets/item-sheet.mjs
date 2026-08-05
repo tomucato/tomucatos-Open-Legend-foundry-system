@@ -48,7 +48,10 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       xtraPersistentToggle: OpenLegendItemSheet.#onXtraPersistentToggle,
       xtraGenerateBoon: OpenLegendItemSheet.#onXtraGenerateBoon,
       xtraGenerateBane: OpenLegendItemSheet.#onXtraGenerateBane,
-      clearMacro: OpenLegendItemSheet.#onClearMacro
+      featPreAdd: OpenLegendItemSheet.#onFeatPreAdd,
+      featPreDelete: OpenLegendItemSheet.#onFeatPreDelete,
+      clearMacro: OpenLegendItemSheet.#onClearMacro,
+      editModeToggle: OpenLegendItemSheet.#onEditModeToggle
     }
   };
 
@@ -133,6 +136,72 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       initial: "description"
     }
   };
+
+  /* -------------------------------------------- */
+
+  /**
+   * Whether the sheet is in EDIT mode. Item sheets open in VIEW mode — the
+   * clean stat-block presentation (the .ol-locked styling, no form chrome or
+   * add buttons) — and the title-bar Edit toggle switches the form on.
+   * Per-instance and non-persistent: reopening a sheet starts in view mode.
+   * @type {boolean}
+   */
+  #editMode = false;
+
+  /**
+   * View mode renders (and submits) as read-only even for owners; the user
+   * enters edit mode explicitly. `super.isEditable` still gates the toggle
+   * itself, so locked-compendium / observer sheets never become editable.
+   * @override
+   */
+  get isEditable() {
+    return this.#editMode && super.isEditable;
+  }
+
+  /**
+   * A brand-new document (sidebar "Create Item", a sheet's add buttons with
+   * renderSheet) has nothing to view yet — open it straight in edit mode.
+   * Everything else opens in the view presentation.
+   * @override
+   */
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+    if ( options.isFirstRender && (options.renderContext === "createItem") ) this.#editMode = true;
+  }
+
+  /**
+   * Add the Edit/Done toggle to the window title bar, before the close button —
+   * only when the user could actually edit the document.
+   * @override
+   */
+  async _renderFrame(options) {
+    const frame = await super._renderFrame(options);
+    if ( super.isEditable ) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.classList.add("header-control", "icon", "fa-solid", "ol-edit-toggle");
+      btn.dataset.action = "editModeToggle";
+      this.window.close?.before(btn);
+      this.#syncEditToggle(btn);
+    }
+    return frame;
+  }
+
+  /** Point the title-bar toggle's icon + tooltip at the CURRENT mode. */
+  #syncEditToggle(btn = this.element?.querySelector("button.ol-edit-toggle")) {
+    if ( !btn ) return;
+    btn.classList.toggle("fa-pen-to-square", !this.#editMode);
+    btn.classList.toggle("fa-check", this.#editMode);
+    btn.dataset.tooltip = this.#editMode ? "Done Editing" : "Edit";
+    btn.setAttribute("aria-label", btn.dataset.tooltip);
+  }
+
+  /** Flip between the view presentation and the editable form. */
+  static #onEditModeToggle(event) {
+    event.preventDefault();
+    this.#editMode = !this.#editMode;
+    this.render();
+  }
 
   /* -------------------------------------------- */
 
@@ -239,7 +308,136 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       sys.legendaryProperties = sys.legendaryProperties.map(p =>
         OpenLegendItemSheet.#combineAttrModSubFields(p));
     }
+    // Feat tier editor: rebuild the dense system.tiers array (sized to maxTier)
+    // from the posted per-tier cost/effect/prerequisite-row edits.
+    if ( this.item.type === "feat" ) this.#normalizeFeatTiers(sys);
     return submitData;
+  }
+
+  /**
+   * Rebuild a feat's `system.tiers` from a submit. The editor posts indexed
+   * paths (system.tiers.0.cost, system.tiers.0.pre.1.type, …) which expandObject
+   * turns into partial {"0":{…}} objects; each posted cell is overlaid onto the
+   * stored tier row. The array is resized to maxTier — new tiers default to the
+   * previous tier's cost with no prerequisites — and each tier's flattened `pre`
+   * rows are folded back into the canonical prerequisites structure. Also keeps
+   * the legacy per-tier `system.cost` array in sync and clamps purchasedTier
+   * when tiers were removed.
+   * @param {object} sys  The `system` portion of the prepared submit data.
+   */
+  #normalizeFeatTiers(sys) {
+    if ( !("tiers" in sys) && !("maxTier" in sys) ) return;
+    const toArray = OpenLegendItemSheet.#toArray;
+    const maxTier = Math.max(1, Math.min(9,
+      Math.floor(Number(sys.maxTier ?? this.item.system.maxTier) || 1)));
+    const current = toArray(this.item.system.tiers);
+    const edit = sys.tiers ?? {};
+    const costs = toArray(this.item.system.cost).map(Number);
+    let lastCost = 0;
+    sys.tiers = Array.from({ length: maxTier }, (_, i) => {
+      const cur = current[i] ?? {};
+      const e = (Array.isArray(edit) ? edit[i] : edit[String(i)]) ?? {};
+      // Flatten the stored prerequisites into editor rows, overlay the posted
+      // partial edits by row index, then fold back into the canonical shape.
+      const rows = OpenLegendItemSheet.#flattenFeatPrereqs(cur.prerequisites);
+      if ( e.pre && (typeof e.pre === "object") ) {
+        for ( const [j, val] of Object.entries(e.pre) ) {
+          const idx = Number(j);
+          if ( !Number.isInteger(idx) || !val || (typeof val !== "object") ) continue;
+          rows[idx] = { ...(rows[idx] ?? { type: "attribute", attr: "", min: 1, text: "" }), ...val };
+        }
+      }
+      const fallbackCost = cur.cost ?? costs[i] ?? costs[costs.length - 1] ?? lastCost;
+      const cost = Math.max(0, Math.floor(Number(("cost" in e) ? e.cost : fallbackCost) || 0));
+      lastCost = cost;
+      return {
+        tier: i + 1,
+        cost,
+        effect: String(("effect" in e) ? e.effect : (cur.effect ?? "")),
+        prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(rows)
+      };
+    });
+    sys.cost = sys.tiers.map(t => t.cost);
+    sys.maxTier = maxTier;
+    // Fewer tiers than the owner has purchased: clamp the purchase.
+    if ( (Math.floor(Number(this.item.system.purchasedTier) || 0)) > maxTier ) {
+      sys.purchasedTier = maxTier;
+    }
+  }
+
+  /**
+   * Flatten a feat tier's prerequisites structure into editor rows, one per
+   * requirement: attribute alternatives (ANY satisfies), then feat requirements,
+   * then custom/other text. Incomplete rows (no attribute picked, empty text)
+   * are preserved so an in-progress row survives re-renders.
+   * @param {{attribute?: Array, feats?: string[], other?: string[]}} pre
+   * @returns {Array<{type: string, attr: string, min: number, text: string}>}
+   */
+  static #flattenFeatPrereqs(pre = {}) {
+    const toArray = OpenLegendItemSheet.#toArray;
+    const rows = [];
+    for ( const a of toArray(pre?.attribute) ) rows.push({
+      type: "attribute", attr: String(a?.key ?? ""),
+      min: Math.max(1, Math.floor(Number(a?.min) || 1)), text: ""
+    });
+    for ( const f of toArray(pre?.feats) ) rows.push({ type: "feat", attr: "", min: 1, text: String(f ?? "") });
+    for ( const o of toArray(pre?.other) ) rows.push({ type: "other", attr: "", min: 1, text: String(o ?? "") });
+    return rows;
+  }
+
+  /**
+   * Fold editor rows back into the canonical prerequisites structure consumed by
+   * formatPrerequisite / checkPrerequisite. Incomplete rows are kept (as empty
+   * entries) so they survive round-trips; format/check skip them.
+   * @param {Array<{type: string, attr: string, min: number, text: string}>} rows
+   * @returns {{attribute: Array, feats: string[], other: string[], hasNone: boolean}}
+   */
+  static #buildFeatPrereqs(rows) {
+    const labels = CONFIG.OPENLEGEND?.attributeLabels ?? {};
+    const labelFor = k => {
+      if ( k === "any attribute" ) return "Any Attribute";
+      if ( k === "any extraordinary" ) return "Any Extraordinary";
+      return labels[k] ?? (k ? k.charAt(0).toUpperCase() + k.slice(1) : "");
+    };
+    const out = { attribute: [], feats: [], other: [], hasNone: false };
+    for ( const r of rows ) {
+      if ( !r || (typeof r !== "object") ) continue;
+      const attr = String(r.attr ?? "");
+      if ( r.type === "feat" ) out.feats.push(String(r.text ?? "").trim());
+      else if ( r.type === "other" ) out.other.push(String(r.text ?? "").trim());
+      else out.attribute.push({
+        key: attr, label: labelFor(attr),
+        min: Math.max(1, Math.floor(Number(r.min) || 1))
+      });
+    }
+    out.hasNone = !out.attribute.length && !out.feats.length && !out.other.length;
+    return out;
+  }
+
+  /**
+   * The feat's canonical tier rows as currently stored, padded/truncated to
+   * maxTier — the base the prerequisite add/delete handlers modify before
+   * writing the whole array back.
+   * @returns {Array<{tier: number, cost: number, effect: string, prerequisites: object}>}
+   */
+  #featTiersSnapshot() {
+    const toArray = OpenLegendItemSheet.#toArray;
+    const maxTier = Math.max(1, Math.min(9, Math.floor(Number(this.item.system.maxTier) || 1)));
+    const current = toArray(this.item.system.tiers);
+    const costs = toArray(this.item.system.cost).map(Number);
+    let lastCost = 0;
+    return Array.from({ length: maxTier }, (_, i) => {
+      const cur = current[i] ?? {};
+      const cost = Math.max(0, Math.floor(Number(cur.cost ?? costs[i] ?? costs[costs.length - 1] ?? lastCost) || 0));
+      lastCost = cost;
+      return {
+        tier: i + 1,
+        cost,
+        effect: String(cur.effect ?? ""),
+        prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(
+          OpenLegendItemSheet.#flattenFeatPrereqs(cur.prerequisites))
+      };
+    });
   }
 
   /**
@@ -496,6 +694,12 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       defense: a.defense ?? ""
     }));
     context.attributesRaw = toArray(this.item.system.attributes).map((a, i) => ({ index: i, value: a }));
+    // View-mode summaries: the boon's invoking attributes as one comma-separated
+    // line, and the bane's attack pairs as "Agility vs. Guard" lines (one each).
+    context.attributesReadable = context.attributesRaw.map(a => a.value).filter(Boolean).join(", ");
+    context.attacksReadable = context.attacksRaw
+      .filter(a => a.attackingAttribute || a.defense)
+      .map(a => `${a.attackingAttribute || "—"} vs. ${a.defense || "—"}`);
   }
 
   /** Whether an item type is a physical item (weapon/armor/gear) — the types
@@ -724,20 +928,41 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   }
 
   /**
-   * Build the feat sheet's per-tier breakdown: each tier's cost and a readable
-   * prerequisite string. Mutates `context`.
+   * Build the feat sheet's per-tier rows: each tier's cost, its own effect text,
+   * and its prerequisite rows for the editor (plus the formatted read-only
+   * string). The list is sized to maxTier, so raising the Tiers input
+   * immediately shows that many editable rows. Mutates `context`.
    * @param {object} context
    * @private
    */
   _prepareFeatContext(context) {
     const cfg = CONFIG.OPENLEGEND ?? {};
     const sys = this.item.system;
-    context.featTiers = (sys.tiers ?? []).map(t => ({
+    const rows = this.#featTiersSnapshot();
+    context.featTierRows = rows.map((t, i) => ({
+      index: i,
       tier: t.tier,
       cost: t.cost,
-      prerequisite: cfg.formatPrerequisite ? cfg.formatPrerequisite(t.prerequisites) : "—"
+      effect: t.effect,
+      prerequisite: cfg.formatPrerequisite ? cfg.formatPrerequisite(t.prerequisites) : "—",
+      prereqs: OpenLegendItemSheet.#flattenFeatPrereqs(t.prerequisites).map((p, j) => ({
+        ...p,
+        index: j,
+        isAttribute: p.type === "attribute",
+        placeholder: p.type === "feat" ? "Feat name, e.g. Lethal Strike II" : "Custom prerequisite"
+      }))
     }));
-    context.featMultiTier = (Number(sys.maxTier) || 1) > 1;
+    context.featMultiTier = rows.length > 1;
+    // Option maps for the prerequisite rows: what kind of requirement, and (for
+    // attribute rows) which attribute — including the SRD's "Any Attribute" /
+    // "Any Extraordinary" wildcards.
+    context.featPreTypeOptions = { attribute: "Attribute", feat: "Feat", other: "Custom" };
+    context.featPreAttrOptions = {
+      "": "—",
+      "any attribute": "Any Attribute",
+      "any extraordinary": "Any Extraordinary",
+      ...(cfg.attributeLabels ?? {})
+    };
   }
 
   /* -------------------------------------------- */
@@ -1730,10 +1955,12 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     // Tag the sheet root with the item type (e.g. "bane"/"boon") so CSS can
     // target a specific item type without a per-type sheet subclass.
     if ( this.item?.type ) this.element?.classList.add(this.item.type);
-    // A non-editable sheet (locked compendium, observer permission) reads as a
-    // clean document: ol-locked restyles the auto-disabled fields as plain text
-    // and hides mutation-only controls (see "Locked sheets" in openlegend.css).
+    // A non-editable sheet — view mode, locked compendium, or observer
+    // permission — reads as a clean document: ol-locked restyles the
+    // auto-disabled fields as plain text and hides mutation-only controls
+    // (see "Locked sheets" in openlegend.css).
     this.element?.classList.toggle("ol-locked", !this.isEditable);
+    this.#syncEditToggle();
     if ( !this.isEditable ) return;
 
     // Changing an extraordinary boon/bane's NAME resets that row's power level to
@@ -2262,6 +2489,32 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const i = Number(target.closest("[data-index]")?.dataset.index);
     const attacks = OpenLegendItemSheet.#toArray(this.item.system.attacks).filter((_, idx) => idx !== i);
     await this.#replaceArray("system.attacks", attacks);
+  }
+
+  /** Add a prerequisite row (defaulting to an unset Attribute requirement) to
+   *  the feat tier the clicked button belongs to. */
+  static async #onFeatPreAdd(event, target) {
+    event.preventDefault();
+    const ti = Number(target.closest("[data-tier-index]")?.dataset.tierIndex);
+    const tiers = this.#featTiersSnapshot();
+    if ( !tiers[ti] ) return;
+    const rows = OpenLegendItemSheet.#flattenFeatPrereqs(tiers[ti].prerequisites);
+    rows.push({ type: "attribute", attr: "", min: 1, text: "" });
+    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows);
+    await this.#replaceArray("system.tiers", tiers);
+  }
+
+  /** Delete a prerequisite row from its feat tier. */
+  static async #onFeatPreDelete(event, target) {
+    event.preventDefault();
+    const ti = Number(target.closest("[data-tier-index]")?.dataset.tierIndex);
+    const pi = Number(target.closest("[data-pre-index]")?.dataset.preIndex);
+    const tiers = this.#featTiersSnapshot();
+    if ( !tiers[ti] ) return;
+    const rows = OpenLegendItemSheet.#flattenFeatPrereqs(tiers[ti].prerequisites)
+      .filter((_, j) => j !== pi);
+    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows);
+    await this.#replaceArray("system.tiers", tiers);
   }
 
   /**

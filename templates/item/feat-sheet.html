@@ -8,7 +8,7 @@
     <div class="item-stats flexrow gear-stats">
       <div class="gear-stat">
         <label>Tiers</label>
-        <input type="number" min="1" step="1" name="system.maxTier" value="{{system.maxTier}}" data-dtype="Number"/>
+        <input type="number" min="1" max="9" step="1" name="system.maxTier" value="{{system.maxTier}}" data-dtype="Number"/>
       </div>
       {{#if system.choice.type}}
       <div class="gear-stat">
@@ -32,17 +32,60 @@
     {{/if}}
 
     <h3 class="bane-heading">{{#if featMultiTier}}Tiers{{else}}Cost &amp; Prerequisite{{/if}}</h3>
+    {{#if editable}}
+    <ol class="feat-tier-edit">
+      {{#each featTierRows as |t|}}
+      <li class="feat-tier-block" data-tier-index="{{t.index}}">
+        <div class="feat-tier-titlebar">
+          <span class="feat-tier-title">Tier {{t.tier}}</span>
+          <label class="feat-tier-cost-field">Cost
+            <input type="number" min="0" step="1" name="system.tiers.{{t.index}}.cost" value="{{t.cost}}" data-dtype="Number"/>
+          </label>
+          <a class="bane-row-add" data-action="featPreAdd" title="Add a prerequisite for this tier"><i class="fas fa-plus"></i> Prerequisite</a>
+        </div>
+        {{#each t.prereqs as |p|}}
+        <div class="feat-pre-row {{#unless p.isAttribute}}feat-pre-row-text{{/unless}}" data-pre-index="{{p.index}}">
+          <select name="system.tiers.{{t.index}}.pre.{{p.index}}.type">
+            {{selectOptions @root.featPreTypeOptions selected=p.type}}
+          </select>
+          {{#if p.isAttribute}}
+          <select name="system.tiers.{{t.index}}.pre.{{p.index}}.attr">
+            {{selectOptions @root.featPreAttrOptions selected=p.attr}}
+          </select>
+          <input type="number" min="1" max="10" step="1" name="system.tiers.{{t.index}}.pre.{{p.index}}.min" value="{{p.min}}" data-dtype="Number" title="Minimum attribute score"/>
+          {{else}}
+          <input type="text" name="system.tiers.{{t.index}}.pre.{{p.index}}.text" value="{{p.text}}" placeholder="{{p.placeholder}}"/>
+          {{/if}}
+          <a class="bane-row-del" data-action="featPreDelete" title="Remove"><i class="fas fa-trash"></i></a>
+        </div>
+        {{else}}
+        <div class="feat-pre-none">No prerequisites.</div>
+        {{/each}}
+        <label class="feat-tier-field-label">Tier Effect</label>
+        <textarea class="feat-tier-effect" name="system.tiers.{{t.index}}.effect" rows="2" placeholder="What this tier grants.">{{t.effect}}</textarea>
+      </li>
+      {{/each}}
+    </ol>
+
+    <h3 class="bane-heading">Effect</h3>
+    <textarea class="feat-text-edit" name="system.effect" rows="4" placeholder="The feat's effect.">{{system.effect}}</textarea>
+
+    <h3 class="bane-heading">Special</h3>
+    <textarea class="feat-text-edit" name="system.special" rows="2" placeholder="Special rules (e.g. may be taken multiple times).">{{system.special}}</textarea>
+
+    {{else}}
     <ol class="feat-tier-list">
       <li class="feat-tier-row feat-tier-head">
         <span class="feat-tier-n">Tier</span>
         <span class="feat-tier-cost">Cost</span>
         <span class="feat-tier-pre">Prerequisite</span>
       </li>
-      {{#each featTiers as |t|}}
+      {{#each featTierRows as |t|}}
       <li class="feat-tier-row">
         <span class="feat-tier-n">{{t.tier}}</span>
         <span class="feat-tier-cost">{{t.cost}}</span>
         <span class="feat-tier-pre">{{t.prerequisite}}</span>
+        {{#if t.effect}}<span class="feat-tier-teffect">{{t.effect}}</span>{{/if}}
       </li>
       {{else}}
       <li class="bane-empty">No tier data.</li>
@@ -57,6 +100,7 @@
     {{#if system.special}}
     <h3 class="bane-heading">Special</h3>
     <div class="feat-special">{{{system.special}}}</div>
+    {{/if}}
     {{/if}}
   </div>
 

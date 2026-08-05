@@ -2355,6 +2355,55 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .bane-power-erow .bane-row-del { margin-top: 4px; }
 
+/* View-mode (read) presentation for bane/boon sheets — compact prose instead
+   of the form layout. */
+.openlegend.sheet .bane-read-line {
+  margin: 2px 0 6px;
+}
+/* Read-mode line-per-entry lists (a bane's attack pairs): no bullets, tight rows. */
+.openlegend.sheet .bane-read-list {
+  list-style: none;
+  margin: 2px 0 6px;
+  padding: 0;
+}
+.openlegend.sheet .bane-read-list li {
+  padding: 1px 0;
+}
+/* Rich-text (description) body: normal flow, paragraphs carry the spacing. */
+.openlegend.sheet .bane-read-doc {
+  margin: 2px 0 8px;
+}
+/* Plain-text fields (effect/special): stored newlines are the line breaks. */
+.openlegend.sheet .bane-read-text {
+  margin: 2px 0 8px;
+  white-space: pre-line;
+}
+/* Power-level breakdown: a tight "PL n — effect" table with zebra rows. */
+.openlegend.sheet .bane-pl-list {
+  list-style: none;
+  margin: 2px 0;
+  padding: 0;
+}
+.openlegend.sheet .bane-pl-row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.openlegend.sheet .bane-pl-row:nth-child(odd) {
+  background: rgba(48, 30, 105, 0.05);
+}
+.openlegend.sheet .bane-pl-badge {
+  font-weight: 700;
+  color: var(--ol-heading);
+  white-space: nowrap;
+}
+.openlegend.sheet .bane-pl-effect {
+  white-space: pre-line;
+}
+
 /* Effects tab: the Active Effects applied when the bane/boon is dropped on a
    token. Row = icon + name/changes + edit/toggle/delete controls. */
 .openlegend.sheet .bane-ae-header {
@@ -2677,6 +2726,87 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 }
 .openlegend.sheet .feat-tier-row.feat-tier-head {
   background: none;
+}
+/* A tier's own effect text on the read-only table: full-width line under the row. */
+.openlegend.sheet .feat-tier-teffect {
+  grid-column: 1 / -1;
+  font-size: 0.9em;
+  white-space: pre-line;
+  opacity: 0.85;
+}
+
+/* Feat item-sheet tier EDITOR (owned/unlocked sheets): one block per tier with
+   its cost, prerequisite rows, and tier-effect text. */
+.openlegend.sheet .feat-tier-edit {
+  list-style: none;
+  margin: 4px 0;
+  padding: 0;
+}
+.openlegend.sheet .feat-tier-block {
+  border: 1px solid rgba(48, 30, 105, 0.25);
+  border-radius: 4px;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+}
+.openlegend.sheet .feat-tier-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.openlegend.sheet .feat-tier-title {
+  font-weight: 700;
+  color: var(--ol-heading);
+}
+.openlegend.sheet .feat-tier-cost-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+}
+.openlegend.sheet .feat-tier-cost-field input {
+  width: 52px;
+  text-align: center;
+}
+.openlegend.sheet .feat-tier-titlebar .bane-row-add {
+  margin-left: auto;
+}
+.openlegend.sheet .feat-pre-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 56px 26px;
+  gap: 6px;
+  align-items: center;
+  margin: 3px 0;
+}
+/* Feat / custom prerequisite rows: the text input spans the value + min columns. */
+.openlegend.sheet .feat-pre-row.feat-pre-row-text {
+  grid-template-columns: 110px 1fr 26px;
+}
+.openlegend.sheet .feat-pre-row .bane-row-del {
+  text-align: center;
+}
+.openlegend.sheet .feat-pre-none {
+  font-size: 0.9em;
+  opacity: 0.7;
+  margin: 3px 0;
+}
+.openlegend.sheet .feat-tier-field-label {
+  display: block;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ol-heading);
+  margin-top: 4px;
+}
+.openlegend.sheet .feat-tier-effect,
+.openlegend.sheet .feat-text-edit {
+  width: 100%;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.95em;
+}
+
+body.ol-dark-theme .openlegend.sheet .feat-tier-block {
+  border-color: rgba(179, 164, 230, 0.22);
 }
 
 /* ---- Effects tab rows --------------------------------------------------- */
@@ -5025,8 +5155,20 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
 .openlegend.sheet.item.ol-locked a[data-action$="Add"],
 .openlegend.sheet.item.ol-locked a[data-action$="Delete"],
 .openlegend.sheet.item.ol-locked a[data-action="weaponRemoveProperty"],
-.openlegend.sheet.item.ol-locked a[data-action="clearMacro"] {
+.openlegend.sheet.item.ol-locked a[data-action="clearMacro"],
+.openlegend.sheet.item.ol-locked button.ol-row-generate,
+.openlegend.sheet.item.ol-locked button.ol-step-btn {
   display: none;
+}
+/* The portrait opens a FilePicker on click — edit-only. */
+.openlegend.sheet.item.ol-locked img.profile-img {
+  pointer-events: none;
+  cursor: default;
+}
+/* Title-bar Edit/Done toggle: gold while editing so the mode is visible at a
+   glance even after the tooltip fades. */
+.openlegend.sheet.item .ol-edit-toggle.fa-check {
+  color: var(--ol-gold-light, #e3b94f);
 }
 
 /* ---- Mount / Vehicle sheet ---------------------------------------------- */
@@ -5430,7 +5572,8 @@ body.ol-dark-theme .ol-roll-dialog select option {
 body.ol-dark-theme .ol-roll-dialog .ol-roll-sources,
 body.ol-dark-theme .ol-roll-dialog .ol-adv-control,
 body.ol-dark-theme .ol-defense-breakdown .ol-defense-row:nth-child(odd),
-body.ol-dark-theme .openlegend.sheet .dice-modifier-row:nth-child(odd) {
+body.ol-dark-theme .openlegend.sheet .dice-modifier-row:nth-child(odd),
+body.ol-dark-theme .openlegend.sheet .bane-pl-row:nth-child(odd) {
   background: rgba(255, 255, 255, 0.05);
 }
 /* Action effect chips: same tints, lightened label text. */

@@ -91,6 +91,9 @@
           {{#if feat.effect}}
           <div class="inv-detail-desc feat-effect">{{{feat.effect}}}</div>
           {{/if}}
+          {{#each feat.tierEffects as |te|}}
+          <div class="inv-detail-desc feat-effect feat-tier-effect-row">{{#if feat.multiTier}}<strong>Tier {{te.tier}}:</strong> {{/if}}{{{te.effect}}}</div>
+          {{/each}}
         </div>
       </details>
       {{else}}

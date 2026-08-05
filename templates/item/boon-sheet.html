@@ -39,50 +39,77 @@
       <h3 class="bane-heading">Invoking Attributes</h3>
       {{#if editable}}<a class="bane-row-add" data-action="attributeAdd" title="Add Attribute"><i class="fas fa-plus"></i> Add Attribute</a>{{/if}}
     </div>
+    {{#if editable}}
     <ol class="bane-attacks-edit">
       {{#each attributesRaw as |attr|}}
       <li class="bane-attr-erow" data-index="{{attr.index}}">
-        <select name="system.attributes.{{attr.index}}" {{#unless ../editable}}disabled{{/unless}}>
+        <select name="system.attributes.{{attr.index}}">
           {{selectOptions ../attackAttributeOptions selected=attr.value}}
         </select>
-        {{#if ../editable}}<a class="bane-row-del" data-action="attributeDelete" title="Remove"><i class="fas fa-trash"></i></a>{{/if}}
+        <a class="bane-row-del" data-action="attributeDelete" title="Remove"><i class="fas fa-trash"></i></a>
       </li>
       {{else}}
       <li class="bane-empty">No invoking attributes listed.</li>
       {{/each}}
     </ol>
+    {{else}}
+    <p class="bane-read-line">{{#if attributesReadable}}{{attributesReadable}}{{else}}No invoking attributes listed.{{/if}}</p>
+    {{/if}}
     <p class="bane-hint">A boon is invoked by beating its Challenge Rating (10 + 2&times;PL) with an action roll using one of these attributes.</p>
 
+    {{#if editable}}
     <h3 class="bane-heading">Description</h3>
-    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled>
       {{{enrichedDescription}}}
     </prose-mirror>
+    {{else if system.description}}
+    <h3 class="bane-heading">Description</h3>
+    <div class="bane-read-doc">{{{enrichedDescription}}}</div>
+    {{/if}}
   </div>
 
   <div class="tab powerEffects {{tabs.powerEffects.cssClass}}" data-group="primary" data-tab="powerEffects">
+    {{#if editable}}
     <h3 class="bane-heading">Effect</h3>
-    <prose-mirror name="system.effect" value="{{system.effect}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+    <prose-mirror name="system.effect" value="{{system.effect}}" document-uuid="{{document.uuid}}" toggled>
       {{{enrichedEffect}}}
     </prose-mirror>
+    {{else if system.effect}}
+    <h3 class="bane-heading">Effect</h3>
+    <div class="bane-read-text">{{{enrichedEffect}}}</div>
+    {{/if}}
 
     <div class="bane-section-head">
       <h3 class="bane-heading">Effects by Power Level</h3>
       {{#if editable}}<a class="bane-row-add" data-action="powerEffectAdd" title="Add Power Level"><i class="fas fa-plus"></i> Add Level</a>{{/if}}
     </div>
+    {{#if editable}}
     <ol class="bane-power-edit">
       {{#each powerEffectsRaw as |pe|}}
       <li class="bane-power-erow" data-index="{{pe.index}}">
         <div class="bane-pl-field">
           <label>PL</label>
-          <input type="number" min="0" step="1" name="system.powerEffects.{{pe.index}}.powerLevel" value="{{pe.powerLevel}}" data-dtype="Number" {{#unless ../editable}}disabled{{/unless}}/>
+          <input type="number" min="0" step="1" name="system.powerEffects.{{pe.index}}.powerLevel" value="{{pe.powerLevel}}" data-dtype="Number"/>
         </div>
-        <textarea class="bane-pl-text" name="system.powerEffects.{{pe.index}}.effect" rows="2" {{#unless ../editable}}disabled{{/unless}}>{{pe.effect}}</textarea>
-        {{#if ../editable}}<a class="bane-row-del" data-action="powerEffectDelete" title="Remove"><i class="fas fa-trash"></i></a>{{/if}}
+        <textarea class="bane-pl-text" name="system.powerEffects.{{pe.index}}.effect" rows="2">{{pe.effect}}</textarea>
+        <a class="bane-row-del" data-action="powerEffectDelete" title="Remove"><i class="fas fa-trash"></i></a>
       </li>
       {{else}}
       <li class="bane-empty">No power-level breakdown.</li>
       {{/each}}
     </ol>
+    {{else}}
+    <ol class="bane-pl-list">
+      {{#each powerEffectRows as |pe|}}
+      <li class="bane-pl-row">
+        <span class="bane-pl-badge">PL {{pe.powerLevel}}</span>
+        <span class="bane-pl-effect">{{{pe.enriched}}}</span>
+      </li>
+      {{else}}
+      <li class="bane-empty">No power-level breakdown.</li>
+      {{/each}}
+    </ol>
+    {{/if}}
   </div>
 
   <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">

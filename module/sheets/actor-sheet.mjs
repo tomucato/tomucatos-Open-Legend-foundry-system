@@ -1360,6 +1360,15 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       // Battle Trance is a TOGGLED feat: surface its on/off state so the row can
       // show a drag-to-macro toggle button.
       const isBattleTrance = (sys.baseName || feat.name) === (cfg.BATTLE_TRANCE_BASE ?? "Battle Trance");
+
+      // Per-tier effect text for the tiers actually purchased (tiers are
+      // cumulative — owning Tier 2 grants Tier 1's effect as well).
+      const tierEffects = (await Promise.all(tiers.slice(0, tier).map(async t => ({
+        tier: t?.tier,
+        effect: String(t?.effect ?? "").trim()
+          ? await TextEditor.enrichHTML(t.effect, { relativeTo: feat, secrets: this.actor.isOwner })
+          : ""
+      })))).filter(t => t.effect);
       rows.push({
         id: feat.id,
         name: feat.name,
@@ -1380,7 +1389,8 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
         prereqUnmet: curCheck.unmet,
         nextPrerequisite: canRaise && cfg.formatPrerequisite ? cfg.formatPrerequisite(nextPre) : "",
         tags: sys.tags ?? [],
-        effect: await TextEditor.enrichHTML(sys.effect ?? "", { relativeTo: feat, secrets: this.actor.isOwner })
+        effect: await TextEditor.enrichHTML(sys.effect ?? "", { relativeTo: feat, secrets: this.actor.isOwner }),
+        tierEffects
       });
     }
     rows.sort((a, b) => a.name.localeCompare(b.name));
