@@ -1,4 +1,5 @@
 import { prepareActionRoll } from "../dice/action-roll.mjs";
+import { selectableDocuments } from "../helpers/utils.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -750,8 +751,21 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     context.powerLevelOptions = Object.fromEntries(
       Array.from({ length: 9 }, (_, i) => [i + 1, String(i + 1)])
     );
-    context.boonOptions = { "": "—", ...Object.fromEntries((cfg.boonNames ?? []).map(n => [n, n])) };
-    context.baneOptions = { "": "—", ...Object.fromEntries((cfg.baneNames ?? []).map(n => [n, n])) };
+    // SRD names plus any world-created boons/banes (skipping those marked
+    // Private). Values are stored by NAME; resolveBoonByName/resolveBaneByName
+    // already look world items up first, so a world pick resolves correctly.
+    const withWorldNames = (base, type) => {
+      const names = new Set(base ?? []);
+      for ( const item of game.items ?? [] ) {
+        if ( item.type !== type ) continue;
+        if ( !item.visible || item.system?.private ) continue;
+        names.add(item.name);
+      }
+      const sorted = [...names].sort((a, b) => a.localeCompare(b));
+      return { "": "—", ...Object.fromEntries(sorted.map(n => [n, n])) };
+    };
+    context.boonOptions = withWorldNames(cfg.boonNames, "boon");
+    context.baneOptions = withWorldNames(cfg.baneNames, "bane");
     context.areaShapeOptions = { ...(cfg.areaShapes ?? {}) };
     context.propertyOptions = {
       "": "—",
@@ -1450,43 +1464,42 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         .filter(Boolean)
     );
 
-    const pack = game.packs?.get("tomucatos-open-legend-rpg-system.banes");
+    // Candidate banes: non-private world banes plus the system compendium's
+    // (world wins on a name tie). Full documents, not an index — power level +
+    // attacks drive the filter.
+    const docs = await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes");
     const options = [];
-    if ( pack ) {
-      // Need power level + attacks to filter, so load the documents.
-      const docs = await pack.getDocuments();
-      for ( const bane of docs ) {
-        const attacks = bane.system?.attacks ?? [];
-        const match = attacks.find(a => (a.attackingAttribute ?? "").toLowerCase() === String(attrLabel).toLowerCase());
-        const fromWeapon = weaponBaneNames.has(bane.name.toLowerCase());
-        if ( !match && !fromWeapon ) continue;   // attribute can't invoke it, and the weapon doesn't list it
-        const pl = Number(bane.system?.powerLevel ?? 0);
-        // Weapon banes pass prerequisites at one power level lower (≤ score + 1).
-        const maxPl = (score === null) ? null : score + (fromWeapon ? 1 : 0);
-        if ( (maxPl !== null) && (pl > maxPl) ) continue;
-        // The discrete power levels this bane actually defines (e.g. 2,4,6,9),
-        // sorted ascending — these are the only invocable levels.
-        const levels = [...new Set(
-          (bane.system?.powerEffects ?? [])
-            .map(pe => Number(pe.powerLevel))
-            .filter(n => Number.isFinite(n) && (n > 0))
-        )].sort((a, b) => a - b);
-        options.push({
-          uuid: bane.uuid, name: bane.name, powerLevel: pl,
-          // A weapon-only bane has no attack entry for this attribute; it still
-          // targets the defense its other attack entries use.
-          defense: ((match ?? attacks[0])?.defense ?? "guard").toLowerCase(),
-          levels: levels.length ? levels : [pl],  // fall back to the minimum
-          weapon: fromWeapon,
-          // Potent Bane feat: invoking this bane is always Potent — preselect it.
-          potent: cfg.isPotentBane?.(actor, bane.name) ?? false
-        });
-      }
-      // Weapon banes first (they're the reason the weapon was picked), then by
-      // power level and name.
-      options.sort((a, b) => (Number(b.weapon) - Number(a.weapon))
-        || (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
+    for ( const bane of docs ) {
+      const attacks = bane.system?.attacks ?? [];
+      const match = attacks.find(a => (a.attackingAttribute ?? "").toLowerCase() === String(attrLabel).toLowerCase());
+      const fromWeapon = weaponBaneNames.has(bane.name.toLowerCase());
+      if ( !match && !fromWeapon ) continue;   // attribute can't invoke it, and the weapon doesn't list it
+      const pl = Number(bane.system?.powerLevel ?? 0);
+      // Weapon banes pass prerequisites at one power level lower (≤ score + 1).
+      const maxPl = (score === null) ? null : score + (fromWeapon ? 1 : 0);
+      if ( (maxPl !== null) && (pl > maxPl) ) continue;
+      // The discrete power levels this bane actually defines (e.g. 2,4,6,9),
+      // sorted ascending — these are the only invocable levels.
+      const levels = [...new Set(
+        (bane.system?.powerEffects ?? [])
+          .map(pe => Number(pe.powerLevel))
+          .filter(n => Number.isFinite(n) && (n > 0))
+      )].sort((a, b) => a - b);
+      options.push({
+        uuid: bane.uuid, name: bane.name, powerLevel: pl,
+        // A weapon-only bane has no attack entry for this attribute; it still
+        // targets the defense its other attack entries use.
+        defense: ((match ?? attacks[0])?.defense ?? "guard").toLowerCase(),
+        levels: levels.length ? levels : [pl],  // fall back to the minimum
+        weapon: fromWeapon,
+        // Potent Bane feat: invoking this bane is always Potent — preselect it.
+        potent: cfg.isPotentBane?.(actor, bane.name) ?? false
+      });
     }
+    // Weapon banes first (they're the reason the weapon was picked), then by
+    // power level and name.
+    options.sort((a, b) => (Number(b.weapon) - Number(a.weapon))
+      || (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
     // Extraordinary-item banes the actor possesses: appended regardless of the
     // action's attribute (the item grants access). Each carries its source item
     // + listed value; invoking uses that value for the power level AND dice.
@@ -1550,29 +1563,28 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const attrLabel = cfg.attributeLabels?.[attrKey] ?? attrKey;
     const score = actor ? Number(actor.system?.attributes?.[attrKey]?.value ?? 0) : null;
 
-    const pack = game.packs?.get("tomucatos-open-legend-rpg-system.boons");
+    // Candidate boons: non-private world boons plus the system compendium's
+    // (world wins on a name tie).
+    const docs = await selectableDocuments("boon", "tomucatos-open-legend-rpg-system.boons");
     const options = [];
-    if ( pack ) {
-      const docs = await pack.getDocuments();
-      for ( const boon of docs ) {
-        // Boons store invoking attributes by capitalized label; match the action's
-        // chosen attribute label case-insensitively.
-        const attrs = (boon.system?.attributes ?? []).map(a => String(a).toLowerCase());
-        if ( !attrs.includes(String(attrLabel).toLowerCase()) ) continue;
-        const pl = Number(boon.system?.powerLevel ?? 0);
-        if ( (score !== null) && (pl > score) ) continue;        // minimum power exceeds the actor's score
-        const levels = [...new Set(
-          (boon.system?.powerEffects ?? [])
-            .map(pe => Number(pe.powerLevel))
-            .filter(n => Number.isFinite(n) && (n > 0))
-        )].sort((a, b) => a - b);
-        options.push({
-          uuid: boon.uuid, name: boon.name, powerLevel: pl,
-          levels: levels.length ? levels : [pl]   // fall back to the minimum
-        });
-      }
-      options.sort((a, b) => (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
+    for ( const boon of docs ) {
+      // Boons store invoking attributes by capitalized label; match the action's
+      // chosen attribute label case-insensitively.
+      const attrs = (boon.system?.attributes ?? []).map(a => String(a).toLowerCase());
+      if ( !attrs.includes(String(attrLabel).toLowerCase()) ) continue;
+      const pl = Number(boon.system?.powerLevel ?? 0);
+      if ( (score !== null) && (pl > score) ) continue;        // minimum power exceeds the actor's score
+      const levels = [...new Set(
+        (boon.system?.powerEffects ?? [])
+          .map(pe => Number(pe.powerLevel))
+          .filter(n => Number.isFinite(n) && (n > 0))
+      )].sort((a, b) => a - b);
+      options.push({
+        uuid: boon.uuid, name: boon.name, powerLevel: pl,
+        levels: levels.length ? levels : [pl]   // fall back to the minimum
+      });
     }
+    options.sort((a, b) => (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
     // Extraordinary-item boons the actor possesses (see _prepareBaneOptions).
     options.push(...await OpenLegendItemSheet.#itemInvocationOptions(actor, "boon", "extraordinaryBoons", sys.invokeFromItemId));
     // Boon Access feat boons (the actor invokes them at PL-as-score, bypassing the
@@ -1657,17 +1669,14 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     if ( context.showBarrierBane ) {
       const attrLower = String(attrLabel).toLowerCase();
       const options = [];
-      const banePack = game.packs?.get("tomucatos-open-legend-rpg-system.banes");
-      if ( banePack ) {
-        for ( const bane of await banePack.getDocuments() ) {
-          const attrs = (bane.system?.attacks ?? []).map(a => String(a.attackingAttribute ?? "").toLowerCase());
-          if ( !attrs.includes(attrLower) ) continue;
-          const bpl = Number(bane.system?.powerLevel ?? 0);
-          if ( bpl > pl ) continue;
-          const levels = [...new Set((bane.system?.powerEffects ?? [])
-            .map(pe => Number(pe.powerLevel)).filter(n => Number.isFinite(n) && (n > 0)))].sort((a, b) => a - b);
-          options.push({ uuid: bane.uuid, name: bane.name, powerLevel: bpl, levels: levels.length ? levels : [bpl] });
-        }
+      for ( const bane of await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes") ) {
+        const attrs = (bane.system?.attacks ?? []).map(a => String(a.attackingAttribute ?? "").toLowerCase());
+        if ( !attrs.includes(attrLower) ) continue;
+        const bpl = Number(bane.system?.powerLevel ?? 0);
+        if ( bpl > pl ) continue;
+        const levels = [...new Set((bane.system?.powerEffects ?? [])
+          .map(pe => Number(pe.powerLevel)).filter(n => Number.isFinite(n) && (n > 0)))].sort((a, b) => a - b);
+        options.push({ uuid: bane.uuid, name: bane.name, powerLevel: bpl, levels: levels.length ? levels : [bpl] });
       }
       options.sort((a, b) => (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
       context.barrierBaneOptions = options;
@@ -1729,9 +1738,9 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   }
 
   /**
-   * The bane/boon invocations an Aura may radiate: system-pack banes (matched by
-   * an attack entry's attacking attribute) and boons (matched by their invoking-
-   * attribute list) invocable by ANY of the given lowercased attribute labels —
+   * The bane/boon invocations an Aura may radiate: non-private world + system-pack
+   * banes (matched by an attack entry's attacking attribute) and boons (matched by
+   * their invoking-attribute list) invocable by ANY of the given lowercased attribute labels —
    * pass null to skip the attribute filter — whose minimum power level ≤ maxPl.
    * Each option carries kind/uuid/name/powerLevel (the minimum) /levels (the
    * discrete PLs) and a "kind|uuid" value; sorted banes-first, then by PL + name.
@@ -1746,29 +1755,23 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         .map(pe => Number(pe.powerLevel)).filter(n => Number.isFinite(n) && (n > 0)))].sort((a, b) => a - b);
       return levels;
     };
-    const banePack = game.packs?.get("tomucatos-open-legend-rpg-system.banes");
-    if ( banePack ) {
-      for ( const bane of await banePack.getDocuments() ) {
-        const attrs = (bane.system?.attacks ?? []).map(a => String(a.attackingAttribute ?? "").toLowerCase());
-        if ( attrLowers && !attrs.some(a => attrLowers.has(a)) ) continue;
-        const pl = Number(bane.system?.powerLevel ?? 0);
-        if ( pl > maxPl ) continue;
-        const levels = discreteLevels(bane);
-        options.push({ kind: "bane", uuid: bane.uuid, name: bane.name, powerLevel: pl, levels: levels.length ? levels : [pl] });
-      }
+    for ( const bane of await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes") ) {
+      const attrs = (bane.system?.attacks ?? []).map(a => String(a.attackingAttribute ?? "").toLowerCase());
+      if ( attrLowers && !attrs.some(a => attrLowers.has(a)) ) continue;
+      const pl = Number(bane.system?.powerLevel ?? 0);
+      if ( pl > maxPl ) continue;
+      const levels = discreteLevels(bane);
+      options.push({ kind: "bane", uuid: bane.uuid, name: bane.name, powerLevel: pl, levels: levels.length ? levels : [pl] });
     }
-    const boonPack = game.packs?.get("tomucatos-open-legend-rpg-system.boons");
-    if ( boonPack ) {
-      for ( const boon of await boonPack.getDocuments() ) {
-        const attrs = (boon.system?.attributes ?? []).map(a => String(a).toLowerCase());
-        if ( attrLowers && !attrs.some(a => attrLowers.has(a)) ) continue;
-        // The aura itself is a boon; don't let it radiate itself.
-        if ( String(boon.name).trim().toLowerCase() === "aura" ) continue;
-        const pl = Number(boon.system?.powerLevel ?? 0);
-        if ( pl > maxPl ) continue;
-        const levels = discreteLevels(boon);
-        options.push({ kind: "boon", uuid: boon.uuid, name: boon.name, powerLevel: pl, levels: levels.length ? levels : [pl] });
-      }
+    for ( const boon of await selectableDocuments("boon", "tomucatos-open-legend-rpg-system.boons") ) {
+      const attrs = (boon.system?.attributes ?? []).map(a => String(a).toLowerCase());
+      if ( attrLowers && !attrs.some(a => attrLowers.has(a)) ) continue;
+      // The aura itself is a boon; don't let it radiate itself.
+      if ( String(boon.name).trim().toLowerCase() === "aura" ) continue;
+      const pl = Number(boon.system?.powerLevel ?? 0);
+      if ( pl > maxPl ) continue;
+      const levels = discreteLevels(boon);
+      options.push({ kind: "boon", uuid: boon.uuid, name: boon.name, powerLevel: pl, levels: levels.length ? levels : [pl] });
     }
     options.sort((a, b) => (a.kind.localeCompare(b.kind)) || (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
     // The option value encodes "kind|uuid" so the pick handler knows both.

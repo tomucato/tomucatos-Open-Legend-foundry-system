@@ -202,6 +202,20 @@ Hooks.once('init', async function() {
     default: true
   });
 
+  // Item privacy: world items (feats, boons, banes, perks, flaws, weapons, armor,
+  // gear) carry a "Private" checkbox that hides them from the system's selection
+  // lists (feat/perk/flaw pickers, action boon/bane pickers, extraordinary item
+  // boon/bane selects, the inventory Add browser). This setting flips the DEFAULT
+  // for newly created world items: on → new items start private.
+  game.settings.register(OPENLEGEND.SYSTEM_ID, "createItemsPrivate", {
+    name: "Create New Items as Private",
+    hint: "New world items (feats, boons, banes, perks, flaws, weapons, armor, gear) start with their Private checkbox on, hiding them from the system's selection lists. Each item's Private checkbox can still be toggled on its sheet.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
+
   // GM-side handler that creates an area Region on request from a non-GM placer
   // (see previewAreaTemplate). Registered here so CONFIG.queries is ready before
   // the first placement.

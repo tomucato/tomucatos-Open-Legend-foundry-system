@@ -2,6 +2,12 @@
   <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
   <div class="header-fields">
     <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Flaw Name"/></h1>
+    <div class="item-stats flexrow gear-stats gear-flags">
+      <label class="gear-check" data-tooltip="Make it private: when checked, this flaw is hidden from the system's selection lists (the character sheet's flaw picker). The flaw itself still works normally.">
+        <input type="checkbox" name="system.private" {{checked system.private}}/>
+        <span>Private <i class="fas fa-circle-info"></i></span>
+      </label>
+    </div>
   </div>
 </header>
 

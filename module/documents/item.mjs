@@ -57,6 +57,16 @@ export class OpenLegendItem extends Item {
       this.updateSource({ img: "icons/svg/aura.svg" });
     }
 
+    // "Create New Items as Private" setting: new WORLD items of a type that has
+    // the Private flag start private (hidden from the system's selection lists).
+    // Only when the incoming data carries no explicit value — a duplicate or an
+    // import keeps whatever it already stored.
+    if ( !this.parent && !this.pack && ("private" in (this.system ?? {}))
+         && (data.system?.private === undefined)
+         && game.settings.get(CONFIG.OPENLEGEND.SYSTEM_ID, "createItemsPrivate") ) {
+      this.updateSource({ "system.private": true });
+    }
+
     return allowed;
   }
 

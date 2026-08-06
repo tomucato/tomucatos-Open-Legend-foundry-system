@@ -21,6 +21,12 @@
         <input type="text" name="system.duration" value="{{system.duration}}"/>
       </div>
     </div>
+    <div class="item-stats flexrow gear-stats gear-flags">
+      <label class="gear-check" data-tooltip="Make it private: when checked, this boon is hidden from the system's selection lists (action boon pickers, extraordinary-item boon selects, feat-choice pickers). The boon itself still works normally.">
+        <input type="checkbox" name="system.private" {{checked system.private}}/>
+        <span>Private <i class="fas fa-circle-info"></i></span>
+      </label>
+    </div>
   </div>
 </header>
 

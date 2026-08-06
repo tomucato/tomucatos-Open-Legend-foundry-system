@@ -25,6 +25,12 @@
         <input type="text" name="system.failDuration" value="{{system.failDuration}}"/>
       </div>
     </div>
+    <div class="item-stats flexrow gear-stats gear-flags">
+      <label class="gear-check" data-tooltip="Make it private: when checked, this bane is hidden from the system's selection lists (action bane pickers, extraordinary-item bane selects, feat-choice pickers). The bane itself still works normally.">
+        <input type="checkbox" name="system.private" {{checked system.private}}/>
+        <span>Private <i class="fas fa-circle-info"></i></span>
+      </label>
+    </div>
   </div>
 </header>
 

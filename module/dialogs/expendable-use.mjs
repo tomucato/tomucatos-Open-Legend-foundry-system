@@ -22,6 +22,7 @@
  * (stack decrements, the last one is deleted) — gated by the "Expend Used
  * Expendable Items" world setting.
  */
+import { selectableDocuments } from "../helpers/utils.mjs";
 
 /** The item's usable bane grants, resolved to their compendium docs. */
 async function resolveGrants(item, cfg) {
@@ -61,8 +62,8 @@ function discreteLevels(doc, cap) {
  */
 async function attributeInvocables(attrLabel, score) {
   const out = [];
-  const banePack = game.packs?.get("tomucatos-open-legend-rpg-system.banes");
-  for ( const bane of (banePack ? await banePack.getDocuments() : []) ) {
+  const docs = await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes");
+  for ( const bane of docs ) {
     const attacks = bane.system?.attacks ?? [];
     const match = attacks.find(a => String(a.attackingAttribute ?? "").toLowerCase() === String(attrLabel).toLowerCase());
     if ( !match ) continue;

@@ -202,11 +202,13 @@
                 "description": "",
                 "powerLevel": 1,
                 "invocationTime": "1 major action",
-                "duration": "1 round"
+                "duration": "1 round",
+                "private": false
             },
             "physical": {
                 "description": "",
                 "notes": "",
+                "private": false,
                 "wealthLevel": 1,
                 "bulky": false,
                 "heavy": false,
@@ -245,10 +247,12 @@
             "gameEffects": []
         },
         "perk": {
-            "description": ""
+            "description": "",
+            "private": false
         },
         "flaw": {
-            "description": ""
+            "description": "",
+            "private": false
         },
         "effect": {
             "description": ""
@@ -269,7 +273,8 @@
                 "value": ""
             },
             "multi": false,
-            "baseName": ""
+            "baseName": "",
+            "private": false
         },
         "weapon": {
             "templates": [

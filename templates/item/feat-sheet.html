@@ -16,6 +16,10 @@
         <input type="text" name="system.choice.value" value="{{system.choice.value}}" placeholder="—"/>
       </div>
       {{/if}}
+      <label class="gear-check" data-tooltip="Make it private: when checked, this feat is hidden from the system's selection lists (the Feats tab picker). The feat itself still works normally.">
+        <input type="checkbox" name="system.private" {{checked system.private}}/>
+        <span>Private <i class="fas fa-circle-info"></i></span>
+      </label>
     </div>
   </div>
 </header>

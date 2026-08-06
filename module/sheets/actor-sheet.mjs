@@ -2,6 +2,7 @@ import { openRollDialog, actorRollModifiers } from "../dice/roll-dialog.mjs";
 import { rollAction, prepareActionRoll } from "../dice/action-roll.mjs";
 import * as Forms from "../forms.mjs";
 import * as Companion from "../companion.mjs";
+import { selectableDocuments } from "../helpers/utils.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -808,16 +809,17 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       overHands: handsUsed > maxHands
     };
 
-    // Perk / Flaw pickers: options from the compendium (excluding owned), plus
-    // whether the recommended per-character count has been exceeded (soft rule:
-    // the picker stays available, the sheet just flags the overage).
+    // Perk / Flaw pickers: options from the compendium and non-private world
+    // items (excluding owned), plus whether the recommended per-character count
+    // has been exceeded (soft rule: the picker stays available, the sheet just
+    // flags the overage).
     context.perkPicker = {
-      options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.perks", context.perks),
+      options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.perks", context.perks, "perk"),
       overMax: context.perks.length > OpenLegendActorSheet.MAX_PERKS,
       max: OpenLegendActorSheet.MAX_PERKS
     };
     context.flawPicker = {
-      options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.flaws", context.flaws),
+      options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.flaws", context.flaws, "flaw"),
       overMax: context.flaws.length > OpenLegendActorSheet.MAX_FLAWS,
       max: OpenLegendActorSheet.MAX_FLAWS
     };
@@ -831,22 +833,38 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
   }
 
   /**
-   * Read a system compendium index and return {uuid, name} options for items the
-   * actor does not already have (matched by name), sorted by name.
+   * Build {uuid, name} options for a picker from world items of a type plus the
+   * system compendium's index, skipping items the actor already has (matched by
+   * name), sorted by name. World items come first so a GM's customised copy wins
+   * over a same-named compendium entry; world items marked Private are hidden.
    * @param {string} packId   e.g. "tomucatos-open-legend-rpg-system.perks"
    * @param {Array} owned     Items of that type already on the actor.
+   * @param {string|null} type  Item type whose world items join the list
+   *                            (e.g. "perk"); null → compendium only.
    * @returns {Promise<Array<{uuid: string, name: string}>>}
    * @private
    */
-  async _getCompendiumOptions(packId, owned = []) {
-    const pack = game.packs?.get(packId);
-    if ( !pack ) return [];
-    const index = await pack.getIndex();
+  async _getCompendiumOptions(packId, owned = [], type = null) {
     const have = new Set(owned.map(i => i.name));
-    return index.contents
-      .filter(e => !have.has(e.name))
-      .map(e => ({ uuid: e.uuid, name: e.name }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const options = [];
+    const push = (uuid, name) => {
+      if ( !uuid || !name || have.has(name) ) return;
+      have.add(name);
+      options.push({ uuid, name });
+    };
+    if ( type ) {
+      for ( const item of game.items ?? [] ) {
+        if ( item.type !== type ) continue;
+        if ( !item.visible || item.system?.private ) continue;
+        push(item.uuid, item.name);
+      }
+    }
+    const pack = game.packs?.get(packId);
+    if ( pack ) {
+      const index = await pack.getIndex();
+      for ( const e of index.contents ) push(e.uuid, e.name);
+    }
+    return options.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   /**
@@ -1430,7 +1448,7 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     // feat, so it wouldn't otherwise be excluded by ownership).
     if ( onSecondaryForm ) exclude.push({ name: Forms.ALTERNATE_FORM_FEAT });
     context.featPicker = {
-      options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.feats", exclude)
+      options: await this._getCompendiumOptions("tomucatos-open-legend-rpg-system.feats", exclude, "feat")
     };
   }
 
@@ -2002,7 +2020,8 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
 
   /**
    * Resolve the option list for a feat-choice type. Compendium-backed types
-   * (bane / boon / weapon) list the matching pack's index; "attribute" lists
+   * (bane / boon / weapon) list the matching pack's index plus non-private
+   * world items of that type; "attribute" lists
    * the config labels; "energy" / "mode" come from OPENLEGEND.featChoices.
    * "text" (and any unknown type) returns [] — free-form input.
    * @param {string} type
@@ -2017,7 +2036,14 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       case "weapon": {
         const pack = game.packs?.get(`tomucatos-open-legend-rpg-system.${type}s`);
         const index = pack ? await pack.getIndex() : [];
-        return [...index].map(e => e.name).sort((a, b) => a.localeCompare(b));
+        const names = new Set([...index].map(e => e.name));
+        // World-created banes/boons/weapons are choosable too, unless Private.
+        for ( const item of game.items ?? [] ) {
+          if ( item.type !== type ) continue;
+          if ( !item.visible || item.system?.private ) continue;
+          names.add(item.name);
+        }
+        return [...names].sort((a, b) => a.localeCompare(b));
       }
       case "attribute":
         return Object.values(cfg.attributeLabels ?? {});
@@ -2558,14 +2584,15 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     const keyForLabel = {};
     for ( const [k, v] of Object.entries(labels) ) keyForLabel[String(v).toLowerCase()] = k;
 
-    const pack = game.packs?.get("tomucatos-open-legend-rpg-system.boons");
-    const docs = pack ? await pack.getDocuments() : [];
+    // Non-private world boons plus the system compendium's (world wins on a
+    // name tie).
+    const docs = await selectableDocuments("boon", "tomucatos-open-legend-rpg-system.boons");
     const boons = docs.map(b => ({
       uuid: b.uuid, name: b.name,
       pl: Math.max(1, Math.floor(Number(b.system?.powerLevel) || 1)),
       attrs: (b.system?.attributes ?? []).map(a => String(a))
     })).sort((a, b) => a.name.localeCompare(b.name));
-    if ( !boons.length ) { ui.notifications?.warn("No boons found in the compendium."); return null; }
+    if ( !boons.length ) { ui.notifications?.warn("No boons found."); return null; }
 
     const maxScore = cfg.maxScore ?? 9;
     const boonOpts = boons.map((b, i) => `<option value="${i}">${esc(b.name)} (PL ${b.pl})</option>`).join("");
@@ -3581,10 +3608,11 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       entries.push({ uuid, name, img: img || "icons/svg/item-bag.svg", source });
     };
 
-    // World items (a GM's customised copies) come first.
+    // World items (a GM's customised copies) come first. Items marked Private
+    // are left out of the browser.
     for ( const item of game.items ?? [] ) {
       if ( item.type !== type ) continue;
-      if ( !item.visible ) continue;
+      if ( !item.visible || item.system?.private ) continue;
       push(item.uuid, item.name, item.img, "World");
     }
 
@@ -3593,7 +3621,9 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       if ( pack.private && !game.user?.isGM ) continue;
       let index;
       try {
-        index = await pack.getIndex();
+        // Index the Private flag too, so items a GM exported to a custom
+        // compendium keep respecting it.
+        index = await pack.getIndex({ fields: ["system.private"] });
       } catch ( err ) {
         console.warn(`Open Legend | Could not index compendium ${pack.collection}`, err);
         continue;
@@ -3601,6 +3631,7 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       const label = pack.metadata?.label ?? pack.collection;
       for ( const e of index ) {
         if ( e.type !== type ) continue;
+        if ( e.system?.private ) continue;
         push(e.uuid, e.name, e.img, label);
       }
     }

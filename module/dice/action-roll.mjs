@@ -1,5 +1,6 @@
 import { openRollDialog, actorRollModifiers, buildFormula } from "./roll-dialog.mjs";
 import { promptNullifyRemoval, promptRestorationDispel } from "../dialogs/bane-dialogs.mjs";
+import { selectableDocuments } from "../helpers/utils.mjs";
 
 /**
  * The advantage an attack gains from a weapon's Deadly Extraordinary property:
@@ -2032,17 +2033,16 @@ export async function attackBaneDialog({ actorUuid, tokenUuid, attrScore, total,
   const tActor = tokenDoc?.actor ?? tokenDoc;
   const tName = tokenDoc?.name ?? tActor?.name ?? "the target";
 
-  // Banes from the banes compendium invocable at power level ≤ the attribute score.
-  // A bane's `pl` here is the HIGHEST level it defines that is ≤ the cap — the same
+  // Banes invocable at power level ≤ the attribute score: non-private world
+  // banes plus the system compendium's (world wins on a name tie). A bane's
+  // `pl` here is the HIGHEST level it defines that is ≤ the cap — the same
   // level postBaneCard will actually apply — NOT its base/minimum level, so the
   // picker shows what you'll really get. `minPl` (its lowest breakpoint) decides
   // whether the bane is invocable at all (a bane whose cheapest level exceeds the
   // cap can't be applied). Falls back to the base powerLevel when a bane has no
   // powerEffects breakpoints.
-  const pack = game.packs?.get("tomucatos-open-legend-rpg-system.banes");
-  if ( !pack ) { ui.notifications?.warn("Banes compendium not found."); return; }
-  const index = await pack.getIndex({ fields: ["system.powerLevel", "system.attacks", "system.powerEffects"] });
-  const banes = [...index]
+  const docs = await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes");
+  const banes = docs
     .map(e => {
       const base = Math.max(0, Math.floor(Number(e.system?.powerLevel) || 0));
       const levels = [...new Set((e.system?.powerEffects ?? [])
@@ -2051,7 +2051,7 @@ export async function attackBaneDialog({ actorUuid, tokenUuid, attrScore, total,
       const minPl = all.length ? all[0] : base;
       const reachable = all.filter(l => l <= cap);
       const pl = reachable.length ? reachable[reachable.length - 1] : minPl;   // highest ≤ cap
-      return { id: e._id, name: e.name, pl, minPl,
+      return { id: e.uuid, name: e.name, pl, minPl,
                defenseKey: String((e.system?.attacks ?? [])[0]?.defense || "guard").trim().toLowerCase(),
                focus: focused.has(String(e.name).trim().toLowerCase()),
                baneful: !!banefulName && (String(e.name).trim().toLowerCase() === banefulName) };
@@ -2103,7 +2103,7 @@ export async function attackBaneDialog({ actorUuid, tokenUuid, attrScore, total,
   });
   if ( !baneId ) return;
 
-  const bane = await pack.getDocument(baneId);
+  const bane = await fromUuid(baneId);
   if ( !bane ) { ui.notifications?.warn("Bane not found."); return; }
   // Potent Bane (feat): if the attacker has it for this bane, the bane is Potent.
   const potent = cfg.isPotentBane?.(actor, bane.name) ?? false;
@@ -2266,11 +2266,10 @@ export async function missMoveNote(name) {
  */
 export async function missEffectBaneDialog({ tokenUuid, name = "the target", actorUuid = "" }) {
   const esc = s => foundry.utils.escapeHTML?.(s) ?? s;
-  const pack = game.packs?.get("tomucatos-open-legend-rpg-system.banes");
-  if ( !pack ) { ui.notifications?.warn("Banes compendium not found."); return; }
-  const index = await pack.getIndex({ fields: ["system.powerLevel"] });
-  const banes = [...index]
-    .map(e => ({ id: e._id, name: e.name, pl: Math.max(0, Math.floor(Number(e.system?.powerLevel) || 0)) }))
+  // Non-private world banes plus the system compendium's (world wins on a name tie).
+  const docs = await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes");
+  const banes = docs
+    .map(e => ({ id: e.uuid, name: e.name, pl: Math.max(0, Math.floor(Number(e.system?.powerLevel) || 0)) }))
     .filter(b => b.pl > 0 && b.pl <= MISS_BANE_PL_CAP)
     .sort((a, b) => (a.pl - b.pl) || a.name.localeCompare(b.name));
   if ( !banes.length ) { ui.notifications?.warn(`No banes at power level ≤ ${MISS_BANE_PL_CAP}.`); return; }
@@ -2299,7 +2298,7 @@ export async function missEffectBaneDialog({ tokenUuid, name = "the target", act
   });
   if ( !baneId ) return;
 
-  const bane = await pack.getDocument(baneId);
+  const bane = await fromUuid(baneId);
   if ( !bane ) { ui.notifications?.warn("Bane not found."); return; }
   const actor = actorUuid ? await fromUuid(actorUuid) : null;
   const cfg = CONFIG.OPENLEGEND ?? {};
@@ -3811,17 +3810,14 @@ async function promptBarrierProperties(boon, actor, powerLevel) {
   // the Baneful sub-pick. Match against the boon's invoking-attribute list.
   const baneAttrs = new Set((boon.system?.attributes ?? []).map(a => String(a).toLowerCase()));
   const baneOpts = [];
-  const banePack = game.packs?.get("tomucatos-open-legend-rpg-system.banes");
-  if ( banePack ) {
-    for ( const bane of await banePack.getDocuments() ) {
-      const ba = (bane.system?.attacks ?? []).map(a => String(a.attackingAttribute ?? "").toLowerCase());
-      if ( !ba.some(a => baneAttrs.has(a)) ) continue;
-      const bpl = Number(bane.system?.powerLevel ?? 0);
-      if ( bpl > pl ) continue;
-      baneOpts.push({ uuid: bane.uuid, name: bane.name, powerLevel: bpl });
-    }
-    baneOpts.sort((a, b) => (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
+  for ( const bane of await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes") ) {
+    const ba = (bane.system?.attacks ?? []).map(a => String(a.attackingAttribute ?? "").toLowerCase());
+    if ( !ba.some(a => baneAttrs.has(a)) ) continue;
+    const bpl = Number(bane.system?.powerLevel ?? 0);
+    if ( bpl > pl ) continue;
+    baneOpts.push({ uuid: bane.uuid, name: bane.name, powerLevel: bpl });
   }
+  baneOpts.sort((a, b) => (a.powerLevel - b.powerLevel) || a.name.localeCompare(b.name));
 
   const checks = pool.map(key => {
     const def = defs[key] ?? { key, label: key, description: "" };
