@@ -1776,6 +1776,14 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .inv-section-head .item-create {
   margin-top: 0;
 }
+/* The pair of section controls: "Add" (pick an existing item from a compendium)
+   and "Create" (a new blank item). */
+.openlegend.sheet .inv-section-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
 .openlegend.sheet .inv-list {
   list-style: none;
   margin: 0;
@@ -4838,6 +4846,81 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
 .ol-choice-open .ol-choice-suggest,
 .ol-choice-open input {
   width: 100%;
+}
+
+/* ============================================================
+   Inventory item picker ("Add" on a Weapons / Armor / Gear section):
+   a search field over a scrolling list of compendium + world items.
+   ============================================================ */
+.ol-item-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ol-item-picker .ol-picker-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid rgba(194, 146, 43, 0.55);
+  border-radius: 6px;
+  background: rgba(128, 128, 128, 0.08);
+}
+.ol-item-picker .ol-picker-search i {
+  color: #c2922b;
+}
+.ol-item-picker .ol-picker-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+.ol-item-picker .ol-picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 6px;
+}
+.ol-item-picker .ol-picker-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+/* `display: grid` above would otherwise beat the UA's `[hidden] {display:none}`,
+   so filtered-out rows need an explicit override. */
+.ol-item-picker .ol-picker-row[hidden] { display: none; }
+.ol-item-picker .ol-picker-row:last-child { border-bottom: none; }
+.ol-item-picker .ol-picker-row:hover {
+  background: rgba(194, 146, 43, 0.22);
+}
+.ol-item-picker .ol-picker-row.selected {
+  background: rgba(194, 146, 43, 0.32);
+  box-shadow: inset 3px 0 0 #c2922b;
+}
+.ol-item-picker .ol-picker-row img {
+  border: none;
+  object-fit: contain;
+}
+.ol-item-picker .ol-picker-name {
+  font-weight: 600;
+}
+.ol-item-picker .ol-picker-source {
+  font-size: 11px;
+  font-style: italic;
+  opacity: 0.7;
+}
+.ol-item-picker .ol-picker-empty {
+  margin: 0;
+  text-align: center;
+  font-style: italic;
 }
 
 /* ============================================================

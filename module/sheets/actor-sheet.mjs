@@ -39,6 +39,7 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
       imagePopout: OpenLegendActorSheet.#onImagePopout,
       statReport: OpenLegendActorSheet.#onStatReport,
       itemCreate: OpenLegendActorSheet.#onItemCreate,
+      itemBrowse: OpenLegendActorSheet.#onItemBrowse,
       featureCreate: OpenLegendActorSheet.#onFeatureCreate,
       itemEdit: OpenLegendActorSheet.#onItemEdit,
       itemDelete: OpenLegendActorSheet.#onItemDelete,
@@ -3553,6 +3554,200 @@ export class OpenLegendActorSheet extends HandlebarsApplicationMixin(ActorSheetV
     // Open the freshly-created action so the user can fill in its form right away.
     if ( type === "action" ) OpenLegendActorSheet.#openDocumentSheet(created);
     return created;
+  }
+
+  /**
+   * Every existing Item of one inventory type the player can add: the world's
+   * Items directory first, then every Item compendium the user can see. The
+   * physical item types are spread across packs (a weapon lives in `weapons`
+   * OR in `extraordinary-items`), so the whole index is scanned and filtered by
+   * type rather than reading one pack per section.
+   *
+   * Entries are deduped per source (the same name twice in one pack collapses to
+   * one row) but NOT across sources — a world "Longsword" and the compendium's
+   * are genuinely different documents, so both are listed and the source column
+   * tells them apart. Sorted by name.
+   * @param {string} type  "weapon" | "armor" | "gear"
+   * @returns {Promise<Array<{uuid: string, name: string, img: string, source: string}>>}
+   * @private
+   */
+  static async #browsableItems(type) {
+    const entries = [];
+    const seen = new Set();
+    const push = (uuid, name, img, source) => {
+      const key = `${name} ${source}`;
+      if ( !uuid || !name || seen.has(key) ) return;
+      seen.add(key);
+      entries.push({ uuid, name, img: img || "icons/svg/item-bag.svg", source });
+    };
+
+    // World items (a GM's customised copies) come first.
+    for ( const item of game.items ?? [] ) {
+      if ( item.type !== type ) continue;
+      if ( !item.visible ) continue;
+      push(item.uuid, item.name, item.img, "World");
+    }
+
+    for ( const pack of game.packs ?? [] ) {
+      if ( pack.documentName !== "Item" ) continue;
+      if ( pack.private && !game.user?.isGM ) continue;
+      let index;
+      try {
+        index = await pack.getIndex();
+      } catch ( err ) {
+        console.warn(`Open Legend | Could not index compendium ${pack.collection}`, err);
+        continue;
+      }
+      const label = pack.metadata?.label ?? pack.collection;
+      for ( const e of index ) {
+        if ( e.type !== type ) continue;
+        push(e.uuid, e.name, e.img, label);
+      }
+    }
+
+    return entries.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  /**
+   * "Add" control on an inventory section: pick an EXISTING item of that section's
+   * type (from the world Items directory or any Item compendium) through a
+   * searchable dialog, then embed a copy of it on the actor. The blank-item path
+   * stays on the sibling "Create" control (#onItemCreate).
+   * @this {OpenLegendActorSheet}
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target  The control carrying data-type.
+   */
+  static async #onItemBrowse(event, target) {
+    event.preventDefault();
+    const type = target.dataset.type;
+    if ( !type ) return null;
+
+    const entries = await OpenLegendActorSheet.#browsableItems(type);
+    if ( !entries.length ) {
+      ui.notifications?.warn(`No ${type} items were found in the compendiums — use Create to make one.`);
+      return null;
+    }
+
+    const uuid = await OpenLegendActorSheet.#promptItemPicker(type, entries);
+    if ( !uuid ) return null;
+
+    const doc = await fromUuid(uuid);
+    if ( !doc ) {
+      ui.notifications?.warn("Selected item could not be found.");
+      return null;
+    }
+    // Inventory types are shared across forms, so the copy always lands on the
+    // live actor (this.document; this.actor is the clone while previewing a form).
+    const [created] = await this.document.createEmbeddedDocuments("Item", [doc.toObject()]);
+    return created ?? null;
+  }
+
+  /**
+   * The item-picker dialog: a search field that live-filters a list of rows
+   * (name + source pack). Clicking a row selects it; double-clicking, or
+   * pressing Enter in the search field when exactly one row matches, confirms
+   * immediately. Resolves to the chosen item's uuid, or null on cancel.
+   * @param {string} type  "weapon" | "armor" | "gear"
+   * @param {Array<{uuid: string, name: string, img: string, source: string}>} entries
+   * @returns {Promise<string|null>}
+   * @private
+   */
+  static async #promptItemPicker(type, entries) {
+    const esc = s => foundry.utils.escapeHTML?.(s) ?? s;
+    const labels = { weapon: "Weapon", armor: "Armor", gear: "Adventuring Gear" };
+    const label = labels[type] ?? type.capitalize();
+
+    const rows = entries.map(e => `
+      <li class="ol-picker-row" data-uuid="${esc(e.uuid)}" data-search="${esc(`${e.name} ${e.source}`.toLowerCase())}">
+        <img src="${esc(e.img)}" alt="" width="24" height="24"/>
+        <span class="ol-picker-name">${esc(e.name)}</span>
+        <span class="ol-picker-source">${esc(e.source)}</span>
+      </li>`).join("");
+
+    const content = `
+      <div class="ol-item-picker">
+        <div class="ol-picker-search">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" name="filter" placeholder="Search ${esc(label)}…" autocomplete="off" autofocus/>
+        </div>
+        <ol class="ol-picker-list">${rows}</ol>
+        <p class="ol-picker-empty hint" hidden>No match.</p>
+      </div>`;
+
+    const { DialogV2 } = foundry.applications.api;
+    const result = await DialogV2.wait({
+      window: { title: `Add ${label}` },
+      classes: ["openlegend", "ol-item-picker-app"],
+      position: { width: 460 },
+      content,
+      rejectClose: false,
+      render: (event, dialog) => {
+        const root = dialog.element;
+        const input = root.querySelector('input[name="filter"]');
+        const list = root.querySelector(".ol-picker-list");
+        const empty = root.querySelector(".ol-picker-empty");
+        const confirm = () => root.querySelector('button[data-action="ok"]')?.click();
+        const visibleRows = () => Array.from(list.querySelectorAll(".ol-picker-row:not([hidden])"));
+
+        const select = row => {
+          for ( const r of list.querySelectorAll(".ol-picker-row.selected") ) r.classList.remove("selected");
+          if ( row ) row.classList.add("selected");
+        };
+
+        list.addEventListener("click", ev => {
+          const row = ev.target.closest(".ol-picker-row");
+          if ( row ) select(row);
+        });
+        list.addEventListener("dblclick", ev => {
+          const row = ev.target.closest(".ol-picker-row");
+          if ( !row ) return;
+          select(row);
+          confirm();
+        });
+
+        input?.addEventListener("input", () => {
+          const q = input.value.trim().toLowerCase();
+          let shown = 0;
+          for ( const row of list.querySelectorAll(".ol-picker-row") ) {
+            const match = !q || row.dataset.search.includes(q);
+            row.hidden = !match;
+            if ( match ) shown++;
+          }
+          if ( empty ) empty.hidden = shown > 0;
+          // Keep the selection meaningful: drop it when the filter hides it.
+          const selected = list.querySelector(".ol-picker-row.selected");
+          if ( selected?.hidden ) select(null);
+        });
+
+        input?.addEventListener("keydown", ev => {
+          if ( ev.key !== "Enter" ) return;
+          ev.preventDefault();
+          // Enter confirms when the filter has narrowed things down to one row
+          // (or when a row is already selected).
+          const rows = visibleRows();
+          if ( !list.querySelector(".ol-picker-row.selected") && (rows.length === 1) ) select(rows[0]);
+          confirm();
+        });
+      },
+      buttons: [
+        {
+          action: "ok",
+          label: "Add",
+          icon: "fas fa-plus",
+          default: true,
+          callback: (event, button, dialog) =>
+            dialog.element.querySelector(".ol-picker-row.selected")?.dataset.uuid ?? ""
+        },
+        { action: "cancel", label: "Cancel", icon: "fas fa-times" }
+      ]
+    });
+
+    if ( typeof result !== "string" ) return null;
+    if ( !result ) {
+      ui.notifications?.warn(`Choose ${type === "armor" ? "an" : "a"} ${type} from the list.`);
+      return null;
+    }
+    return result;
   }
 
   /**

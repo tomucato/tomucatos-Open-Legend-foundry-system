@@ -29,9 +29,14 @@
   <div class="inv-section">
     <div class="inv-section-head">
       <h2>{{label}}</h2>
-      <a class="item-create" data-action="itemCreate" data-type="{{type}}">
-        <i class="fas fa-plus"></i> Add
-      </a>
+      <div class="inv-section-actions">
+        <a class="item-create" data-action="itemBrowse" data-type="{{type}}" title="Add an existing {{label}} item from the compendiums">
+          <i class="fas fa-book-open"></i> Add
+        </a>
+        <a class="item-create" data-action="itemCreate" data-type="{{type}}" title="Create a new blank item">
+          <i class="fas fa-plus"></i> Create
+        </a>
+      </div>
     </div>
     <div class="inv-list">
       <div class="inv-row inv-head">
@@ -86,9 +91,14 @@
   <div class="inv-section">
     <div class="inv-section-head">
       <h2>Armor</h2>
-      <a class="item-create" data-action="itemCreate" data-type="armor">
-        <i class="fas fa-plus"></i> Add
-      </a>
+      <div class="inv-section-actions">
+        <a class="item-create" data-action="itemBrowse" data-type="armor" title="Add an existing armor item from the compendiums">
+          <i class="fas fa-book-open"></i> Add
+        </a>
+        <a class="item-create" data-action="itemCreate" data-type="armor" title="Create a new blank armor item">
+          <i class="fas fa-plus"></i> Create
+        </a>
+      </div>
     </div>
     <div class="inv-list inv-armor">
       <div class="inv-row inv-armor-row inv-head">
@@ -158,9 +168,14 @@
         <i class="fas fa-hands"></i>
         <span>{{weaponSummary.handsUsed}} / {{weaponSummary.maxHands}} hands</span>
       </div>
-      <a class="item-create" data-action="itemCreate" data-type="weapon">
-        <i class="fas fa-plus"></i> Add
-      </a>
+      <div class="inv-section-actions">
+        <a class="item-create" data-action="itemBrowse" data-type="weapon" title="Add an existing weapon from the compendiums">
+          <i class="fas fa-book-open"></i> Add
+        </a>
+        <a class="item-create" data-action="itemCreate" data-type="weapon" title="Create a new blank weapon">
+          <i class="fas fa-plus"></i> Create
+        </a>
+      </div>
     </div>
     {{#if weaponSummary.overHands}}
     <p class="carry-warn">You have more weapons equipped than you have hands ({{weaponSummary.handsUsed}} / {{weaponSummary.maxHands}}).</p>
