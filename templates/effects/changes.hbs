@@ -10,7 +10,7 @@
         <p class="hint">A stacking condition (e.g. Fatigued) accrues LEVELS: re-applying the bane adds +1 level (capped at the highest row), and EVERY row at or below the current level applies (cumulative), not just the strongest. The field below then counts stacks, not power level.</p>
     </div>
     <div class="form-group ol-effect-pl">
-        <label>{{#if stacking}}Stack Level{{else}}Power Level{{/if}}</label>
+        <label>{{#if stacking}}Stack Level{{else}}Starting Power Level{{/if}}</label>
         <div class="form-fields">
             <input type="number" name="flags.openlegend.{{#if stacking}}stackLevel{{else}}powerLevel{{/if}}" value="{{currentLevel}}" min="0" step="1"/>
         </div>

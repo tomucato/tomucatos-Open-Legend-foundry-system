@@ -1,5 +1,11 @@
 <header class="sheet-header">
-  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="ol-portrait-col">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+    <label class="gear-check" data-tooltip="Make it private: when checked, this feat is hidden from the system's selection lists (the Feats tab picker). The feat itself still works normally.">
+      <input type="checkbox" name="system.private" {{checked system.private}}/>
+      <span>Private <i class="fas fa-circle-info"></i></span>
+    </label>
+  </div>
   <div class="header-fields">
     <div class="gear-stat field-name">
       <label>Name</label>
@@ -16,10 +22,6 @@
         <input type="text" name="system.choice.value" value="{{system.choice.value}}" placeholder="—"/>
       </div>
       {{/if}}
-      <label class="gear-check" data-tooltip="Make it private: when checked, this feat is hidden from the system's selection lists (the Feats tab picker). The feat itself still works normally.">
-        <input type="checkbox" name="system.private" {{checked system.private}}/>
-        <span>Private <i class="fas fa-circle-info"></i></span>
-      </label>
     </div>
   </div>
 </header>
@@ -36,7 +38,7 @@
     {{/if}}
 
     <h3 class="bane-heading">{{#if featMultiTier}}Tiers{{else}}Cost &amp; Prerequisite{{/if}}</h3>
-    {{#if editable}}
+    {{#if editTab.details}}
     <ol class="feat-tier-edit">
       {{#each featTierRows as |t|}}
       <li class="feat-tier-block" data-tier-index="{{t.index}}">
@@ -109,11 +111,11 @@
   </div>
 
   <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
-    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editTab.description}}disabled{{/unless}}>
       {{{enrichedDescription}}}
     </prose-mirror>
   </div>
   <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
-    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the character while they have this feat."}}
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" editable=editTab.effects effectsHint="These Active Effects are applied to the character while they have this feat."}}
   </div>
 </section>

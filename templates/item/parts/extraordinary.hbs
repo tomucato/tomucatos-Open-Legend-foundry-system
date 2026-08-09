@@ -1,6 +1,7 @@
 {{!--
-  Extraordinary Item editor — shared by weapon/armor/gear sheets.
-  The config is always editable; `system.extraordinary` is derived (in the Item
+  Extraordinary Item editor — shared by weapon/armor/gear sheets. Rendered
+  inside the Extraordinary tab, whose own Edit toggle locks/unlocks the fields
+  (see #applyTabEditState); `system.extraordinary` is derived (in the Item
   document) from whether any grant exists — adding the first attribute/boon/bane/
   property makes the item extraordinary, clearing them all makes it mundane.
   Edits four arrays: granted attributes, boons, banes, and properties.

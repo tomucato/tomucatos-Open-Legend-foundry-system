@@ -37,6 +37,7 @@ export class OpenLegendActiveEffectConfig extends ActiveEffectConfig {
   static DEFAULT_OPTIONS = {
     classes: ["ol-effect-config"],
     window: { resizable: true },
+    position: { width: 620 },
     actions: {
       addChange: OpenLegendActiveEffectConfig.#onAddChange,
       deleteChange: OpenLegendActiveEffectConfig.#onDeleteChange

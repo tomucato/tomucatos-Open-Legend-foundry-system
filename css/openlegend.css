@@ -77,6 +77,18 @@
   width: 96px;
   height: 96px;
 }
+/* Item-sheet header portrait column: the image with the Private toggle
+   tucked underneath it, centered. */
+.openlegend.sheet .ol-portrait-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+.openlegend.sheet .ol-portrait-col .gear-check {
+  white-space: nowrap;
+}
 .openlegend.sheet .profile-img {
   width: 96px;
   height: 96px;
@@ -1344,11 +1356,22 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet h4 + prose-mirror {
   margin-top: 6px;
 }
-/* The element's toggled-mode edit button (pencil). */
+/* The element's toggled-mode edit button (pencil), with the icon centered. */
 .openlegend.sheet prose-mirror button.toggle {
-  background: var(--ol-purple);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  background: #000;
   border: 1px solid var(--ol-gold);
   color: #fff;
+}
+/* While the editor is OPEN, hide that edit button — the editor's own menu bar
+   (with its save control) is showing; the pencil returns once the user saves
+   and the element drops its `open` state. */
+.openlegend.sheet prose-mirror[open] button.toggle {
+  display: none;
 }
 
 
@@ -1365,6 +1388,9 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
    keep that model and only override the column template (core ships 5 columns;
    we add the Level column for 6) — overriding `ol > li` to `grid` instead
    fights core's <ol> grid and the columns never line up. */
+.application.ol-effect-config {
+  min-width: 620px;
+}
 .application.ol-effect-config .tab.changes header,
 .application.ol-effect-config .tab.changes ol {
   grid-template-columns: 10rem 7rem 8rem 4.5rem 3.5rem 1.5rem;
@@ -2566,9 +2592,13 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
   color: #b5482b;
   cursor: pointer;
 }
-.openlegend.sheet .weapon-add-property {
+.openlegend.sheet .weapon-add-property,
+.openlegend.sheet .weapon-add-bane {
   width: 100%;
   max-width: 240px;
+}
+.openlegend.sheet .weapon-add-bane {
+  margin-top: 6px;
 }
 .openlegend.sheet .weapon-banes {
   list-style: none;
@@ -2581,6 +2611,13 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .weapon-bane i {
   color: var(--ol-gold);
   margin-right: 4px;
+}
+.openlegend.sheet .weapon-bane .weapon-prop-remove {
+  margin-left: 4px;
+}
+.openlegend.sheet .weapon-bane .weapon-prop-remove i {
+  color: #b5482b;
+  margin-right: 0;
 }
 
 /* ---- Draggable inventory rows ------------------------------------------- */
@@ -5173,15 +5210,17 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
 .ol-damage-types-config .ol-dt-add-fields input { flex: 1 1 auto; }
 .ol-damage-types-config .ol-dt-add-btn { flex: 0 0 auto; white-space: nowrap; }
 
-/* ---- Locked sheets (read-only view) ------------------------------------ */
+/* ---- Locked sheets & tabs (read-only view) ------------------------------ */
 /* A non-editable item sheet (locked compendium, observer permission) gets
-   .ol-locked from _onRender. Core auto-disables every form field on such a
-   sheet (DocumentSheetV2#_toggleDisabled); these rules restyle those disabled
-   fields as plain readable text — no sunken boxes, borders, or dimming — so
-   the sheet reads like a clean stat-block instead of a dead form. */
-.openlegend.sheet.item.ol-locked input:disabled,
-.openlegend.sheet.item.ol-locked select:disabled,
-.openlegend.sheet.item.ol-locked textarea:disabled {
+   .ol-locked on its ROOT from _onRender; on an editable sheet each TAB pane
+   still in view mode gets .ol-locked individually (per-tab Edit toggles —
+   see #applyTabEditState). Either way the fields inside are disabled; these
+   rules restyle those disabled fields as plain readable text — no sunken
+   boxes, borders, or dimming — so the content reads like a clean stat-block
+   instead of a dead form. */
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) input:disabled,
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) select:disabled,
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) textarea:disabled {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -5192,7 +5231,7 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   pointer-events: none;
 }
 /* Selects: drop the dropdown chrome so only the chosen value shows. */
-.openlegend.sheet.item.ol-locked select:disabled {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) select:disabled {
   appearance: none;
   -webkit-appearance: none;
   background-image: none;
@@ -5200,57 +5239,79 @@ button.ol-defend-punish.is-applied { opacity: 0.6; cursor: default; }
   text-overflow: ellipsis;
 }
 /* Number inputs: no spinners in the read-only view. */
-.openlegend.sheet.item.ol-locked input[type="number"]:disabled {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) input[type="number"]:disabled {
   appearance: textfield;
   -moz-appearance: textfield;
 }
-.openlegend.sheet.item.ol-locked input[type="number"]:disabled::-webkit-inner-spin-button,
-.openlegend.sheet.item.ol-locked input[type="number"]:disabled::-webkit-outer-spin-button {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) input[type="number"]:disabled::-webkit-inner-spin-button,
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) input[type="number"]:disabled::-webkit-outer-spin-button {
   display: none;
 }
 /* Checkboxes stay visible (their checked state is information), just undimmed. */
-.openlegend.sheet.item.ol-locked input[type="checkbox"]:disabled {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) input[type="checkbox"]:disabled {
   opacity: 1;
   pointer-events: none;
 }
 /* The item name reads as a title, not a boxed field. */
-.openlegend.sheet.item.ol-locked input.charname:disabled {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) input.charname:disabled {
   border-bottom-color: var(--ol-gold-light);
   font-weight: 700;
 }
 /* Mutation-only controls that aren't {{#if editable}}-gated in templates:
    effect enable/disable + delete (the edit/eye control stays — the config
    sheet opens read-only and is worth viewing). */
-.openlegend.sheet.item.ol-locked a[data-action="effectToggle"],
-.openlegend.sheet.item.ol-locked a[data-action="effectDelete"],
-.openlegend.sheet.item.ol-locked a[data-action="stepField"] {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) a[data-action="effectToggle"],
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) a[data-action="effectDelete"],
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) a[data-action="stepField"] {
   display: none;
 }
 /* Rich-text fields: hide the ProseMirror edit affordance; the enriched HTML
    body already renders read-only. */
-.openlegend.sheet.item.ol-locked prose-mirror button.toggle,
-.openlegend.sheet.item.ol-locked prose-mirror .editor-edit {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) prose-mirror button.toggle,
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) prose-mirror .editor-edit {
   display: none;
 }
 /* Row add/remove controls that templates don't gate on {{editable}} (boon/bane
    attack & power-effect rows, the extraordinary editor): all mutation-only, so
    hide them wholesale in the read-only view by action-name suffix. */
-.openlegend.sheet.item.ol-locked a[data-action$="Add"],
-.openlegend.sheet.item.ol-locked a[data-action$="Delete"],
-.openlegend.sheet.item.ol-locked a[data-action="weaponRemoveProperty"],
-.openlegend.sheet.item.ol-locked a[data-action="clearMacro"],
-.openlegend.sheet.item.ol-locked button.ol-row-generate,
-.openlegend.sheet.item.ol-locked button.ol-step-btn {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) a[data-action$="Add"],
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) a[data-action$="Delete"],
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) a[data-action="weaponRemoveProperty"],
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) a[data-action="clearMacro"],
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) button.ol-row-generate,
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) button.ol-step-btn {
   display: none;
 }
 /* The portrait opens a FilePicker on click — edit-only. */
-.openlegend.sheet.item.ol-locked img.profile-img {
+:is(.openlegend.sheet.item.ol-locked, .openlegend.sheet.item .tab.ol-locked) img.profile-img {
   pointer-events: none;
   cursor: default;
 }
-/* Title-bar Edit/Done toggle: gold while editing so the mode is visible at a
-   glance even after the tooltip fades. */
-.openlegend.sheet.item .ol-edit-toggle.fa-check {
+/* Per-tab Edit/Done toggle, injected as each tab pane's first child. It sits
+   on its OWN row (block + auto left margin pushes it right; align-self/order
+   cover flex-column tabs) so it never overlaps the tab's content. */
+.openlegend.sheet.item .tab > .ol-tab-edit {
+  display: block;
+  align-self: flex-end;
+  order: -1;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  margin: 0 0 6px auto;
+  padding: 0;
+  line-height: 24px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ol-purple) 0%, var(--ol-purple-light) 100%);
+  border: 1px solid var(--ol-gold);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.openlegend.sheet.item .tab > .ol-tab-edit:hover {
+  box-shadow: 0 0 4px var(--ol-purple-light);
+}
+/* Gold check while editing so the mode is visible at a glance even after the
+   tooltip fades. */
+.openlegend.sheet.item .tab > .ol-tab-edit.fa-check {
   color: var(--ol-gold-light, #e3b94f);
 }
 

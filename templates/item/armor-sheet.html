@@ -1,5 +1,11 @@
 <header class="sheet-header">
-  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="ol-portrait-col">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+    <label class="gear-check" data-tooltip="Make it private: when checked, this armor is hidden from the system's selection lists (the inventory Add browser). The armor itself still works normally.">
+      <input type="checkbox" name="system.private" {{checked system.private}}/>
+      <span>Private <i class="fas fa-circle-info"></i></span>
+    </label>
+  </div>
   <div class="header-fields">
     <div class="gear-stat field-name">
       <label>Name</label>
@@ -27,10 +33,6 @@
       <label class="gear-check" title="Equipped armor applies its defense bonus and speed penalty to the actor.">
         <input type="checkbox" name="system.equipped" {{checked system.equipped}}/>
         <span>Equipped</span>
-      </label>
-      <label class="gear-check" data-tooltip="Make it private: when checked, this armor is hidden from the system's selection lists (the inventory Add browser). The armor itself still works normally.">
-        <input type="checkbox" name="system.private" {{checked system.private}}/>
-        <span>Private <i class="fas fa-circle-info"></i></span>
       </label>
     </div>
   </div>
@@ -69,15 +71,15 @@
     {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/extraordinary.hbs"}}
   </div>
   <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
-    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the wearer while this armor is equipped."}}
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" editable=editTab.effects effectsHint="These Active Effects are applied to the wearer while this armor is equipped."}}
   </div>
   <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
-    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editTab.description}}disabled{{/unless}}>
       {{{enrichedDescription}}}
     </prose-mirror>
   </div>
   <div class="tab notes {{tabs.notes.cssClass}}" data-group="primary" data-tab="notes">
-    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editTab.notes}}disabled{{/unless}}>
       {{{enrichedNotes}}}
     </prose-mirror>
   </div>

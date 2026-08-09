@@ -1,5 +1,11 @@
 <header class="sheet-header">
-  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="ol-portrait-col">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+    <label class="gear-check" data-tooltip="Make it private: when checked, this bane is hidden from the system's selection lists (action bane pickers, extraordinary-item bane selects, feat-choice pickers). The bane itself still works normally.">
+      <input type="checkbox" name="system.private" {{checked system.private}}/>
+      <span>Private <i class="fas fa-circle-info"></i></span>
+    </label>
+  </div>
   <div class="header-fields">
     <div class="gear-stat field-name">
       <label>Name</label>
@@ -25,12 +31,6 @@
         <input type="text" name="system.failDuration" value="{{system.failDuration}}"/>
       </div>
     </div>
-    <div class="item-stats flexrow gear-stats gear-flags">
-      <label class="gear-check" data-tooltip="Make it private: when checked, this bane is hidden from the system's selection lists (action bane pickers, extraordinary-item bane selects, feat-choice pickers). The bane itself still works normally.">
-        <input type="checkbox" name="system.private" {{checked system.private}}/>
-        <span>Private <i class="fas fa-circle-info"></i></span>
-      </label>
-    </div>
   </div>
 </header>
 
@@ -47,9 +47,9 @@
 
     <div class="bane-section-head">
       <h3 class="bane-heading">Attacks</h3>
-      {{#if editable}}<a class="bane-row-add" data-action="attackAdd" title="Add Attack"><i class="fas fa-plus"></i> Add Attack</a>{{/if}}
+      {{#if editTab.details}}<a class="bane-row-add" data-action="attackAdd" title="Add Attack"><i class="fas fa-plus"></i> Add Attack</a>{{/if}}
     </div>
-    {{#if editable}}
+    {{#if editTab.details}}
     <ol class="bane-attacks-edit">
       <li class="bane-attack-erow bane-attack-head">
         <span>Attacking Attribute</span>
@@ -80,7 +80,7 @@
     </ul>
     {{/if}}
 
-    {{#if editable}}
+    {{#if editTab.details}}
     <h3 class="bane-heading">Description</h3>
     <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled>
       {{{enrichedDescription}}}
@@ -103,7 +103,7 @@
   </div>
 
   <div class="tab powerEffects {{tabs.powerEffects.cssClass}}" data-group="primary" data-tab="powerEffects">
-    {{#if editable}}
+    {{#if editTab.powerEffects}}
     <h3 class="bane-heading">Effect</h3>
     <prose-mirror name="system.effect" value="{{system.effect}}" document-uuid="{{document.uuid}}" toggled>
       {{{enrichedEffect}}}
@@ -115,9 +115,9 @@
 
     <div class="bane-section-head">
       <h3 class="bane-heading">Effects by Power Level</h3>
-      {{#if editable}}<a class="bane-row-add" data-action="powerEffectAdd" title="Add Power Level"><i class="fas fa-plus"></i> Add Level</a>{{/if}}
+      {{#if editTab.powerEffects}}<a class="bane-row-add" data-action="powerEffectAdd" title="Add Power Level"><i class="fas fa-plus"></i> Add Level</a>{{/if}}
     </div>
-    {{#if editable}}
+    {{#if editTab.powerEffects}}
     <ol class="bane-power-edit">
       {{#each powerEffectsRaw as |pe|}}
       <li class="bane-power-erow" data-index="{{pe.index}}">
@@ -147,6 +147,6 @@
   </div>
 
   <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
-    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the target when this bane is dragged onto a token, scaled to the invoked power level (each change row activates at its PL)."}}
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" editable=editTab.effects effectsHint="These Active Effects are applied to the target when this bane is dragged onto a token, scaled to the invoked power level (each change row activates at its PL)."}}
   </div>
 </section>

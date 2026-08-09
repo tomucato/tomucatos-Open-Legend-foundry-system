@@ -24,6 +24,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     actions: {
       weaponToggleCategory: OpenLegendItemSheet.#onWeaponToggleCategory,
       weaponRemoveProperty: OpenLegendItemSheet.#onWeaponRemoveProperty,
+      weaponBaneDelete: OpenLegendItemSheet.#onWeaponBaneDelete,
       stepField: OpenLegendItemSheet.#onStepField,
       effectCreate: OpenLegendItemSheet.#onEffectCreate,
       effectEdit: OpenLegendItemSheet.#onEffectEdit,
@@ -52,7 +53,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       featPreAdd: OpenLegendItemSheet.#onFeatPreAdd,
       featPreDelete: OpenLegendItemSheet.#onFeatPreDelete,
       clearMacro: OpenLegendItemSheet.#onClearMacro,
-      editModeToggle: OpenLegendItemSheet.#onEditModeToggle
+      tabEditToggle: OpenLegendItemSheet.#onTabEditToggle
     }
   };
 
@@ -141,67 +142,107 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   /* -------------------------------------------- */
 
   /**
-   * Whether the sheet is in EDIT mode. Item sheets open in VIEW mode — the
-   * clean stat-block presentation (the .ol-locked styling, no form chrome or
-   * add buttons) — and the title-bar Edit toggle switches the form on.
-   * Per-instance and non-persistent: reopening a sheet starts in view mode.
-   * @type {boolean}
+   * The tab ids currently in EDIT mode on this sheet. Each tab opens in VIEW
+   * mode — the clean stat-block presentation (the .ol-locked styling, no form
+   * chrome or add buttons) — and carries its own Edit toggle that switches
+   * just that tab's form on. The header (and the tab-less action sheet) is
+   * always editable. Per-instance and non-persistent: reopening a sheet
+   * starts every tab in view mode.
+   * @type {Set<string>}
    */
-  #editMode = false;
-
-  /**
-   * View mode renders (and submits) as read-only even for owners; the user
-   * enters edit mode explicitly. `super.isEditable` still gates the toggle
-   * itself, so locked-compendium / observer sheets never become editable.
-   * @override
-   */
-  get isEditable() {
-    return this.#editMode && super.isEditable;
-  }
+  #editTabs = new Set();
 
   /**
    * A brand-new document (sidebar "Create Item", a sheet's add buttons with
-   * renderSheet) has nothing to view yet — open it straight in edit mode.
-   * Everything else opens in the view presentation.
+   * renderSheet) has nothing to view yet — open it with every tab already in
+   * edit mode. Everything else opens in the view presentation.
    * @override
    */
   _configureRenderOptions(options) {
     super._configureRenderOptions(options);
-    if ( options.isFirstRender && (options.renderContext === "createItem") ) this.#editMode = true;
+    if ( options.isFirstRender && (options.renderContext === "createItem") ) {
+      for ( const t of OpenLegendItemSheet.ITEM_TABS[this.item.type] ?? [] ) this.#editTabs.add(t.id);
+    }
   }
 
   /**
-   * Add the Edit/Done toggle to the window title bar, before the close button —
-   * only when the user could actually edit the document.
-   * @override
+   * Tabs that are ALWAYS editable and carry no Edit/Done toggle: Description
+   * and Notes (their prose-mirrors already have their own edit affordance),
+   * Effects (its rows already carry explicit add/edit/delete controls), and
+   * the Extraordinary editor (likewise all explicit row controls).
+   * @type {Set<string>}
    */
-  async _renderFrame(options) {
-    const frame = await super._renderFrame(options);
-    if ( super.isEditable ) {
+  static ALWAYS_EDIT_TABS = new Set(["description", "notes", "effects", "extraordinary"]);
+
+  /** Whether a tab is always editable (no Edit/Done toggle at all). */
+  #isAlwaysEdit(tabId) {
+    if ( OpenLegendItemSheet.ALWAYS_EDIT_TABS.has(tabId) ) return true;
+    // The weapon Stats tab is all explicit toggles/pickers/row controls too.
+    return (this.item.type === "weapon") && (tabId === "stats");
+  }
+
+  /** Whether a tab currently renders its editable form (vs the read-only view). */
+  #isTabEditing(tabId) {
+    return this.isEditable && (this.#isAlwaysEdit(tabId) || this.#editTabs.has(tabId));
+  }
+
+  /**
+   * Flip one tab between the view presentation and the editable form.
+   * Entering edit mode also pops the tab's rich-text editors straight into
+   * editing (no second click on their pencil); leaving it first saves any
+   * editor still open in the tab, so the Done check never discards typed text.
+   */
+  static async #onTabEditToggle(event) {
+    event.preventDefault();
+    const tab = event.target.closest(".tab[data-tab]");
+    const tabId = tab?.dataset.tab;
+    if ( !tabId ) return;
+    const entering = !this.#editTabs.has(tabId);
+    if ( entering ) this.#editTabs.add(tabId);
+    else {
+      // Save (and close) the tab's open rich-text editors: the save control
+      // commits the editor's text and dispatches a change, which the
+      // submitOnChange form persists before the view re-render below.
+      for ( const save of tab.querySelectorAll("prose-mirror[open] [data-action='save']") ) save.click();
+      this.#editTabs.delete(tabId);
+    }
+    await this.render();
+    if ( !entering ) return;
+    const pane = this.element?.querySelector(`.tab[data-tab="${tabId}"]`);
+    for ( const toggle of pane?.querySelectorAll("prose-mirror[toggled]:not([open]) button.toggle") ?? [] ) {
+      toggle.click();
+    }
+  }
+
+  /**
+   * Apply the per-tab edit state after each render: every tab pane gets its
+   * own Edit/Done toggle in its top corner, and a tab still in view mode gets
+   * .ol-locked (restyles its fields as plain text, hides mutation controls)
+   * with its form fields disabled so they neither react nor submit. The
+   * header sits outside any tab pane and therefore always stays live.
+   */
+  #applyTabEditState() {
+    // A sheet the user can't edit at all (observer / locked compendium) is
+    // handled wholesale by the root .ol-locked — no per-tab toggles.
+    if ( !this.isEditable ) return;
+    for ( const tab of this.element?.querySelectorAll(".sheet-body .tab[data-tab]") ?? [] ) {
+      // Always-editable tabs get no toggle and never lock.
+      if ( this.#isAlwaysEdit(tab.dataset.tab) ) continue;
+      const editing = this.#editTabs.has(tab.dataset.tab);
+      tab.classList.toggle("ol-locked", !editing);
+      if ( !editing ) {
+        for ( const el of tab.querySelectorAll("input, select, textarea, button") ) {
+          if ( el.dataset.action !== "tabEditToggle" ) el.disabled = true;
+        }
+      }
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.classList.add("header-control", "icon", "fa-solid", "ol-edit-toggle");
-      btn.dataset.action = "editModeToggle";
-      this.window.close?.before(btn);
-      this.#syncEditToggle(btn);
+      btn.classList.add("ol-tab-edit", "icon", "fa-solid", editing ? "fa-check" : "fa-pen-to-square");
+      btn.dataset.action = "tabEditToggle";
+      btn.dataset.tooltip = editing ? "Done Editing" : "Edit";
+      btn.setAttribute("aria-label", btn.dataset.tooltip);
+      tab.prepend(btn);
     }
-    return frame;
-  }
-
-  /** Point the title-bar toggle's icon + tooltip at the CURRENT mode. */
-  #syncEditToggle(btn = this.element?.querySelector("button.ol-edit-toggle")) {
-    if ( !btn ) return;
-    btn.classList.toggle("fa-pen-to-square", !this.#editMode);
-    btn.classList.toggle("fa-check", this.#editMode);
-    btn.dataset.tooltip = this.#editMode ? "Done Editing" : "Edit";
-    btn.setAttribute("aria-label", btn.dataset.tooltip);
-  }
-
-  /** Flip between the view presentation and the editable form. */
-  static #onEditModeToggle(event) {
-    event.preventDefault();
-    this.#editMode = !this.#editMode;
-    this.render();
   }
 
   /* -------------------------------------------- */
@@ -544,6 +585,12 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const context = await super._prepareContext(options);
     context.item = this.item;
     context.system = this.item.system;
+    // Per-tab edit flags for the templates ({{#if editTab.details}} …): each
+    // tab renders its editable form only while ITS Edit toggle is on. The
+    // header fields sit outside the tabs and are always editable.
+    context.editTab = Object.fromEntries(
+      (OpenLegendItemSheet.ITEM_TABS[this.item.type] ?? []).map(t => [t.id, this.#isTabEditing(t.id)])
+    );
     // Wealth Level select options (1-9) for physical items. Use an object map
     // so {{selectOptions}} uses the number itself as the option value — passing
     // a bare array makes it use the array index, which is off-by-one.
@@ -594,8 +641,9 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     // whatever token/actor the item is dropped on instead of transferring.
     if ( ["feat", "perk", "flaw", "effect"].includes(this.item.type) ) this._prepareItemEffects(context);
 
-    // Weapon: category checkboxes (with checked state) and property rows.
-    if ( this.item.type === "weapon" ) this._prepareWeaponContext(context);
+    // Weapon: category checkboxes (with checked state), property rows, and
+    // the bane picker (async: reads the banes compendium).
+    if ( this.item.type === "weapon" ) await this._prepareWeaponContext(context);
 
     // Action: enum option maps + derived range display (+ bane options, async).
     if ( this.item.type === "action" ) await this._prepareActionContext(context);
@@ -905,11 +953,13 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   /**
    * Build weapon-specific view data: a checkbox list of all categories (marking
    * the ones this weapon has), the weapon's structured properties resolved to
-   * labels, and its referenced banes. Mutates `context`.
+   * labels, its referenced banes, and the add-a-bane picker options (the same
+   * world + compendium bane list the rest of the system offers, minus banes
+   * already referenced). Mutates `context`.
    * @param {object} context
    * @private
    */
-  _prepareWeaponContext(context) {
+  async _prepareWeaponContext(context) {
     const cfg = CONFIG.OPENLEGEND ?? {};
     const sys = this.item.system;
     const have = new Set(sys.categories ?? []);
@@ -937,8 +987,15 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       .filter(([key]) => !(sys.properties ?? []).some(p => p.key === key))
       .map(([key, d]) => ({ key, label: d.label }));
 
-    // Referenced banes (stored as {name, uuid}); shown as links.
-    context.weaponBanes = sys.banes ?? [];
+    // Referenced banes (stored as {name, uuid}); shown as links, each with a
+    // remove control, plus a picker to add more.
+    context.weaponBanes = (sys.banes ?? []).map((b, i) => ({ ...b, index: i }));
+    const listed = new Set(context.weaponBanes.map(b => String(b.name).toLowerCase()));
+    const docs = await selectableDocuments("bane", "tomucatos-open-legend-rpg-system.banes");
+    context.baneChoices = docs
+      .filter(d => !listed.has(String(d.name).toLowerCase()))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map(d => ({ uuid: d.uuid, name: d.name }));
   }
 
   /**
@@ -1958,12 +2015,13 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     // Tag the sheet root with the item type (e.g. "bane"/"boon") so CSS can
     // target a specific item type without a per-type sheet subclass.
     if ( this.item?.type ) this.element?.classList.add(this.item.type);
-    // A non-editable sheet — view mode, locked compendium, or observer
-    // permission — reads as a clean document: ol-locked restyles the
-    // auto-disabled fields as plain text and hides mutation-only controls
-    // (see "Locked sheets" in openlegend.css).
+    // A non-editable sheet — locked compendium or observer permission — reads
+    // as a clean document: ol-locked restyles the auto-disabled fields as
+    // plain text and hides mutation-only controls (see "Locked sheets" in
+    // openlegend.css). Editable sheets get the same treatment PER TAB, driven
+    // by each tab's own Edit toggle.
     this.element?.classList.toggle("ol-locked", !this.isEditable);
-    this.#syncEditToggle();
+    this.#applyTabEditState();
     if ( !this.isEditable ) return;
 
     // Changing an extraordinary boon/bane's NAME resets that row's power level to
@@ -2020,6 +2078,8 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     // Add-property picker fires on change (a click action can't read the chosen value).
     const adder = this.element.querySelector(".weapon-add-property");
     if ( adder ) adder.addEventListener("change", this.#onWeaponAddProperty.bind(this));
+    const baneAdder = this.element.querySelector(".weapon-add-bane");
+    if ( baneAdder ) baneAdder.addEventListener("change", this.#onWeaponAddBane.bind(this));
   }
 
   /**
@@ -2363,6 +2423,37 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const key = target.dataset.property;
     const props = (this.item.system.properties ?? []).filter(p => p.key !== key);
     await this.item.update({ "system.properties": props });
+  }
+
+  /**
+   * Add a bane reference (from the picker <select>, whose option value is the
+   * bane document's uuid) to the weapon's system.banes {name, uuid} list.
+   * @param {Event} event  change event from the add-bane select.
+   * @private
+   */
+  async #onWeaponAddBane(event) {
+    event.preventDefault();
+    const select = event.currentTarget;
+    const uuid = select.value;
+    if ( !uuid ) return;
+    const name = select.selectedOptions[0]?.dataset.name ?? select.selectedOptions[0]?.textContent.trim();
+    const banes = foundry.utils.deepClone(this.item.system.banes ?? []);
+    if ( banes.some(b => String(b.name).toLowerCase() === String(name).toLowerCase()) ) return; // no duplicates
+    banes.push({ name, uuid });
+    await this.item.update({ "system.banes": banes });
+  }
+
+  /**
+   * Remove a referenced bane from the weapon.
+   * @this {OpenLegendItemSheet}
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target  Carries data-index (position in system.banes).
+   */
+  static async #onWeaponBaneDelete(event, target) {
+    event.preventDefault();
+    const index = Number(target.dataset.index);
+    const banes = (this.item.system.banes ?? []).filter((_, i) => i !== index);
+    await this.item.update({ "system.banes": banes });
   }
 
   /* -------------------------------------------- */

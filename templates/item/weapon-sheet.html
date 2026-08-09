@@ -1,5 +1,11 @@
 <header class="sheet-header">
-  <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+  <div class="ol-portrait-col">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}"/>
+    <label class="gear-check" data-tooltip="Make it private: when checked, this weapon is hidden from the system's selection lists (the inventory Add browser and feat-choice pickers). The weapon itself still works normally.">
+      <input type="checkbox" name="system.private" {{checked system.private}}/>
+      <span>Private <i class="fas fa-circle-info"></i></span>
+    </label>
+  </div>
   <div class="header-fields">
     <div class="gear-stat field-name">
       <label>Name</label>
@@ -35,10 +41,6 @@
       <label class="gear-check">
         <input type="checkbox" name="system.heavy" {{checked system.heavy}}/>
         <span>Heavy</span>
-      </label>
-      <label class="gear-check" data-tooltip="Make it private: when checked, this weapon is hidden from the system's selection lists (the inventory Add browser and feat-choice pickers). The weapon itself still works normally.">
-        <input type="checkbox" name="system.private" {{checked system.private}}/>
-        <span>Private <i class="fas fa-circle-info"></i></span>
       </label>
     </div>
   </div>
@@ -96,11 +98,22 @@
       <li class="weapon-bane">
         {{#if bane.uuid}}<a class="content-link" data-uuid="{{bane.uuid}}"><i class="fas fa-burst"></i> {{bane.name}}</a>
         {{else}}<i class="fas fa-burst"></i> {{bane.name}}{{/if}}
+        <a class="weapon-prop-remove" data-action="weaponBaneDelete" data-index="{{bane.index}}" title="Remove">
+          <i class="fas fa-times"></i>
+        </a>
       </li>
       {{else}}
       <li class="bane-empty">None.</li>
       {{/each}}
     </ul>
+    {{#if baneChoices.length}}
+    <select class="weapon-add-bane">
+      <option value="">+ Add a bane…</option>
+      {{#each baneChoices as |b|}}
+      <option value="{{b.uuid}}" data-name="{{b.name}}">{{b.name}}</option>
+      {{/each}}
+    </select>
+    {{/if}}
   </div>
 
   <div class="tab extraordinary {{tabs.extraordinary.cssClass}}" data-group="primary" data-tab="extraordinary">
@@ -108,16 +121,16 @@
   </div>
 
   <div class="tab effects {{tabs.effects.cssClass}}" data-group="primary" data-tab="effects">
-    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" effectsHint="These Active Effects are applied to the wielder while this weapon is equipped."}}
+    {{> "systems/tomucatos-open-legend-rpg-system/templates/item/parts/item-effects.hbs" editable=editTab.effects effectsHint="These Active Effects are applied to the wielder while this weapon is equipped."}}
   </div>
 
   <div class="tab description {{tabs.description.cssClass}}" data-group="primary" data-tab="description">
-    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+    <prose-mirror name="system.description" value="{{system.description}}" document-uuid="{{document.uuid}}" toggled {{#unless editTab.description}}disabled{{/unless}}>
       {{{enrichedDescription}}}
     </prose-mirror>
   </div>
   <div class="tab notes {{tabs.notes.cssClass}}" data-group="primary" data-tab="notes">
-    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editable}}disabled{{/unless}}>
+    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled {{#unless editTab.notes}}disabled{{/unless}}>
       {{{enrichedNotes}}}
     </prose-mirror>
   </div>
