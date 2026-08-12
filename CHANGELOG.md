@@ -2,6 +2,17 @@
 
 All notable changes to this system are documented in this file.
 
+## [1.1.4] - 2026-08-12
+
+### Added
+- Items created in the world (feats, banes, boons, gear, etc.) are now discoverable by the system's selection lists, with a "Private" checkbox on item sheets to opt out; a world item takes precedence over a same-named compendium entry (#8).
+- New "Add" button on the inventory tab opens a dialog for quickly picking compendium items; the previous add button is now named "Create" (#12).
+- Feats, banes, and boons can now be fully customized on their sheets — tier costs, prerequisites, and effects are all editable (#7).
+- Placing line templates now shows on-screen instructions and a cursor-following progress HUD explaining the Open Legend placement rules (#11).
+
+### Changed
+- Item sheets restyled for better readability.
+
 ## [1.1.3] - 2026-07-30
 
 ### Added
