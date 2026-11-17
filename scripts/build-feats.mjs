@@ -72,17 +72,22 @@ function attrKey(label) {
 /**
  * Parse one tier's prerequisites object into a readable structure. The API shape
  * per tier is a map of category -> value, optionally nested under an "any" key:
- *   { any: { Attribute: [{Agility:3}, {Might:3}] } }
+ *   { any: { Attribute: [{Agility:3}, {Might:3}] } }   Agility 3 OR Might 3
+ *   { Attribute: [{Alteration:4}, {Deception:3}] }     Alteration 4 AND Deception 3
  *   { Feat: ["Lethal Strike I"] }
  *   { Other: ["None"] }
- * Returns { attribute: [{key,label,min}] (alternatives — ANY satisfies),
+ * An Attribute list wrapped in "any" is a set of alternatives; a bare one (or
+ * one wrapped in "all") requires every entry — recorded as attributeMode "all".
+ * Returns { attribute: [{key,label,min}], attributeMode?: "all",
  *           feats: [name], other: [text], hasNone: bool }.
  */
 function parsePrereqTier(tierObj = {}) {
   const out = { attribute: [], feats: [], other: [], hasNone: false };
 
-  const ingest = (category, value) => {
+  let attrsAreAlternatives = false;
+  const ingest = (category, value, wrapper) => {
     if ( category === "Attribute" && Array.isArray(value) ) {
+      if ( wrapper === "any" ) attrsAreAlternatives = true;
       for ( const alt of value ) {
         // alt is { "Agility": 3 } or { "Any Extraordinary": 3 }
         for ( const [label, min] of Object.entries(alt) ) {
@@ -103,10 +108,15 @@ function parsePrereqTier(tierObj = {}) {
   for ( const [k, v] of Object.entries(tierObj) ) {
     if ( (k === "any") || (k === "all") ) {
       // Wrapper: descend into the inner category map.
-      for ( const [ck, cv] of Object.entries(v || {}) ) ingest(ck, cv);
+      for ( const [ck, cv] of Object.entries(v || {}) ) ingest(ck, cv, k);
     } else {
       ingest(k, v);
     }
+  }
+  // Only flagged when it matters (2+ attributes); absent means "any".
+  if ( !attrsAreAlternatives && (out.attribute.length > 1) ) {
+    const { attribute, ...rest } = out;
+    return { attribute, attributeMode: "all", ...rest };
   }
   return out;
 }

@@ -34,6 +34,7 @@
               "min": 5
             }
           ],
+          "attributeMode": "all",
           "feats": [
             "Multi-Attack Specialist"
           ],

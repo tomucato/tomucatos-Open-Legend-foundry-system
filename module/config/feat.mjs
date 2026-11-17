@@ -1592,10 +1592,12 @@ FEATS.substitutedAttributeScore = function(actor, attrKey, purpose = "general") 
 
 /**
  * Format a parsed prerequisite tier (see build-feats.mjs parsePrereqTier) into a
- * short human-readable string. Attribute alternatives are joined with "or"; feat
- * and other requirements are appended. Returns "None" when there are no real
- * requirements.
- * @param {{attribute: Array, feats: string[], other: string[], hasNone: boolean}} pre
+ * short human-readable string. Attribute requirements are joined with "or"
+ * (attributeMode "any", the default — any one satisfies) or "and" (attributeMode
+ * "all" — every one is required, e.g. Mimic's Alteration 4 and Deception 3);
+ * feat and other requirements are appended. Returns "None" when there are no
+ * real requirements.
+ * @param {{attribute: Array, attributeMode?: string, feats: string[], other: string[], hasNone: boolean}} pre
  * @returns {string}
  */
 FEATS.formatPrerequisite = function(pre = {}) {
@@ -1604,7 +1606,8 @@ FEATS.formatPrerequisite = function(pre = {}) {
   // in-progress rows (no attribute picked yet, empty text) in the data.
   const attrs = (pre.attribute ?? []).filter(a => a?.label);
   if ( attrs.length ) {
-    parts.push(attrs.map(a => `${a.label} ${a.min}`).join(" or "));
+    const joiner = (pre.attributeMode === "all") ? " and " : " or ";
+    parts.push(attrs.map(a => `${a.label} ${a.min}`).join(joiner));
   }
   for ( const f of (pre.feats ?? []) ) if ( String(f).trim() ) parts.push(f);
   for ( const o of (pre.other ?? []) ) if ( String(o).trim() ) parts.push(o);
@@ -1612,9 +1615,11 @@ FEATS.formatPrerequisite = function(pre = {}) {
 };
 
 /**
- * Evaluate whether an actor meets a feat tier's prerequisites. Attribute
- * alternatives are satisfied if ANY listed attribute meets its minimum ("Any
- * Extraordinary N" is met if any of the extraordinary attributes ≥ N). Feat
+ * Evaluate whether an actor meets a feat tier's prerequisites. By default
+ * (attributeMode "any") the attribute requirements are alternatives, satisfied
+ * if ANY listed attribute meets its minimum; with attributeMode "all" EVERY
+ * listed attribute must meet its minimum. ("Any Extraordinary N" is met if any
+ * of the extraordinary attributes ≥ N.) Feat
  * prerequisites check the actor owns that feat (by name) at a high-enough tier
  * when the requirement names a tier (e.g. "Lethal Strike III"). "Other" textual
  * requirements can't be auto-checked, so they're reported as unverifiable, not
@@ -1628,21 +1633,27 @@ FEATS.checkPrerequisite = function(actor, pre = {}) {
   const unverifiable = [];
   const extraordinary = STATS.categories?.extraordinary?.attributes ?? [];
 
-  // Attribute alternatives — ANY satisfies. Incomplete editor rows (no
-  // attribute picked yet) are not requirements.
+  // Attribute requirements — ANY satisfies by default; ALL are required when
+  // attributeMode is "all". Incomplete editor rows (no attribute picked yet)
+  // are not requirements.
   const attrs = (pre.attribute ?? []).filter(a => a?.key || a?.label);
-  if ( attrs.length ) {
-    const ok = attrs.some(a => {
-      const min = Number(a.min) || 0;
-      if ( /^any extraordinary$/i.test(a.label) ) {
-        return extraordinary.some(k => Number(actor?.system?.attributes?.[k]?.value ?? 0) >= min);
-      }
-      if ( /^any attribute$/i.test(a.label) ) {
-        return Object.values(actor?.system?.attributes ?? {}).some(at => Number(at?.value ?? 0) >= min);
-      }
-      return Number(actor?.system?.attributes?.[a.key]?.value ?? 0) >= min;
-    });
-    if ( !ok ) unmet.push(attrs.map(a => `${a.label} ${a.min}`).join(" or "));
+  const meets = a => {
+    const min = Number(a.min) || 0;
+    if ( /^any extraordinary$/i.test(a.label) ) {
+      return extraordinary.some(k => Number(actor?.system?.attributes?.[k]?.value ?? 0) >= min);
+    }
+    if ( /^any attribute$/i.test(a.label) ) {
+      return Object.values(actor?.system?.attributes ?? {}).some(at => Number(at?.value ?? 0) >= min);
+    }
+    return Number(actor?.system?.attributes?.[a.key]?.value ?? 0) >= min;
+  };
+  if ( pre.attributeMode === "all" ) {
+    // Report each missing attribute on its own, so the sheet shows exactly
+    // which of the required scores falls short.
+    for ( const a of attrs ) if ( !meets(a) ) unmet.push(`${a.label} ${a.min}`);
+  }
+  else if ( attrs.length && !attrs.some(meets) ) {
+    unmet.push(attrs.map(a => `${a.label} ${a.min}`).join(" or "));
   }
 
   // Feat prerequisites — the actor must own a feat of that name (and tier, if the

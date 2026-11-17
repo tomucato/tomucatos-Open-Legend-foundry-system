@@ -392,11 +392,14 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
       const fallbackCost = cur.cost ?? costs[i] ?? costs[costs.length - 1] ?? lastCost;
       const cost = Math.max(0, Math.floor(Number(("cost" in e) ? e.cost : fallbackCost) || 0));
       lastCost = cost;
+      // Any-one (OR) vs all (AND) for the attribute rows: the posted select
+      // when it is shown (2+ attribute rows), else whatever is stored.
+      const attributeMode = ("attributeMode" in e) ? e.attributeMode : cur.prerequisites?.attributeMode;
       return {
         tier: i + 1,
         cost,
         effect: String(("effect" in e) ? e.effect : (cur.effect ?? "")),
-        prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(rows)
+        prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(rows, attributeMode)
       };
     });
     sys.cost = sys.tiers.map(t => t.cost);
@@ -409,8 +412,9 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
 
   /**
    * Flatten a feat tier's prerequisites structure into editor rows, one per
-   * requirement: attribute alternatives (ANY satisfies), then feat requirements,
-   * then custom/other text. Incomplete rows (no attribute picked, empty text)
+   * requirement: attribute requirements (any-one or all, per the tier's
+   * attributeMode — carried separately), then feat requirements, then
+   * custom/other text. Incomplete rows (no attribute picked, empty text)
    * are preserved so an in-progress row survives re-renders.
    * @param {{attribute?: Array, feats?: string[], other?: string[]}} pre
    * @returns {Array<{type: string, attr: string, min: number, text: string}>}
@@ -432,16 +436,21 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
    * formatPrerequisite / checkPrerequisite. Incomplete rows are kept (as empty
    * entries) so they survive round-trips; format/check skip them.
    * @param {Array<{type: string, attr: string, min: number, text: string}>} rows
-   * @returns {{attribute: Array, feats: string[], other: string[], hasNone: boolean}}
+   * @param {string} [attributeMode]  "all" when every attribute row is required
+   *   (AND); anything else means any one satisfies (OR, the default).
+   * @returns {{attribute: Array, attributeMode: string, feats: string[], other: string[], hasNone: boolean}}
    */
-  static #buildFeatPrereqs(rows) {
+  static #buildFeatPrereqs(rows, attributeMode) {
     const labels = CONFIG.OPENLEGEND?.attributeLabels ?? {};
     const labelFor = k => {
       if ( k === "any attribute" ) return "Any Attribute";
       if ( k === "any extraordinary" ) return "Any Extraordinary";
       return labels[k] ?? (k ? k.charAt(0).toUpperCase() + k.slice(1) : "");
     };
-    const out = { attribute: [], feats: [], other: [], hasNone: false };
+    const out = {
+      attribute: [], attributeMode: (attributeMode === "all") ? "all" : "any",
+      feats: [], other: [], hasNone: false
+    };
     for ( const r of rows ) {
       if ( !r || (typeof r !== "object") ) continue;
       const attr = String(r.attr ?? "");
@@ -477,7 +486,8 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         cost,
         effect: String(cur.effect ?? ""),
         prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(
-          OpenLegendItemSheet.#flattenFeatPrereqs(cur.prerequisites))
+          OpenLegendItemSheet.#flattenFeatPrereqs(cur.prerequisites),
+          cur.prerequisites?.attributeMode)
       };
     });
   }
@@ -1010,24 +1020,31 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const cfg = CONFIG.OPENLEGEND ?? {};
     const sys = this.item.system;
     const rows = this.#featTiersSnapshot();
-    context.featTierRows = rows.map((t, i) => ({
-      index: i,
-      tier: t.tier,
-      cost: t.cost,
-      effect: t.effect,
-      prerequisite: cfg.formatPrerequisite ? cfg.formatPrerequisite(t.prerequisites) : "—",
-      prereqs: OpenLegendItemSheet.#flattenFeatPrereqs(t.prerequisites).map((p, j) => ({
+    context.featTierRows = rows.map((t, i) => {
+      const prereqs = OpenLegendItemSheet.#flattenFeatPrereqs(t.prerequisites).map((p, j) => ({
         ...p,
         index: j,
         isAttribute: p.type === "attribute",
         placeholder: p.type === "feat" ? "Feat name, e.g. Lethal Strike II" : "Custom prerequisite"
-      }))
-    }));
+      }));
+      return {
+        index: i,
+        tier: t.tier,
+        cost: t.cost,
+        effect: t.effect,
+        prerequisite: cfg.formatPrerequisite ? cfg.formatPrerequisite(t.prerequisites) : "—",
+        prereqs,
+        // Any-one vs all only matters once there are 2+ attribute rows.
+        attributeMode: t.prerequisites.attributeMode,
+        showAttributeMode: prereqs.filter(p => p.isAttribute).length > 1
+      };
+    });
     context.featMultiTier = rows.length > 1;
     // Option maps for the prerequisite rows: what kind of requirement, and (for
     // attribute rows) which attribute — including the SRD's "Any Attribute" /
     // "Any Extraordinary" wildcards.
     context.featPreTypeOptions = { attribute: "Attribute", feat: "Feat", other: "Custom" };
+    context.featPreAttrModeOptions = { any: "Any one of them (OR)", all: "All of them (AND)" };
     context.featPreAttrOptions = {
       "": "—",
       "any attribute": "Any Attribute",
@@ -2594,7 +2611,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     if ( !tiers[ti] ) return;
     const rows = OpenLegendItemSheet.#flattenFeatPrereqs(tiers[ti].prerequisites);
     rows.push({ type: "attribute", attr: "", min: 1, text: "" });
-    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows);
+    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows, tiers[ti].prerequisites.attributeMode);
     await this.#replaceArray("system.tiers", tiers);
   }
 
@@ -2607,7 +2624,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     if ( !tiers[ti] ) return;
     const rows = OpenLegendItemSheet.#flattenFeatPrereqs(tiers[ti].prerequisites)
       .filter((_, j) => j !== pi);
-    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows);
+    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows, tiers[ti].prerequisites.attributeMode);
     await this.#replaceArray("system.tiers", tiers);
   }
 
@@ -2978,19 +2995,21 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
   }
 
   /**
-   * Replace an array-valued system field cleanly. If a prior submitOnChange
-   * turned the array into a {"0":…} object, a plain update would MERGE the new
-   * (shorter) array onto the stale object and leave orphan numeric keys, so we
-   * delete the field first (-=) then set it in the same update.
+   * Replace an array-valued system field wholesale. A plain update is enough:
+   * an Array value is never deep-merged — it overwrites whatever is stored,
+   * including a stale {"0":…} object left behind by an old submitOnChange.
+   *
+   * Do NOT pair this with a `-=key` deletion of the same field in the same
+   * update. Foundry v14 turns `-=key` into a deletion operator on `key` itself,
+   * which collides with (and wins over) the new value: the field is deleted
+   * instead of replaced, so "add row" wiped existing rows and did nothing on an
+   * empty list.
    * @param {string} path  e.g. "system.attacks"
    * @param {Array} value
    * @returns {Promise<void>}
    * @private
    */
   async #replaceArray(path, value) {
-    const lastDot = path.lastIndexOf(".");
-    const parent = path.slice(0, lastDot);
-    const key = path.slice(lastDot + 1);
-    await this.item.update({ [`${parent}.-=${key}`]: null, [path]: value });
+    await this.item.update({ [path]: value });
   }
 }

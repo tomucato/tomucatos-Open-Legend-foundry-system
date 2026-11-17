@@ -429,13 +429,15 @@ export class OpenLegendActor extends Actor {
       armorDefenseBonus += battleTranceArmorFloor;
     }
 
-    // Carrying capacity (Wealth & Equipment rules). Only weapons and armor count
-    // toward the 20-item cap, heavy count, and bulky count — adventuring gear is
-    // excluded. Limits: 20 items, heavy <= Might score, bulky <= 2.
+    // Carrying capacity (Wealth & Equipment rules). Every physical item —
+    // weapons, armor, and adventuring gear — counts toward the 20-item cap,
+    // heavy count, and bulky count. Limits: 20 items, heavy <= Might score,
+    // bulky <= 2.
+    const CARRIED_TYPES = ["weapon", "armor", "gear"];
     const might = score("might");
     let carriedCount = 0, heavyCount = 0, bulkyCount = 0;
     for ( const item of this.items ) {
-      if ( (item.type !== "weapon") && (item.type !== "armor") ) continue;
+      if ( !CARRIED_TYPES.includes(item.type) ) continue;
       carriedCount += 1;
       if ( item.system?.heavy ) heavyCount += 1;
       if ( item.system?.bulky ) bulkyCount += 1;

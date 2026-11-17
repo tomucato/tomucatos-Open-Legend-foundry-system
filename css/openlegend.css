@@ -2830,6 +2830,17 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .feat-pre-row .bane-row-del {
   text-align: center;
 }
+.openlegend.sheet .feat-pre-mode {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0;
+  font-size: 0.9em;
+}
+.openlegend.sheet .feat-pre-mode select {
+  flex: 0 1 auto;
+  width: auto;
+}
 .openlegend.sheet .feat-pre-none {
   font-size: 0.9em;
   opacity: 0.7;

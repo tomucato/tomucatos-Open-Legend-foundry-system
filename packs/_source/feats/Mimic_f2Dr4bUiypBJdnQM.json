@@ -33,6 +33,7 @@
               "min": 3
             }
           ],
+          "attributeMode": "all",
           "feats": [],
           "other": [],
           "hasNone": false

@@ -2,6 +2,14 @@
 
 All notable changes to this system are documented in this file.
 
+## [Unreleased]
+
+### Added
+- Feat prerequisites with several attributes can now be set to require all of them (AND) instead of any one (OR), via a new "Attributes required" selector on the feat sheet.
+
+### Fixed
+- Mimic (Alteration 4 and Deception 3) and Two Weapon Brute (Agility 4 and Might 5) now require every listed attribute instead of any one of them.
+
 ## [1.1.4] - 2026-08-12
 
 ### Added

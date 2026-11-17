@@ -67,6 +67,13 @@
         {{else}}
         <div class="feat-pre-none">No prerequisites.</div>
         {{/each}}
+        {{#if t.showAttributeMode}}
+        <label class="feat-pre-mode" title="Whether a character needs just one of the attribute scores above, or every one of them.">Attributes required
+          <select name="system.tiers.{{t.index}}.attributeMode">
+            {{selectOptions @root.featPreAttrModeOptions selected=t.attributeMode}}
+          </select>
+        </label>
+        {{/if}}
         <label class="feat-tier-field-label">Tier Effect</label>
         <textarea class="feat-tier-effect" name="system.tiers.{{t.index}}.effect" rows="2" placeholder="What this tier grants.">{{t.effect}}</textarea>
       </li>

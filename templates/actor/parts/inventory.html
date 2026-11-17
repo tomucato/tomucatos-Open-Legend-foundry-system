@@ -2,9 +2,9 @@
       Included by both the character and NPC sheets. --}}
 <div class="tab inventory {{tabs.inventory.cssClass}}" data-group="primary" data-tab="inventory">
 
-  {{!-- Carrying capacity (weapons + armor count; adventuring gear excluded). --}}
+  {{!-- Carrying capacity (weapons, armor, and adventuring gear all count). --}}
   <div class="carry-capacity">
-    <div class="carry-stat {{#if carry.overCount}}over{{/if}}" title="Up to 20 items (weapons + armor). Adventuring gear does not count.">
+    <div class="carry-stat {{#if carry.overCount}}over{{/if}}" title="Up to 20 items (weapons, armor, and adventuring gear).">
       <span class="carry-label">Items</span>
       <span class="carry-value">{{carry.count}} / {{carry.max}}</span>
     </div>
