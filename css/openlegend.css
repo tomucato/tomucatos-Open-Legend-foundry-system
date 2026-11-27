@@ -2830,16 +2830,194 @@ body.game .openlegend.sheet .sheet-tabs > a.active span {
 .openlegend.sheet .feat-pre-row .bane-row-del {
   text-align: center;
 }
-.openlegend.sheet .feat-pre-mode {
+/* and/or connector between two prerequisite rows, with the "group with row
+   above" toggle next to it. */
+.openlegend.sheet .feat-pre-join {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding-left: 116px;
+}
+.openlegend.sheet .feat-pre-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85em;
+  opacity: 0.85;
+  cursor: pointer;
+}
+.openlegend.sheet .feat-pre-group input {
+  margin: 0;
+  width: 14px;
+  height: 14px;
+}
+/* Rows bracketed into a group: a bar down their left side. */
+.openlegend.sheet .feat-pre-row.feat-pre-grouped,
+.openlegend.sheet .feat-pre-join.feat-pre-grouped {
+  border-left: 3px solid var(--ol-heading);
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.openlegend.sheet .feat-pre-row.feat-pre-grouped {
+  padding-left: 6px;
+}
+.openlegend.sheet .feat-pre-join.feat-pre-grouped {
+  padding-left: 113px;
+}
+.openlegend.sheet .feat-pre-row.feat-pre-group-start {
+  border-top-left-radius: 4px;
+  margin-top: 3px;
+}
+.openlegend.sheet .feat-pre-row.feat-pre-group-end {
+  border-bottom-left-radius: 4px;
+  margin-bottom: 3px;
+}
+.openlegend.sheet .feat-pre-info {
+  margin-left: 8px;
+  cursor: help;
+  opacity: 0.8;
+}
+.openlegend.sheet .feat-pre-reading {
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.85;
+  margin: 0 0 4px;
+}
+#tooltip .feat-pre-help {
+  max-width: 340px;
+  text-align: left;
+}
+#tooltip .feat-pre-help p {
+  margin: 0 0 6px;
+}
+/* Review of feats whose prerequisites read differently after an update. */
+/* Never taller than the screen; the content scrolls inside the window. */
+.ol-prerequisite-review {
+  max-height: calc(100vh - 20px);
+}
+.ol-prerequisite-review .window-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.ol-prerequisite-review .ol-pr-review {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.ol-prerequisite-review .ol-pr-intro {
+  margin: 0 0 14px;
+  line-height: 1.45;
+}
+.ol-prerequisite-review .ol-pr-intro p {
+  margin: 0 0 8px;
+}
+.ol-prerequisite-review .ol-pr-examples {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+.ol-prerequisite-review .ol-pr-example {
+  border: 1px solid var(--color-border-light-2, #8884);
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+.ol-prerequisite-review .ol-pr-example-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.ol-prerequisite-review .ol-pr-row {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 3px 0;
-  font-size: 0.9em;
+  padding: 2px 0 2px 6px;
+  border-left: 3px solid transparent;
+  font-size: 0.92em;
 }
-.openlegend.sheet .feat-pre-mode select {
-  flex: 0 1 auto;
+.ol-prerequisite-review .ol-pr-row.is-grouped {
+  border-left-color: var(--ol-heading, currentColor);
+}
+.ol-prerequisite-review .ol-pr-row.is-new-group {
+  margin-top: 6px;
+}
+.ol-prerequisite-review .ol-pr-join {
+  width: 28px;
+  font-style: italic;
+  opacity: 0.85;
+}
+.ol-prerequisite-review .ol-pr-req {
+  font-weight: 600;
+}
+.ol-prerequisite-review .ol-pr-check {
+  font-size: 0.85em;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+.ol-prerequisite-review .ol-pr-row .ol-pr-check {
+  margin-left: auto;
+}
+.ol-prerequisite-review .ol-pr-result {
+  margin-top: 6px;
+  font-style: italic;
+  font-size: 0.92em;
+}
+.ol-prerequisite-review .ol-pr-meaning {
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+.ol-prerequisite-review .ol-pr-steps {
+  margin: 0;
+  padding-left: 18px;
+}
+.ol-prerequisite-review .ol-pr-steps li {
+  margin: 0 0 4px;
+}
+.ol-prerequisite-review .ol-pr-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+}
+.ol-prerequisite-review .ol-pr-feat {
+  border: 1px solid var(--color-border-light-2, #8884);
+  border-radius: 4px;
+  padding: 6px 8px;
+  margin: 0 0 6px;
+}
+.ol-prerequisite-review .ol-pr-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ol-prerequisite-review .ol-pr-name {
+  font-weight: 700;
+  flex: 1;
+}
+.ol-prerequisite-review .ol-pr-head button {
   width: auto;
+  flex: none;
+}
+.ol-prerequisite-review .ol-pr-where {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+.ol-prerequisite-review .ol-pr-tier {
+  margin: 4px 0 0;
+  font-size: 0.92em;
+}
+.ol-prerequisite-review .ol-pr-tier span {
+  display: block;
+}
+
+.openlegend.sheet .feat-pre-join select {
+  width: 64px;
+  height: 22px;
+  font-size: 0.85em;
 }
 .openlegend.sheet .feat-pre-none {
   font-size: 0.9em;

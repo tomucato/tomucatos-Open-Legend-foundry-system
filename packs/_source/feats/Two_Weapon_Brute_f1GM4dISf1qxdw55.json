@@ -31,10 +31,10 @@
             {
               "key": "might",
               "label": "Might",
-              "min": 5
+              "min": 5,
+              "join": "and"
             }
           ],
-          "attributeMode": "all",
           "feats": [
             "Multi-Attack Specialist"
           ],

@@ -15,6 +15,8 @@ import { processAuras, refreshAuraDrawings, clearAuraRoundTracking, removeAuraGr
 import { TEMPLATE_AUTOTARGET_SETTING } from "./module/canvas/template-target.mjs";
 import { previewAreaTemplate, registerAreaRegionQuery, registerOLConeControl, registerConeKeybinding } from "./module/canvas/template-preview.mjs";
 import * as Companion from "./module/companion.mjs";
+import { registerMigrationSetting, migrateWorldIfNeeded, migrateWorld } from "./module/migration.mjs";
+import { OpenLegendPrerequisiteReview } from "./module/apps/prerequisite-review.mjs";
 
 Hooks.once('init', async function() {
   console.log("OpenLegend | Initializing Open Legend RPG System");
@@ -216,6 +218,9 @@ Hooks.once('init', async function() {
     default: false
   });
 
+  // How far this world's data has been migrated (see module/migration.mjs).
+  registerMigrationSetting(OPENLEGEND.SYSTEM_ID);
+
   // GM-side handler that creates an area Region on request from a non-GM placer
   // (see previewAreaTemplate). Registered here so CONFIG.queries is ready before
   // the first placement.
@@ -232,6 +237,17 @@ Hooks.once('init', async function() {
     hint: "View the built-in damage types per attribute and add your own. Custom types are available everywhere damage types appear.",
     icon: "fas fa-burst",
     type: OpenLegendDamageTypesConfig,
+    restricted: true
+  });
+
+  // Feats whose prerequisites read differently since rows are combined top to
+  // bottom with explicit groups (GM-only; also opened once after the update).
+  game.settings.registerMenu(OPENLEGEND.SYSTEM_ID, "prerequisiteReviewMenu", {
+    name: "Feat Prerequisites",
+    label: "Review Feat Prerequisites",
+    hint: "List the feats in this world whose prerequisites were saved before grouping existed and now read differently, so you can check and edit them.",
+    icon: "fas fa-list-check",
+    type: OpenLegendPrerequisiteReview,
     restricted: true
   });
 
@@ -1043,5 +1059,28 @@ Hooks.once("ready", async () => {
     }
   } catch ( err ) {
     console.warn("OpenLegend | Could not apply default template settings:", err);
+  }
+});
+
+/**
+ * Bring world data saved by an older version up to date (see
+ * module/migration.mjs), e.g. owned copies of feats whose prerequisites were
+ * corrected in the compendium. Also exposed as game.openlegend.migrateWorld()
+ * for a manual re-run. Feats the update cannot safely convert are listed for
+ * the GM (game.openlegend.reviewPrerequisites() reopens that list).
+ */
+Hooks.once("ready", async () => {
+  game.openlegend ??= {};
+  game.openlegend.migrateWorld = migrateWorld;
+  game.openlegend.reviewPrerequisites = () => new OpenLegendPrerequisiteReview().render({ force: true });
+  try {
+    await migrateWorldIfNeeded(OPENLEGEND.SYSTEM_ID, {
+      onReview: feats => {
+        ui.notifications?.warn(`Open Legend: ${feats.length} feat${feats.length === 1 ? "" : "s"} in this world may read differently after the update. Please review ${feats.length === 1 ? "it" : "them"}.`, { permanent: true });
+        game.openlegend.reviewPrerequisites();
+      }
+    });
+  } catch ( err ) {
+    console.error("OpenLegend | World migration failed:", err);
   }
 });

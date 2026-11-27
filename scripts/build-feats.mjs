@@ -77,30 +77,41 @@ function attrKey(label) {
  *   { Feat: ["Lethal Strike I"] }
  *   { Other: ["None"] }
  * An Attribute list wrapped in "any" is a set of alternatives; a bare one (or
- * one wrapped in "all") requires every entry — recorded as attributeMode "all".
- * Returns { attribute: [{key,label,min}], attributeMode?: "all",
- *           feats: [name], other: [text], hasNone: bool }.
+ * one wrapped in "all") requires every entry — recorded as join: "and" on each
+ * entry after the first (an entry without it starts a new alternative).
+ * Feat / Other entries are required on top of everything else unless they sit
+ * in an "any" wrapper, where they are alternatives — recorded as "or" in the
+ * parallel featJoins / otherJoins arrays (omitted when every entry is "and").
+ * Returns { attribute: [{key,label,min,join?}], feats: [name], featJoins?,
+ *           other: [text], otherJoins?, hasNone: bool }.
  */
 function parsePrereqTier(tierObj = {}) {
   const out = { attribute: [], feats: [], other: [], hasNone: false };
 
-  let attrsAreAlternatives = false;
+  const featJoins = [];
+  const otherJoins = [];
   const ingest = (category, value, wrapper) => {
+    const extraJoin = (wrapper === "any") ? "or" : "and";
     if ( category === "Attribute" && Array.isArray(value) ) {
-      if ( wrapper === "any" ) attrsAreAlternatives = true;
+      const first = out.attribute.length;
       for ( const alt of value ) {
         // alt is { "Agility": 3 } or { "Any Extraordinary": 3 }
         for ( const [label, min] of Object.entries(alt) ) {
-          out.attribute.push({ key: attrKey(label), label, min: Number(min) });
+          const entry = { key: attrKey(label), label, min: Number(min) };
+          if ( (wrapper !== "any") && (out.attribute.length > first) ) entry.join = "and";
+          out.attribute.push(entry);
         }
       }
     } else if ( category === "Feat" && Array.isArray(value) ) {
-      out.feats.push(...value.map(s => String(s).trim()).filter(Boolean));
+      for ( const name of value.map(s => String(s).trim()).filter(Boolean) ) {
+        out.feats.push(name);
+        featJoins.push(extraJoin);
+      }
     } else if ( category === "Other" && Array.isArray(value) ) {
       for ( const t of value ) {
         const text = String(t).trim();
         if ( /^none$/i.test(text) ) out.hasNone = true;
-        else if ( text ) out.other.push(text);
+        else if ( text ) { out.other.push(text); otherJoins.push(extraJoin); }
       }
     }
   };
@@ -113,11 +124,8 @@ function parsePrereqTier(tierObj = {}) {
       ingest(k, v);
     }
   }
-  // Only flagged when it matters (2+ attributes); absent means "any".
-  if ( !attrsAreAlternatives && (out.attribute.length > 1) ) {
-    const { attribute, ...rest } = out;
-    return { attribute, attributeMode: "all", ...rest };
-  }
+  if ( featJoins.includes("or") ) out.featJoins = featJoins;
+  if ( otherJoins.includes("or") ) out.otherJoins = otherJoins;
   return out;
 }
 

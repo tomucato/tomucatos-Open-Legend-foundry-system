@@ -1591,52 +1591,130 @@ FEATS.substitutedAttributeScore = function(actor, attrKey, purpose = "general") 
 };
 
 /**
- * Format a parsed prerequisite tier (see build-feats.mjs parsePrereqTier) into a
- * short human-readable string. Attribute requirements are joined with "or"
- * (attributeMode "any", the default — any one satisfies) or "and" (attributeMode
- * "all" — every one is required, e.g. Mimic's Alteration 4 and Deception 3);
- * feat and other requirements are appended. Returns "None" when there are no
- * real requirements.
- * @param {{attribute: Array, attributeMode?: string, feats: string[], other: string[], hasNone: boolean}} pre
- * @returns {string}
+ * Every requirement of a prerequisite tier as one ordered list of rows, the
+ * way the feat sheet shows them. The data keeps one array per kind
+ * (`attribute`, `feats` + `featJoins`, `other` + `otherJoins`); the optional
+ * `order` array (["attribute", "feat", "attribute", "other", ...]) records how
+ * they interleave: its n-th "feat" is `feats[n]`, and so on. Without a usable
+ * `order` (compendium data, feats saved before it existed) the rows read
+ * attributes first, then feats, then custom. The optional `groups` array runs
+ * parallel to `order`: true brackets that row together with the row above it
+ * (see FEATS.prerequisiteTerms). Incomplete editor rows are kept.
+ * @param {object} pre
+ * @returns {Array<{type: "attribute"|"feat"|"other", join: "and"|"or", group: boolean, attribute?: object, text?: string}>}
  */
-FEATS.formatPrerequisite = function(pre = {}) {
-  const parts = [];
-  // Skip incomplete entries — the feat sheet's prerequisite editor keeps
-  // in-progress rows (no attribute picked yet, empty text) in the data.
-  const attrs = (pre.attribute ?? []).filter(a => a?.label);
-  if ( attrs.length ) {
-    const joiner = (pre.attributeMode === "all") ? " and " : " or ";
-    parts.push(attrs.map(a => `${a.label} ${a.min}`).join(joiner));
+FEATS.prerequisiteRows = function(pre = {}) {
+  const list = v => Array.isArray(v) ? v : ((v && (typeof v === "object")) ? Object.values(v) : []);
+  const extraJoin = j => (j === "or") ? "or" : "and";
+  const featJoins = list(pre?.featJoins);
+  const otherJoins = list(pre?.otherJoins);
+  const byType = {
+    attribute: list(pre?.attribute).map(a => ({ type: "attribute", join: (a?.join === "and") ? "and" : "or", group: false, attribute: a ?? {} })),
+    feat: list(pre?.feats).map((f, i) => ({ type: "feat", join: extraJoin(featJoins[i]), group: false, text: String(f ?? "").trim() })),
+    other: list(pre?.other).map((o, i) => ({ type: "other", join: extraJoin(otherJoins[i]), group: false, text: String(o ?? "").trim() }))
+  };
+  const order = list(pre?.order);
+  const count = type => order.filter(t => t === type).length;
+  const usable = order.length
+    && order.every(t => t in byType)
+    && Object.keys(byType).every(type => count(type) === byType[type].length);
+  if ( !usable ) return [...byType.attribute, ...byType.feat, ...byType.other];
+  const next = { attribute: 0, feat: 0, other: 0 };
+  const groups = list(pre?.groups);
+  return order.map((type, i) => ({ ...byType[type][next[type]++], group: (i > 0) && (groups[i] === true) }));
+};
+
+/** The text of one complete prerequisite row: "Agility 5", "Lethal Strike II". */
+function prerequisiteRowText(r) {
+  if ( r.type !== "attribute" ) return r.text;
+  return `${r.attribute?.label || r.attribute?.key} ${r.attribute?.min}`;
+}
+
+/**
+ * The rows of a prerequisite tier (see FEATS.prerequisiteRows) as the terms
+ * that are combined top to bottom. ONE rule for every row, whatever its type:
+ * a row's "and" / "or" combines it with everything above it. So
+ *   Agility 5, or Might 5, and Battlefield Retribution
+ * reads "(Agility 5 or Might 5) and Battlefield Retribution".
+ * Rows bracketed together (`group`) form one term: the group is worked out on
+ * its own first (again top to bottom), then combined with everything above it
+ * by the connector of its first row. So, with [ ] marking the groups,
+ *   [Agility 5, and Might 5], or [Logic 6, and Lethal Strike II]
+ * reads "(Agility 5 and Might 5) or (Logic 6 and Lethal Strike II)".
+ * Incomplete rows (no attribute picked, empty text) are dropped.
+ * @param {object} pre
+ * @returns {Array<{join: "and"|"or", rows: Array<{type: string, join: string, text: string, attribute?: object}>}>}
+ */
+FEATS.prerequisiteTerms = function(pre = {}) {
+  const terms = [];
+  for ( const r of FEATS.prerequisiteRows(pre) ) {
+    if ( r.group && terms.length ) terms[terms.length - 1].push(r);
+    else terms.push([r]);
   }
-  for ( const f of (pre.feats ?? []) ) if ( String(f).trim() ) parts.push(f);
-  for ( const o of (pre.other ?? []) ) if ( String(o).trim() ) parts.push(o);
-  return parts.length ? parts.join(", ") : "None";
+  return terms
+    .map(rows => rows
+      .filter(r => (r.type === "attribute") ? (r.attribute?.key || r.attribute?.label) : r.text)
+      .map(r => ({ ...r, text: prerequisiteRowText(r) })))
+    .filter(rows => rows.length)
+    .map(rows => ({ join: rows[0].join, rows }));
 };
 
 /**
- * Evaluate whether an actor meets a feat tier's prerequisites. By default
- * (attributeMode "any") the attribute requirements are alternatives, satisfied
- * if ANY listed attribute meets its minimum; with attributeMode "all" EVERY
- * listed attribute must meet its minimum. ("Any Extraordinary N" is met if any
- * of the extraordinary attributes ≥ N.) Feat
- * prerequisites check the actor owns that feat (by name) at a high-enough tier
- * when the requirement names a tier (e.g. "Lethal Strike III"). "Other" textual
- * requirements can't be auto-checked, so they're reported as unverifiable, not
- * failed. Returns { met, unmet: [string], unverifiable: [string] }.
+ * Join parts ({join, text, top}) top to bottom into one expression, adding
+ * parentheses wherever the reading would otherwise be ambiguous. `top` is the
+ * operator at the top level of a part's own text (null: a single requirement).
+ * @returns {{text: string, top: "and"|"or"|null}}
+ */
+function foldPrerequisiteText(parts) {
+  let expr = "";
+  let top = null;
+  for ( const p of parts ) {
+    if ( !expr ) { expr = p.text; top = p.top ?? null; continue; }
+    let text = p.text;
+    if ( top && (top !== p.join) ) expr = `(${expr})`;
+    if ( p.top && (p.top !== p.join) ) text = `(${text})`;
+    expr = `${expr} ${p.join} ${text}`;
+    top = p.join;
+  }
+  return { text: expr, top };
+}
+
+/**
+ * Format a parsed prerequisite tier (see build-feats.mjs parsePrereqTier) into a
+ * short human-readable string, reading its terms (FEATS.prerequisiteTerms) top
+ * to bottom, each combined with everything before it by its own "and" / "or".
+ * Parentheses are added wherever the grouping would otherwise be ambiguous, e.g.
+ * "(Agility 5 or Might 5) and Battlefield Retribution". Returns "None" when
+ * there are no real requirements.
+ * @param {{attribute: Array, feats: string[], other: string[], hasNone: boolean}} pre
+ * @returns {string}
+ */
+FEATS.formatPrerequisite = function(pre = {}) {
+  const parts = FEATS.prerequisiteTerms(pre).map(t => ({ join: t.join, ...foldPrerequisiteText(t.rows) }));
+  return foldPrerequisiteText(parts).text || "None";
+};
+
+/**
+ * Evaluate whether an actor meets a feat tier's prerequisites. Its terms (see
+ * FEATS.prerequisiteTerms) are combined top to bottom, each with the result so
+ * far by its own "and" / "or"; a group of rows is worked out first, the same
+ * way. For a single row:
+ *   - an attribute row needs that attribute at its minimum ("Any Extraordinary
+ *     N" is met if any of the extraordinary attributes ≥ N);
+ *   - a feat row checks the actor owns that feat (by name) at a high-enough
+ *     tier when the requirement names one (e.g. "Lethal Strike III");
+ *   - a custom textual row can't be auto-checked. It is reported as
+ *     unverifiable and left OUT of the result either way: it neither fails the
+ *     check nor, as an "or" alternative, satisfies it. The GM judges it.
+ * Returns { met, unmet: [string], unverifiable: [string] }.
  * @param {Actor} actor
  * @param {object} pre  A parsed prerequisite tier.
  * @returns {{met: boolean, unmet: string[], unverifiable: string[]}}
  */
 FEATS.checkPrerequisite = function(actor, pre = {}) {
   const unmet = [];
-  const unverifiable = [];
   const extraordinary = STATS.categories?.extraordinary?.attributes ?? [];
 
-  // Attribute requirements — ANY satisfies by default; ALL are required when
-  // attributeMode is "all". Incomplete editor rows (no attribute picked yet)
-  // are not requirements.
-  const attrs = (pre.attribute ?? []).filter(a => a?.key || a?.label);
   const meets = a => {
     const min = Number(a.min) || 0;
     if ( /^any extraordinary$/i.test(a.label) ) {
@@ -1647,30 +1725,43 @@ FEATS.checkPrerequisite = function(actor, pre = {}) {
     }
     return Number(actor?.system?.attributes?.[a.key]?.value ?? 0) >= min;
   };
-  if ( pre.attributeMode === "all" ) {
-    // Report each missing attribute on its own, so the sheet shows exactly
-    // which of the required scores falls short.
-    for ( const a of attrs ) if ( !meets(a) ) unmet.push(`${a.label} ${a.min}`);
-  }
-  else if ( attrs.length && !attrs.some(meets) ) {
-    unmet.push(attrs.map(a => `${a.label} ${a.min}`).join(" or "));
-  }
-
-  // Feat prerequisites — the actor must own a feat of that name (and tier, if the
-  // requirement names one like "Lethal Strike III"). Empty rows are skipped.
-  for ( const req of (pre.feats ?? []) ) {
-    if ( !String(req).trim() ) continue;
-    const m = /^(.*?)(?:\s+([IVX]+))?$/.exec(req.trim());
+  // The actor must own a feat of that name (and tier, if the requirement names
+  // one like "Lethal Strike III").
+  const ownsFeat = req => {
+    const m = /^(.*?)(?:\s+([IVX]+))?$/.exec(req);
     const baseName = (m?.[1] ?? req).trim();
     const reqTier = m?.[2] ? FEATS.romanToInt(m[2]) : 1;
     const owned = (actor?.items?.contents ?? []).find(i =>
       (i.type === "feat") && featBaseName(i.name) === baseName.toLowerCase()
     );
-    if ( !owned || (Number(owned.system?.purchasedTier ?? 0) < reqTier) ) unmet.push(req);
-  }
+    return !!owned && (Number(owned.system?.purchasedTier ?? 0) >= reqTier);
+  };
 
-  // Other textual prerequisites can't be auto-verified.
-  for ( const o of (pre.other ?? []) ) if ( String(o).trim() ) unverifiable.push(o);
+  const terms = FEATS.prerequisiteTerms(pre);
+  const unverifiable = terms.flatMap(t => t.rows.filter(r => r.type === "other").map(r => r.text));
+  // Combine parts ({join, ok}) top to bottom.
+  const fold = parts => parts.reduce((ok, p) => (ok === null) ? p.ok : ((p.join === "or") ? (ok || p.ok) : (ok && p.ok)), null);
+  // Only what can be checked takes part; a group left with nothing drops out.
+  const checked = terms
+    .map(t => ({
+      join: t.join,
+      rows: t.rows.filter(r => r.type !== "other")
+        .map(r => ({ join: r.join, text: r.text, ok: (r.type === "attribute") ? meets(r.attribute) : ownsFeat(r.text) }))
+    }))
+    .filter(t => t.rows.length)
+    .map(t => ({ ...t, ok: fold(t.rows) }));
+
+  // The first requirement (of the tier, of a group) has nothing before it to
+  // combine with.
+  const anyOr = checked.slice(1).some(t => t.join === "or")
+    || checked.some(t => t.rows.slice(1).some(r => r.join === "or"));
+  if ( !anyOr ) {
+    // Everything is required together: name exactly what is missing.
+    for ( const t of checked ) unmet.push(...t.rows.filter(r => !r.ok).map(r => r.text));
+  }
+  // Some requirement is an alternative: there is no one "missing" requirement,
+  // so show the whole expression.
+  else if ( fold(checked) === false ) unmet.push(FEATS.formatPrerequisite(pre));
 
   return { met: unmet.length === 0, unmet, unverifiable };
 };

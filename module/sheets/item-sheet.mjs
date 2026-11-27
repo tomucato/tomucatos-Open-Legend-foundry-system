@@ -386,20 +386,24 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         for ( const [j, val] of Object.entries(e.pre) ) {
           const idx = Number(j);
           if ( !Number.isInteger(idx) || !val || (typeof val !== "object") ) continue;
-          rows[idx] = { ...(rows[idx] ?? { type: "attribute", attr: "", min: 1, text: "" }), ...val };
+          const before = rows[idx];
+          rows[idx] = { ...(before ?? { type: "attribute", attr: "", min: 1, text: "", join: "or", group: false }), ...val };
+          // A feat row posts its feat-name select (+ optional minimum-tier
+          // select) instead of free text: store them as "Lethal Strike II".
+          if ( (rows[idx].type === "feat") && (typeof val.feat === "string") ) {
+            const feat = val.feat.trim();
+            rows[idx].text = feat ? [feat, String(val.tier ?? "").trim()].filter(Boolean).join(" ") : "";
+          }
         }
       }
       const fallbackCost = cur.cost ?? costs[i] ?? costs[costs.length - 1] ?? lastCost;
       const cost = Math.max(0, Math.floor(Number(("cost" in e) ? e.cost : fallbackCost) || 0));
       lastCost = cost;
-      // Any-one (OR) vs all (AND) for the attribute rows: the posted select
-      // when it is shown (2+ attribute rows), else whatever is stored.
-      const attributeMode = ("attributeMode" in e) ? e.attributeMode : cur.prerequisites?.attributeMode;
       return {
         tier: i + 1,
         cost,
         effect: String(("effect" in e) ? e.effect : (cur.effect ?? "")),
-        prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(rows, attributeMode)
+        prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(rows)
       };
     });
     sys.cost = sys.tiers.map(t => t.cost);
@@ -410,56 +414,72 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     }
   }
 
+  /** The explanation behind the info icon next to a feat tier's prerequisites. */
+  static FEAT_PRE_HELP = `<div class="feat-pre-help">
+    <p><strong>How prerequisites are read</strong></p>
+    <p>Rows are read from top to bottom. The <em>and</em> / <em>or</em> on a row combines it with <strong>everything above it</strong>, whatever kind of prerequisite it is (attribute, feat or custom).</p>
+    <p>Agility 5<br>or Might 5<br>and Battlefield Retribution<br>reads <em>(Agility 5 or Might 5) and Battlefield Retribution</em>.</p>
+    <p>Tick <strong>group with row above</strong> to bracket rows together. A group is worked out on its own first, then combined with what is above it by the <em>and</em> / <em>or</em> of its first row.</p>
+    <p>[Agility 5, and Might 5]<br>or [Logic 6, and Lethal Strike II]<br>reads <em>(Agility 5 and Might 5) or (Logic 6 and Lethal Strike II)</em>.</p>
+    <p>The <strong>Reads:</strong> line under the tier title always shows the result.</p>
+    <p>A custom prerequisite cannot be checked automatically: it is shown to the GM and never changes whether the feat counts as met.</p>
+  </div>`;
+
   /**
    * Flatten a feat tier's prerequisites structure into editor rows, one per
-   * requirement: attribute requirements (any-one or all, per the tier's
-   * attributeMode — carried separately), then feat requirements, then
-   * custom/other text. Incomplete rows (no attribute picked, empty text)
-   * are preserved so an in-progress row survives re-renders.
-   * @param {{attribute?: Array, feats?: string[], other?: string[]}} pre
-   * @returns {Array<{type: string, attr: string, min: number, text: string}>}
+   * requirement, in the order they were added (see FEATS.prerequisiteRows),
+   * each with its `join` to what is above it and whether it is bracketed into a
+   * `group` with the row above. Incomplete rows (no attribute picked, empty
+   * text) are preserved so an in-progress row survives re-renders.
+   * @param {{attribute?: Array, feats?: string[], other?: string[], order?: string[], groups?: boolean[]}} pre
+   * @returns {Array<{type: string, attr: string, min: number, text: string, join: string, group: boolean}>}
    */
   static #flattenFeatPrereqs(pre = {}) {
-    const toArray = OpenLegendItemSheet.#toArray;
-    const rows = [];
-    for ( const a of toArray(pre?.attribute) ) rows.push({
-      type: "attribute", attr: String(a?.key ?? ""),
-      min: Math.max(1, Math.floor(Number(a?.min) || 1)), text: ""
-    });
-    for ( const f of toArray(pre?.feats) ) rows.push({ type: "feat", attr: "", min: 1, text: String(f ?? "") });
-    for ( const o of toArray(pre?.other) ) rows.push({ type: "other", attr: "", min: 1, text: String(o ?? "") });
-    return rows;
+    const ordered = CONFIG.OPENLEGEND?.prerequisiteRows?.(pre) ?? [];
+    return ordered.map(r => (r.type === "attribute")
+      ? {
+        type: "attribute", attr: String(r.attribute?.key ?? ""),
+        min: Math.max(1, Math.floor(Number(r.attribute?.min) || 1)), text: "", join: r.join, group: !!r.group
+      }
+      : { type: r.type, attr: "", min: 1, text: r.text, join: r.join, group: !!r.group });
   }
 
   /**
    * Fold editor rows back into the canonical prerequisites structure consumed by
    * formatPrerequisite / checkPrerequisite. Incomplete rows are kept (as empty
    * entries) so they survive round-trips; format/check skip them.
-   * @param {Array<{type: string, attr: string, min: number, text: string}>} rows
-   * @param {string} [attributeMode]  "all" when every attribute row is required
-   *   (AND); anything else means any one satisfies (OR, the default).
-   * @returns {{attribute: Array, attributeMode: string, feats: string[], other: string[], hasNone: boolean}}
+   * @param {Array<{type: string, attr: string, min: number, text: string, join: string}>} rows
+   * @returns {{attribute: Array, feats: string[], featJoins: string[], other: string[], otherJoins: string[], hasNone: boolean}}
    */
-  static #buildFeatPrereqs(rows, attributeMode) {
+  static #buildFeatPrereqs(rows) {
     const labels = CONFIG.OPENLEGEND?.attributeLabels ?? {};
     const labelFor = k => {
       if ( k === "any attribute" ) return "Any Attribute";
       if ( k === "any extraordinary" ) return "Any Extraordinary";
       return labels[k] ?? (k ? k.charAt(0).toUpperCase() + k.slice(1) : "");
     };
-    const out = {
-      attribute: [], attributeMode: (attributeMode === "all") ? "all" : "any",
-      feats: [], other: [], hasNone: false
-    };
+    // featJoins / otherJoins run parallel to feats / other: how each of those
+    // requirements combines with everything above it.
+    // `order` records how the three kinds interleave, so the rows stay in the
+    // order they were added (see FEATS.prerequisiteRows). `groups` runs parallel
+    // to `order`: true brackets that row together with the row above it.
+    const out = { attribute: [], feats: [], featJoins: [], other: [], otherJoins: [], order: [], groups: [], hasNone: false };
     for ( const r of rows ) {
       if ( !r || (typeof r !== "object") ) continue;
       const attr = String(r.attr ?? "");
-      if ( r.type === "feat" ) out.feats.push(String(r.text ?? "").trim());
-      else if ( r.type === "other" ) out.other.push(String(r.text ?? "").trim());
-      else out.attribute.push({
-        key: attr, label: labelFor(attr),
-        min: Math.max(1, Math.floor(Number(r.min) || 1))
-      });
+      out.groups.push(!!out.order.length && ((r.group === true) || (r.group === "true")));
+      const extraJoin = (r.join === "or") ? "or" : "and";
+      if ( r.type === "feat" ) { out.feats.push(String(r.text ?? "").trim()); out.featJoins.push(extraJoin); out.order.push("feat"); }
+      else if ( r.type === "other" ) { out.other.push(String(r.text ?? "").trim()); out.otherJoins.push(extraJoin); out.order.push("other"); }
+      else {
+        out.attribute.push({
+          key: attr, label: labelFor(attr),
+          min: Math.max(1, Math.floor(Number(r.min) || 1)),
+          // How this attribute ties to what is above it; moot on the first row.
+          join: (out.order.length && (r.join === "and")) ? "and" : "or"
+        });
+        out.order.push("attribute");
+      }
     }
     out.hasNone = !out.attribute.length && !out.feats.length && !out.other.length;
     return out;
@@ -486,8 +506,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         cost,
         effect: String(cur.effect ?? ""),
         prerequisites: OpenLegendItemSheet.#buildFeatPrereqs(
-          OpenLegendItemSheet.#flattenFeatPrereqs(cur.prerequisites),
-          cur.prerequisites?.attributeMode)
+          OpenLegendItemSheet.#flattenFeatPrereqs(cur.prerequisites))
       };
     });
   }
@@ -659,7 +678,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     if ( this.item.type === "action" ) await this._prepareActionContext(context);
 
     // Feat: a readable per-tier breakdown (cost + prerequisites) for the sheet.
-    if ( this.item.type === "feat" ) this._prepareFeatContext(context);
+    if ( this.item.type === "feat" ) await this._prepareFeatContext(context);
 
     // `editable`/`document`/`source`/`fields` are provided by super.
     return context;
@@ -1016,16 +1035,65 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
    * @param {object} context
    * @private
    */
-  _prepareFeatContext(context) {
+  async _prepareFeatContext(context) {
     const cfg = CONFIG.OPENLEGEND ?? {};
     const sys = this.item.system;
     const rows = this.#featTiersSnapshot();
+
+    // Feats a "Feat" prerequisite row can pick: the system compendium's plus
+    // world feats that are visible to this user and not marked Private (the
+    // same rule as every other selection list). Keyed by the name without its
+    // "(I - IX)" tier suffix → that feat's tier count. This feat itself is
+    // always offered too (even when Private or not yet in the world), since a
+    // higher tier commonly requires a lower tier of the same feat.
+    const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+    const stripTiers = name => String(name ?? "").replace(/\s*\(.*?\)\s*$/, "").trim();
+    const featTiers = new Map();
+    // baseName: an owned copy's name may carry a "— <choice>" suffix.
+    const ownName = stripTiers(this.item.system.baseName || this.item.name);
+    if ( ownName ) featTiers.set(ownName, rows.length);
+    for ( const doc of await selectableDocuments("feat", "tomucatos-open-legend-rpg-system.feats") ) {
+      const name = stripTiers(doc.name);
+      if ( !name || featTiers.has(name) ) continue;
+      featTiers.set(name, Math.max(1, Math.min(9, Math.floor(Number(doc.system?.maxTier) || 1))));
+    }
+    const featNames = [...featTiers.keys()].sort((a, b) => a.localeCompare(b));
+    /** Split a stored feat requirement ("Lethal Strike II") into its feat-name
+     *  and minimum-tier selects, with the option maps for both. */
+    const featPick = text => {
+      const m = /^(.*?)(?:\s+([IVX]+))?$/.exec(String(text ?? "").trim());
+      let name = (m?.[1] ?? "").trim();
+      let tier = m?.[2] ?? "";
+      // A feat whose own name ends in a numeral-like word: prefer the full text.
+      const exact = featNames.find(n => n.toLowerCase() === String(text ?? "").trim().toLowerCase());
+      if ( exact ) { name = exact; tier = ""; }
+      else name = featNames.find(n => n.toLowerCase() === name.toLowerCase()) ?? name;
+      // A stored name that is no longer selectable (deleted, renamed, or made
+      // Private) is kept as an option so opening the sheet never drops it.
+      const names = (name && !featTiers.has(name)) ? [name, ...featNames] : featNames;
+      const maxTier = featTiers.get(name) ?? 9;
+      const tiers = ROMAN.slice(0, Math.max(maxTier, ROMAN.indexOf(tier) + 1));
+      return {
+        featName: name,
+        featTier: tier,
+        featOptions: { "": "—", ...Object.fromEntries(names.map(n => [n, n])) },
+        featTierOptions: { "": "—", ...Object.fromEntries(tiers.map(r => [r, r])) }
+      };
+    };
+
     context.featTierRows = rows.map((t, i) => {
-      const prereqs = OpenLegendItemSheet.#flattenFeatPrereqs(t.prerequisites).map((p, j) => ({
+      const prereqs = OpenLegendItemSheet.#flattenFeatPrereqs(t.prerequisites).map((p, j, all) => ({
         ...p,
         index: j,
         isAttribute: p.type === "attribute",
-        placeholder: p.type === "feat" ? "Feat name, e.g. Lethal Strike II" : "Custom prerequisite"
+        isFeat: p.type === "feat",
+        // Every row but the first gets an and/or connector to what is above it.
+        showJoin: j > 0,
+        // Bracketed with the row above and/or the row below.
+        inGroup: (j > 0 && p.group) || !!all[j + 1]?.group,
+        groupStart: !(j > 0 && p.group) && !!all[j + 1]?.group,
+        groupEnd: (j > 0 && p.group) && !all[j + 1]?.group,
+        ...((p.type === "feat") ? featPick(p.text) : {})
       }));
       return {
         index: i,
@@ -1033,10 +1101,7 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         cost: t.cost,
         effect: t.effect,
         prerequisite: cfg.formatPrerequisite ? cfg.formatPrerequisite(t.prerequisites) : "—",
-        prereqs,
-        // Any-one vs all only matters once there are 2+ attribute rows.
-        attributeMode: t.prerequisites.attributeMode,
-        showAttributeMode: prereqs.filter(p => p.isAttribute).length > 1
+        prereqs
       };
     });
     context.featMultiTier = rows.length > 1;
@@ -1044,7 +1109,8 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     // attribute rows) which attribute — including the SRD's "Any Attribute" /
     // "Any Extraordinary" wildcards.
     context.featPreTypeOptions = { attribute: "Attribute", feat: "Feat", other: "Custom" };
-    context.featPreAttrModeOptions = { any: "Any one of them (OR)", all: "All of them (AND)" };
+    context.featPreJoinOptions = { or: "or", and: "and" };
+    context.featPreHelp = OpenLegendItemSheet.FEAT_PRE_HELP;
     context.featPreAttrOptions = {
       "": "—",
       "any attribute": "Any Attribute",
@@ -2610,8 +2676,8 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const tiers = this.#featTiersSnapshot();
     if ( !tiers[ti] ) return;
     const rows = OpenLegendItemSheet.#flattenFeatPrereqs(tiers[ti].prerequisites);
-    rows.push({ type: "attribute", attr: "", min: 1, text: "" });
-    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows, tiers[ti].prerequisites.attributeMode);
+    rows.push({ type: "attribute", attr: "", min: 1, text: "", join: "or", group: false });
+    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows);
     await this.#replaceArray("system.tiers", tiers);
   }
 
@@ -2622,9 +2688,12 @@ export class OpenLegendItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
     const pi = Number(target.closest("[data-pre-index]")?.dataset.preIndex);
     const tiers = this.#featTiersSnapshot();
     if ( !tiers[ti] ) return;
-    const rows = OpenLegendItemSheet.#flattenFeatPrereqs(tiers[ti].prerequisites)
-      .filter((_, j) => j !== pi);
-    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows, tiers[ti].prerequisites.attributeMode);
+    const all = OpenLegendItemSheet.#flattenFeatPrereqs(tiers[ti].prerequisites);
+    // Removing the first row of a group: the next row starts that group
+    // instead of joining whatever is above it.
+    if ( all[pi] && !all[pi].group && all[pi + 1]?.group ) all[pi + 1].group = false;
+    const rows = all.filter((_, j) => j !== pi);
+    tiers[ti].prerequisites = OpenLegendItemSheet.#buildFeatPrereqs(rows);
     await this.#replaceArray("system.tiers", tiers);
   }
 

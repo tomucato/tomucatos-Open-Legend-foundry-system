@@ -1,0 +1,68 @@
+{{!-- Feats whose prerequisites were saved before grouping existed and now read
+      differently. Nothing is converted automatically: the GM checks each one. --}}
+<div class="ol-pr-review">
+  <div class="ol-pr-intro">
+    <p><strong>Why you are seeing this.</strong> The way a feat's prerequisite rows are combined has changed, so a few feats saved earlier may no longer mean what their author intended. Nothing was changed for you: only you know what each feat was meant to require.</p>
+
+    <p><strong>The rule now.</strong> Each row is added to <em>everything above it</em> with its own "and" / "or". It does not matter whether the row is an attribute, a feat or a custom text.</p>
+
+    <p><strong>Why groups were needed.</strong> "and" / "or" alone cannot say which rows belong together. The same four rows can mean two different things:</p>
+
+    <div class="ol-pr-examples">
+      <div class="ol-pr-example">
+        <div class="ol-pr-example-title">No groups</div>
+        <div class="ol-pr-rows">
+          <div class="ol-pr-row"><span class="ol-pr-join"></span><span class="ol-pr-req">Agility 5</span></div>
+          <div class="ol-pr-row"><span class="ol-pr-join">and</span><span class="ol-pr-req">Might 5</span></div>
+          <div class="ol-pr-row"><span class="ol-pr-join">or</span><span class="ol-pr-req">Logic 6</span></div>
+          <div class="ol-pr-row"><span class="ol-pr-join">and</span><span class="ol-pr-req">Presence 6</span></div>
+        </div>
+        <div class="ol-pr-result">Reads: ((Agility 5 and Might 5) or Logic 6) and Presence 6</div>
+        <div class="ol-pr-meaning">Presence 6 is always required.</div>
+      </div>
+      <div class="ol-pr-example">
+        <div class="ol-pr-example-title">Two groups</div>
+        <div class="ol-pr-rows">
+          <div class="ol-pr-row is-grouped"><span class="ol-pr-join"></span><span class="ol-pr-req">Agility 5</span></div>
+          <div class="ol-pr-row is-grouped"><span class="ol-pr-join">and</span><span class="ol-pr-req">Might 5</span><span class="ol-pr-check"><i class="fas fa-square-check"></i> group with row above</span></div>
+          <div class="ol-pr-row is-grouped is-new-group"><span class="ol-pr-join">or</span><span class="ol-pr-req">Logic 6</span></div>
+          <div class="ol-pr-row is-grouped"><span class="ol-pr-join">and</span><span class="ol-pr-req">Presence 6</span><span class="ol-pr-check"><i class="fas fa-square-check"></i> group with row above</span></div>
+        </div>
+        <div class="ol-pr-result">Reads: (Agility 5 and Might 5) or (Logic 6 and Presence 6)</div>
+        <div class="ol-pr-meaning">Either pair is enough.</div>
+      </div>
+    </div>
+
+    <p><strong>What to do.</strong> For each feat below, compare "Read before" with "Reads now".</p>
+    <ul class="ol-pr-steps">
+      <li>If "Reads now" is not what you meant: press <strong>Open</strong>, edit the Details tab, and tick <span class="ol-pr-check"><i class="fas fa-square-check"></i> group with row above</span> on the rows that belong with the row above them. The "Reads:" line on the feat sheet updates as you go.</li>
+      <li>If "Reads now" is fine: press <strong>Keep as it reads now</strong>.</li>
+    </ul>
+  </div>
+  {{#if feats.length}}
+  <ul class="ol-pr-list">
+    {{#each feats as |f|}}
+    <li class="ol-pr-feat">
+      <div class="ol-pr-head">
+        <span class="ol-pr-name">{{f.name}}</span>
+        {{#if f.canOpen}}<button type="button" data-action="openFeat" data-index="{{f.index}}"><i class="fas fa-pen-to-square"></i> Open</button>{{/if}}
+        <button type="button" data-action="keepFeat" data-index="{{f.index}}" data-tooltip="Keep the prerequisites as they read now and remove this feat from the list."><i class="fas fa-check"></i> Keep as it reads now</button>
+      </div>
+      <div class="ol-pr-where">{{f.where}}</div>
+      {{#each f.tiers as |t|}}
+      <div class="ol-pr-tier">
+        {{#if f.multiTier}}<strong>Tier {{t.tier}}</strong>{{/if}}
+        <span>Read before: {{t.before}}</span>
+        <span>Reads now: {{t.after}}</span>
+      </div>
+      {{/each}}
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  <p>No feat in this world needs a look.</p>
+  {{/if}}
+  <footer class="form-footer">
+    <button type="button" data-action="refresh"><i class="fas fa-rotate"></i> Check again</button>
+  </footer>
+</div>
